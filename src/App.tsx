@@ -1,15 +1,18 @@
-import "./App.css";
-import Illustrator from "../src/assets/img/Illustrator.svg";
-import { FormLogin } from "./components/formLogin";
+import { Login } from "./pages/Login";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+  },
+]);
 
 function App() {
   return (
-    <div className="container">
-      <FormLogin />
-      <div className="generec-img">
-        <img src={Illustrator} alt="Ilustração de cards flutuando" />
-      </div>
-    </div>
+    <>
+      <RouterProvider router={router} />
+    </>
   );
 }
 

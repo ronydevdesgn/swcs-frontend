@@ -22,7 +22,7 @@
   text-align: start;
   gap: .4rem;
 
-  margin-bottom: 4.8rem;
+  margin-bottom: 4rem;
 }
 
 .group-form form .group-title h1 {
@@ -41,25 +41,70 @@
   display: flex;
   flex-direction: column;
   align-items: start;
-  gap: 2.4rem;
+  gap: 2rem;
 }
 
 .group-form form .group-input input {
   width: 40rem;
   padding: 1.2rem 2.4rem;
-  color: black;
-}
-
-.group-form form .group-input select {
-  width: 40rem;
-  padding: 1.2rem 2.4rem;
   color: #000;
 }
 
+.group-form form .group-input select {
+  /* Remove a aparência padrão */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 40rem;
+  padding: 1.2rem 2.4rem;
+  color: #000;
+  /* Adiciona um ícone de seta para baixo */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 2.4rem center;
+  background-size: 1.6rem;
+  cursor: pointer;
+}
+
+.group-form form .group-input select option {
+  border: .1rem solid var(--purple-heart-400);
+  background-color: var(--purple-heart-100);
+  border-radius: .8rem;
+  color: #000;
+  padding: 1.2rem;
+}
+
+.group-form form .group-input select option:hover {
+  background-color: var(--purple-heart-100);
+}
 
 .group-form form .group-button {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 3.2rem;
+  margin-top: 2.4rem;
+}
+
+.group-form form .group-button button {
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 40rem;
+  transition: background-color .2s ease-in-out;
+}
+
+.group-form form .group-button button:hover {
+background-color: var(--purple-heart-400);
+}
+
+.group-form form .group-button a {
+  text-decoration: none;
+  color: var(--purple-heart-500);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.group-form form .group-button a:hover {
+  color: var(--purple-heart-400);
+  transition: background-color .2s ease-in-out;
 }

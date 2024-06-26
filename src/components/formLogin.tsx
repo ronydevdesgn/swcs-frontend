@@ -32,7 +32,7 @@ export function FormLogin() {
             required
           />
           <select name="cargo" id="cargo" required>
-            <option disabled selected value="">
+            <option disabled selected value="" className="Placeholder">
             Selecione o seu cargo
             </option>
             <option value="sumarista">Sumarista</option>
@@ -41,7 +41,7 @@ export function FormLogin() {
         </div>
         <div className="group-button">
           <button type="button">Entrar agora</button>
-          <span>Esqueci minha senha</span>
+          <a href="#">Esqueceu da senha?</a>
         </div>
       </form>
     </div>
