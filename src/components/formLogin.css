@@ -1,0 +1,65 @@
+.group-form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 3.2rem;
+}
+
+.group-form img {
+  width: 13.5rem;
+  height: 3.45rem;
+}
+
+.group-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.group-form form .group-title {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  gap: .4rem;
+
+  margin-bottom: 4.8rem;
+}
+
+.group-form form .group-title h1 {
+  color: var(--purple-heart-950);
+  font-size: 3.2rem;
+  font-weight: bold;
+}
+
+.group-form form .group-title p {
+  color: var(--purple-heart-950);
+  font-size: 1.6rem;
+  font-weight: normal;
+}
+
+.group-form form .group-input {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 2.4rem;
+}
+
+.group-form form .group-input input {
+  width: 40rem;
+  padding: 1.2rem 2.4rem;
+  color: black;
+}
+
+.group-form form .group-input select {
+  width: 40rem;
+  padding: 1.2rem 2.4rem;
+  color: #000;
+}
+
+
+.group-form form .group-button {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 3.2rem;
+}

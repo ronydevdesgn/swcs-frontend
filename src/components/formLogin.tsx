@@ -1,7 +1,8 @@
 import Logoswcs from "/logoswcs.svg";
+import "./formLogin.css"
 export function FormLogin() {
   return (
-    <div>
+    <div className="group-form">
       <img src={Logoswcs} alt="logotipo do sistema" />
       <form action="#" method="get">
         <div className="group-title">
