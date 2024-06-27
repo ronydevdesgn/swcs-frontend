@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "Home/:homeId",
+    path: "/Home",
     element: <Home />,
   },
 ]);
