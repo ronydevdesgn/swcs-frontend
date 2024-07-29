@@ -1,6 +1,4 @@
-import './index.css';
+import "./index.css";
 export function Relatorios() {
-  return (
-  <h1>Relatórios</h1>
-);
+  return <h1>Relatórios</h1>;
 }

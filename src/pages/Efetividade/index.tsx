@@ -1,6 +1,4 @@
-import './index.css';
+import "./index.css";
 export function Efetividade() {
-  return (
-  <h1>Efetividade</h1>
-);
+  return <h1>Efetividade</h1>;
 }

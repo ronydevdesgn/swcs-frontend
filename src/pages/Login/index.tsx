@@ -5,10 +5,10 @@ import { FormLogin } from "../../components/formLogin";
 export function Login() {
   return (
     <div className="container">
-    <FormLogin />
-    <div className="generec-img">
-      <img src={Illustrator} alt="Ilustração de cards flutuando" />
+      <FormLogin />
+      <div className="generec-img">
+        <img src={Illustrator} alt="Ilustração de cards flutuando" />
+      </div>
     </div>
-  </div>
-  )
+  );
 }

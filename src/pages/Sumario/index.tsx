@@ -1,6 +1,4 @@
-import './index.css';
+import "./index.css";
 export function Sumario() {
-  return (
-  <h1>Sumário</h1>
-);
+  return <h1>Sumário</h1>;
 }

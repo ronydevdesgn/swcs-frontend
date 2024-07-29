@@ -1,6 +1,4 @@
-import './index.css';
+import "./index.css";
 export function Cursos() {
-  return (
-  <h1>Dashboard</h1>
-);
+  return <h1>Curso</h1>;
 }
