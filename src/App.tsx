@@ -1,6 +1,7 @@
 // All screen
 import { Login } from "./pages/Login";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const routers = createBrowserRouter([
   {
@@ -11,9 +12,9 @@ const routers = createBrowserRouter([
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <RouterProvider router={routers} />
-    </>
+    </AuthProvider>
   );
 }
 
