@@ -27,7 +27,7 @@ npm install
 
 ## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Se você está desenvolvendo uma aplicação para produção, recomendamos atualizar a configuração para habilitar regras de lint com verificação de tipos:
 
 - Configure the top-level `parserOptions` property like this:
 
@@ -124,6 +124,6 @@ VITE_API_URL=http://localhost:3000
 VITE_APP_NAME=SWCS
 ```
 ## 👥 Equipe
-- [Seu Nome] - Desenvolvedor Frontend
+- [Rodivânio_Alberto_Da_Costa] - Desenvolvedor Frontend
 ## 📞 Suporte
 Para reportar bugs ou sugerir melhorias, abra uma issue no repositório do projeto.
