@@ -1,8 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import type { LoginFormData, LoginFormErrors, UserRole } from '../types/auth';
-import Logoswcs from "../assets/img/logoswcs.svg";
+import { useAuth } from '../../hooks/useAuth';
+import type { LoginFormData, LoginFormErrors, UserRole } from '../../types/auth';
+import Logoswcs from "../../assets/img/logoswcs.svg";
 import "./formLogin.css";
 
 export function FormLogin() {

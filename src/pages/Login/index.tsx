@@ -1,6 +1,6 @@
 import "./index.css";
 import Illustrator from "../../assets/img/Illustrator.svg";
-import { FormLogin } from "../../components/formLogin";
+import { FormLogin } from "../../components/Form/formLogin";
 
 export function Login() {
   return (

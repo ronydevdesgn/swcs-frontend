@@ -1,18 +1,17 @@
-type UserRole = 'sumarista' | 'professor';
-
-interface LoginFormData {
+export interface User {
   name: string;
   email: string;
-  password: string;
   role: UserRole;
 }
 
-interface LoginFormErrors {
+export type UserRole = 'sumarista' | 'professor';
+
+export interface LoginFormData extends User {}
+
+export interface LoginFormErrors {
   name?: string;
   email?: string;
   password?: string;
   role?: string;
-  submit?: string; // Erro global do formulário
+  submit?: string;
 }
-
-export type { UserRole, LoginFormData, LoginFormErrors };
