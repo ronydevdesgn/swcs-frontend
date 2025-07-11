@@ -10,7 +10,7 @@ import { Efetividade } from "./pages/Efetividade";
 import { Home } from "./pages/Home";
 import { Professores } from "./pages/Professores";
 import { Relatorios } from "./pages/Relatorios";
-import { SignUp } from "./pages/Sign up";
+import { SignUp } from "./pages/SignUp";
 import { Sumario } from "./pages/Sumario";
 
 const routers = createBrowserRouter([
