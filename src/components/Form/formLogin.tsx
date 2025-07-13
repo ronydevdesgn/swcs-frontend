@@ -1,35 +1,39 @@
-import { useState, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import type { LoginFormData, LoginFormErrors, UserRole } from '../../types/auth';
-import Logoswcs from "../../assets/img/logoswcs.svg";
+import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import type {
+  LoginFormData,
+  LoginFormErrors,
+  UserRole,
+} from "../../types/auth";
+import Logoswcs from "../../../public/logoswcs.svg";
 import "./formLogin.css";
 
 export function FormLogin() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginFormData>({
-    name: '',
-    email: '',
-    password: '',
-    role: '' as UserRole
+    name: "",
+    email: "",
+    password: "",
+    role: "" as UserRole,
   });
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
-    if (!formData.name.trim()) newErrors.name = 'Nome é obrigatório';
-    if (!formData.email.trim()) newErrors.email = 'E-mail é obrigatório';
+    if (!formData.name.trim()) newErrors.name = "Nome é obrigatório";
+    if (!formData.email.trim()) newErrors.email = "E-mail é obrigatório";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'E-mail inválido';
+      newErrors.email = "E-mail inválido";
     }
-    if (!formData.password.trim()) newErrors.password = 'Senha é obrigatória';
+    if (!formData.password.trim()) newErrors.password = "Senha é obrigatória";
     else if (formData.password.length < 6) {
-      newErrors.password = 'A senha deve ter no mínimo 6 caracteres';
+      newErrors.password = "A senha deve ter no mínimo 6 caracteres";
     }
-    if (!formData.role) newErrors.role = 'Cargo é obrigatório';
-    
+    if (!formData.role) newErrors.role = "Cargo é obrigatório";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -41,30 +45,30 @@ export function FormLogin() {
     try {
       setIsLoading(true);
       await signIn(formData);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        submit: 'Erro ao fazer login. Verifique suas credenciais.'
+        submit: "Erro ao fazer login. Verifique suas credenciais.",
       }));
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleInputChange = (field: keyof LoginFormData) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setFormData(prev => ({ ...prev, [field]: e.target.value }));
-    // Limpa o erro do campo quando o usuário começa a digitar
-    if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
-  };
+  const handleInputChange =
+    (field: keyof LoginFormData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+      // Limpa o erro do campo quando o usuário começa a digitar
+      if (errors[field]) {
+        setErrors((prev) => {
+          const newErrors = { ...prev };
+          delete newErrors[field];
+          return newErrors;
+        });
+      }
+    };
 
   return (
     <div className="group-form" role="main">
@@ -74,7 +78,7 @@ export function FormLogin() {
           <h1>Acesse o sistema</h1>
           <p>Preencha os campos abaixos se tiver uma conta</p>
         </div>
-        
+
         {errors.submit && (
           <div className="error-message global-error" role="alert">
             {errors.submit}
@@ -93,7 +97,7 @@ export function FormLogin() {
               aria-invalid={!!errors.name}
               aria-describedby={errors.name ? "name-error" : undefined}
               value={formData.name}
-              onChange={handleInputChange('name')}
+              onChange={handleInputChange("name")}
               placeholder="Digite seu nome"
               autoComplete="name"
             />
@@ -115,7 +119,7 @@ export function FormLogin() {
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "email-error" : undefined}
               value={formData.email}
-              onChange={handleInputChange('email')}
+              onChange={handleInputChange("email")}
               placeholder="Digite seu e-mail"
               autoComplete="email"
             />
@@ -137,7 +141,7 @@ export function FormLogin() {
               aria-invalid={!!errors.password}
               aria-describedby={errors.password ? "password-error" : undefined}
               value={formData.password}
-              onChange={handleInputChange('password')}
+              onChange={handleInputChange("password")}
               placeholder="Digite sua senha"
               autoComplete="current-password"
             />
@@ -158,7 +162,7 @@ export function FormLogin() {
               aria-invalid={!!errors.role}
               aria-describedby={errors.role ? "role-error" : undefined}
               value={formData.role}
-              onChange={handleInputChange('role')}
+              onChange={handleInputChange("role")}
             >
               <option value="">Selecione o seu cargo</option>
               <option value="sumarista">Sumarista</option>
@@ -173,20 +177,20 @@ export function FormLogin() {
         </div>
 
         <div className="group-button">
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isLoading}
             aria-busy={isLoading}
-            className={isLoading ? 'loading' : ''}
+            className={isLoading ? "loading" : ""}
           >
-            {isLoading ? 'Entrando...' : 'Entrar agora'}
+            {isLoading ? "Entrando..." : "Entrar agora"}
           </button>
-          <a 
-            href="/recuperar-senha" 
+          <a
+            href="/recuperar-senha"
             className="forgot-password"
             onClick={(e) => {
               e.preventDefault();
-              navigate('/recuperar-senha');
+              navigate("/recuperar-senha");
             }}
           >
             Esqueceu a senha?
