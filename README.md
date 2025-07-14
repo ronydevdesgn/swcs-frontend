@@ -41,22 +41,23 @@ npm run dev
 
 ```
 src/
-  ├── assets/        # Arquivos estáticos
-  ├── components/    # Componentes reutilizáveis
-  │   ├── Header/    # Componente de cabeçalho
-  │   └── Sidebar/   # Barra lateral de navegação
-  ├── contexts/      # Contextos React (Auth)
-  ├── pages/         # Páginas da aplicação
-  │   ├── Cursos/
-  │   ├── Dashboard/
-  │   ├── Efetividade/
-  │   ├── Home/
-  │   ├── Login/
-  │   ├── Professores/
-  │   ├── Relatorios/
-  │   ├── Sign up/
-  │   └── Sumario/
-  └── types/         # Definições de tipos TypeScript
+  ├── assets/        # Arquivos estáticos
+  ├── components/    # Componentes reutilizáveis
+  │   ├── Header/    # Componente de cabeçalho
+  │   └── Sidebar/   # Barra lateral de navegação
+  ├── contexts/      # Contextos React (Auth)
+  ├── pages/         # Páginas da aplicação
+  │   ├── Cursos/
+  │   ├── Dashboard/
+  │   ├── Definicoes/
+  │   ├── Efetividade/
+  │   ├── Home/
+  │   ├── Login/
+  │   ├── Professores/
+  │   ├── Relatorios/
+  │   ├── Sign up/
+  │   └── Sumario/
+  └── types/         # Definições de tipos TypeScript
 ```
 
 ## 🔧 Scripts Disponíveis
@@ -72,18 +73,20 @@ src/
   - Login com email e senha
   - Diferentes níveis de acesso (Sumarista/Professor)
   - Recuperação de senha
+  - Redirecionamento automático para login em rotas inválidas (usuários não autenticados)
+  - Redirecionamento automático para dashboard em rotas inválidas (usuários autenticados)
 - Gestão de Sumários
   - Criação e edição de sumários
-  - Visualização de histórico (x)
-  - Aprovação/rejeição de sumários (x)
+  - Visualização de histórico
+  - Aprovação/rejeição de sumários
 - Gestão de Usuários
   - Cadastro de professores
-  - Cadastro de sumarista
+  - Cadastro de sumaristas
   - Gerenciamento de permissões
   - Controlo de presenças e faltas de professores
 - Relatórios
   - Geração de relatórios de efetividade (presenças e faltas dos professores)
-  - Estatísticas de sumários (x)
+  - Estatísticas de sumários
   - Exportação de dados
 
 ## 📝 Padrões de Código
