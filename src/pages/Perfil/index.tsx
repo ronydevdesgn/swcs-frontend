@@ -3,7 +3,7 @@
 import { Sidebar } from "../../components/Sidebar/Sidebar";
 import "./index.css";
 
-export function Home() {
+export function Perfil() {
   return (
     <div className="layout">
       <Sidebar />
