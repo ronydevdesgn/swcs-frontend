@@ -42,22 +42,31 @@ npm run dev
 ```
 src/
   ├── assets/        # Arquivos estáticos
+  │   └── img/       # Imagens do projeto
   ├── components/    # Componentes reutilizáveis
+  │   ├── Form/      # Componentes de formulário
   │   ├── Header/    # Componente de cabeçalho
+  │   ├── Layout/    # Layout principal da aplicação
+  │   ├── PrivateRoute/ # Componente de proteção de rotas
+  │   ├── SplashScreen/ # Tela de carregamento
   │   └── Sidebar/   # Barra lateral de navegação
-  ├── contexts/      # Contextos React (Auth)
+  ├── contexts/      # Contextos React
+  │   └── AuthContext.tsx  # Contexto de autenticação
+  ├── hooks/         # Hooks personalizados
+  │   └── useAuth.ts # Hook de autenticação
   ├── pages/         # Páginas da aplicação
-  │   ├── Cursos/
-  │   ├── Dashboard/
-  │   ├── Definicoes/
-  │   ├── Efetividade/
-  │   ├── Home/
-  │   ├── Login/
-  │   ├── Professores/
-  │   ├── Relatorios/
-  │   ├── Sign up/
-  │   └── Sumario/
+  │   ├── Dashboard/ # Página inicial após login
+  │   ├── Cursos/    # Gestão de cursos
+  │   ├── Definicoes/ # Configurações do sistema
+  │   ├── Efetividade/ # Controle de efetividade
+  │   ├── Login/     # Página de login
+  │   ├── Perfil/    # Perfil do usuário
+  │   ├── Professores/ # Gestão de professores
+  │   ├── Relatorios/ # Geração de relatórios
+  │   ├── SignUp/    # Página de cadastro
+  │   └── Definicoes/ # Configurações do sistema
   └── types/         # Definições de tipos TypeScript
+      └── auth.ts    # Tipos relacionados à autenticação
 ```
 
 ## 🔧 Scripts Disponíveis
@@ -86,7 +95,7 @@ src/
   - Controlo de presenças e faltas de professores
 - Relatórios
   - Geração de relatórios de efetividade (presenças e faltas dos professores)
-  - Estatísticas de sumários
+  - Estatísticas de sumários (x)
   - Exportação de dados
 
 ## 📝 Padrões de Código
