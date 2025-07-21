@@ -1,18 +1,23 @@
-// All screen
+// All screen (todas as telas do aplicativo)
 import { Login } from "./pages/Login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Layout } from "./components/Layout";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { Cursos } from "./pages/Cursos";
 import { Dashboard } from "./pages/Dashboard";
 import { Efetividade } from "./pages/Efetividade";
-import { Home } from "./pages/Home";
+import { Perfil } from "./pages/Perfil";
 import { Professores } from "./pages/Professores";
 import { Relatorios } from "./pages/Relatorios";
 import { SignUp } from "./pages/SignUp";
-import { Sumario } from "./pages/Sumario";
+import { Definicoes } from "./pages/Definicoes";
 
+// All routes (todas as rotas)
 const routers = createBrowserRouter([
   {
     path: "/",
@@ -22,6 +27,8 @@ const routers = createBrowserRouter([
     path: "/signup",
     element: <SignUp />,
   },
+  // Private routes (rotas privadas)
+  // These routes require authentication (estas rotas requerem autenticação)
   {
     element: <PrivateRoute />,
     children: [
@@ -41,8 +48,8 @@ const routers = createBrowserRouter([
             element: <Efetividade />,
           },
           {
-            path: "/home",
-            element: <Home />,
+            path: "/perfil",
+            element: <Perfil />,
           },
           {
             path: "/professores",
@@ -53,15 +60,24 @@ const routers = createBrowserRouter([
             element: <Relatorios />,
           },
           {
-            path: "/sumario",
-            element: <Sumario />,
+            path: "/definicoes",
+            element: <Definicoes />,
+          },
+          {
+            path: "*",
+            element: <Navigate to="/dashboard" replace />,
           },
         ],
       },
     ],
   },
+  {
+    path: "*",
+    element: <Navigate to="/" replace />,
+  },
 ]);
 
+// Main component of the application
 function App() {
   return (
     <AuthProvider>
