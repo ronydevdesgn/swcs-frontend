@@ -15,6 +15,7 @@ import { Perfil } from "./pages/Perfil";
 import { Professores } from "./pages/Professores";
 import { Relatorios } from "./pages/Relatorios";
 import { SignUp } from "./pages/SignUp";
+import { ForgotPassword } from "./pages/ForgotPassword";
 import { Definicoes } from "./pages/Definicoes";
 
 // All routes (todas as rotas)
@@ -22,6 +23,10 @@ const routers = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
   },
   {
     path: "/signup",

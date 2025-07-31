@@ -73,6 +73,7 @@ export function FormLogin() {
   return (
     <div className="group-form" role="main">
       <img src={Logoswcs} alt="logotipo do sistema" />
+
       <form onSubmit={handleSubmit} noValidate>
         <div className="group-title" role="heading" aria-level={1}>
           <h1>Acesse o sistema</h1>
@@ -86,74 +87,83 @@ export function FormLogin() {
         )}
 
         <div className="group-input">
+          {/* <div className="input-field">
+            <label htmlFor="name">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                aria-label="Nome de usuário"
+                aria-required="true"
+                aria-invalid={!!errors.name}
+                aria-describedby={errors.name ? "name-error" : undefined}
+                value={formData.name}
+                onChange={handleInputChange("name")}
+                placeholder="Digite seu nome"
+                autoComplete="name"
+              />
+              {errors.name && (
+                <span className="error-message" role="alert" id="name-error">
+                  {errors.name}
+                </span>
+              )}
+            </label>
+          </div> */}
+
           <div className="input-field">
-            <label htmlFor="name">Nome</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              aria-label="Nome de usuário"
-              aria-required="true"
-              aria-invalid={!!errors.name}
-              aria-describedby={errors.name ? "name-error" : undefined}
-              value={formData.name}
-              onChange={handleInputChange("name")}
-              placeholder="Digite seu nome"
-              autoComplete="name"
-            />
-            {errors.name && (
-              <span className="error-message" role="alert" id="name-error">
-                {errors.name}
-              </span>
-            )}
+            <label htmlFor="email">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                aria-label="E-mail"
+                aria-required="true"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
+                value={formData.email}
+                onChange={handleInputChange("email")}
+                placeholder="Preencha o seu e-mail"
+                autoComplete="email"
+              />
+              {errors.email && (
+                <span className="error-message" role="alert" id="email-error">
+                  {errors.email}
+                </span>
+              )}
+            </label>
           </div>
 
           <div className="input-field">
-            <label htmlFor="email">E-mail</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              aria-label="E-mail"
-              aria-required="true"
-              aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? "email-error" : undefined}
-              value={formData.email}
-              onChange={handleInputChange("email")}
-              placeholder="Digite seu e-mail"
-              autoComplete="email"
-            />
-            {errors.email && (
-              <span className="error-message" role="alert" id="email-error">
-                {errors.email}
-              </span>
-            )}
+            <label htmlFor="password">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                aria-label="Senha"
+                aria-required="true"
+                aria-invalid={!!errors.password}
+                aria-describedby={
+                  errors.password ? "password-error" : undefined
+                }
+                value={formData.password}
+                onChange={handleInputChange("password")}
+                placeholder="Preencha a sua senha"
+                autoComplete="current-password"
+              />
+              {errors.password && (
+                <span
+                  className="error-message"
+                  role="alert"
+                  id="password-error"
+                >
+                  {errors.password}
+                </span>
+              )}
+            </label>
           </div>
 
           <div className="input-field">
-            <label htmlFor="password">Senha</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              aria-label="Senha"
-              aria-required="true"
-              aria-invalid={!!errors.password}
-              aria-describedby={errors.password ? "password-error" : undefined}
-              value={formData.password}
-              onChange={handleInputChange("password")}
-              placeholder="Digite sua senha"
-              autoComplete="current-password"
-            />
-            {errors.password && (
-              <span className="error-message" role="alert" id="password-error">
-                {errors.password}
-              </span>
-            )}
-          </div>
-
-          <div className="input-field">
-            <label htmlFor="role">Cargo</label>
+            {/* <label htmlFor="role">Cargo</label> */}
             <select
               id="role"
               name="role"
@@ -185,16 +195,28 @@ export function FormLogin() {
           >
             {isLoading ? "Entrando..." : "Entrar agora"}
           </button>
-          <a
-            href="/recuperar-senha"
-            className="forgot-password"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/recuperar-senha");
-            }}
-          >
-            Esqueceu a senha?
-          </a>
+          <div className="group-button-other">
+            <a
+              href="/forgotpassword"
+              className="forgot-password"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/forgotpassword");
+              }}
+            >
+              Esqueci minha senha!
+            </a>
+            <a
+              href="/signup"
+              className="access"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/signup");
+              }}
+            >
+              Cadastra-se
+            </a>
+          </div>
         </div>
       </form>
     </div>
