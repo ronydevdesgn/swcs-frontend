@@ -13,7 +13,6 @@ export function FormLogin() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginFormData>({
-    name: "",
     email: "",
     password: "",
     role: "" as UserRole,
@@ -23,7 +22,6 @@ export function FormLogin() {
 
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Nome é obrigatório";
     if (!formData.email.trim()) newErrors.email = "E-mail é obrigatório";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "E-mail inválido";
@@ -87,29 +85,6 @@ export function FormLogin() {
         )}
 
         <div className="group-input">
-          {/* <div className="input-field">
-            <label htmlFor="name">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                aria-label="Nome de usuário"
-                aria-required="true"
-                aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? "name-error" : undefined}
-                value={formData.name}
-                onChange={handleInputChange("name")}
-                placeholder="Digite seu nome"
-                autoComplete="name"
-              />
-              {errors.name && (
-                <span className="error-message" role="alert" id="name-error">
-                  {errors.name}
-                </span>
-              )}
-            </label>
-          </div> */}
-
           <div className="input-field">
             <label htmlFor="email">
               <input
