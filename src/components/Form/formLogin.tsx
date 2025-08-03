@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useLogin } from "../../hooks/useAuthentication";
 import type {
   LoginFormData,
   LoginFormErrors,
@@ -10,7 +10,7 @@ import Logoswcs from "../../../public/logoswcs.svg";
 import "./formLogin.css";
 
 export function FormLogin() {
-  const { signIn } = useAuth();
+  const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
@@ -18,7 +18,6 @@ export function FormLogin() {
     role: "" as UserRole,
   });
   const [errors, setErrors] = useState<LoginFormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
@@ -41,16 +40,13 @@ export function FormLogin() {
     if (!validateForm()) return;
 
     try {
-      setIsLoading(true);
-      await signIn(formData);
+      await login.mutateAsync(formData);
       navigate("/dashboard");
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
         submit: "Erro ao fazer login. Verifique suas credenciais.",
       }));
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -138,7 +134,6 @@ export function FormLogin() {
           </div>
 
           <div className="input-field">
-            {/* <label htmlFor="role">Cargo</label> */}
             <select
               id="role"
               name="role"
@@ -164,11 +159,11 @@ export function FormLogin() {
         <div className="group-button">
           <button
             type="submit"
-            disabled={isLoading}
-            aria-busy={isLoading}
-            className={isLoading ? "loading" : ""}
+            disabled={login.isPending}
+            aria-busy={login.isPending}
+            className={login.isPending ? "loading" : ""}
           >
-            {isLoading ? "Entrando..." : "Entrar agora"}
+            {login.isPending ? "Entrando..." : "Entrar agora"}
           </button>
           <div className="group-button-other">
             <a

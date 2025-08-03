@@ -1,0 +1,40 @@
+.sidebar-container {
+  width: 25rem;
+  min-height: 100vh;
+  background-color: var(--purple-heart-50);
+  border-right: 1px solid var(--purple-heart-200);
+  padding: 2rem 0;
+}
+
+.sidebar-container nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-container nav a {
+  padding: 1.2rem 2rem;
+  color: var(--purple-heart-900);
+  text-decoration: none;
+  font-size: 1.6rem;
+  transition: background-color 0.2s;
+}
+
+.sidebar-container nav a:hover {
+  background-color: var(--purple-heart-100);
+}
+
+.sidebar-container nav a.active {
+  background-color: var(--purple-heart-200);
+  font-weight: 600;
+}
+
+.sidebar-container nav a.active::before {
+  content: "";
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  background-color: var(--purple-heart-500);
+  border-radius: 50%;
+  margin-right: 1rem;
+}

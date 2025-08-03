@@ -19,3 +19,10 @@ export interface LoginFormErrors {
   role?: string;
   submit?: string;
 }
+
+export interface AuthContextData {
+  isAuthenticated: boolean;
+  user: User | null;
+  signIn: (data: LoginFormData) => Promise<void>;
+  signOut: () => void;
+}
