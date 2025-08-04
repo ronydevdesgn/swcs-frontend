@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useLogin } from "../../hooks/useAuthentication";
 import type {
   LoginFormData,
@@ -37,16 +38,27 @@ export function FormLogin() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      toast.error(
+        "Por favor, corrija os erros no formulário antes de continuar."
+      );
+      return;
+    }
 
     try {
       await login.mutateAsync(formData);
+      toast.success("Login realizado com sucesso!");
       navigate("/dashboard");
     } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Erro ao fazer login. Verifique suas credenciais.";
       setErrors((prev) => ({
         ...prev,
-        submit: "Erro ao fazer login. Verifique suas credenciais.",
+        submit: errorMessage,
       }));
+      toast.error(errorMessage);
     }
   };
 

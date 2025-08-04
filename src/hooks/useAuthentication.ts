@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { api } from "../lib/api";
 import { AuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
-import { AuthContextData, LoginFormData, User } from "../types/auth";
+import { AuthContextData, LoginFormData, User, UserRole } from "../types/auth";
 
 // Tipos
 interface AuthResponse {
@@ -107,6 +107,30 @@ export function useChangePassword() {
     },
     onError: (error: ApiError) => {
       toast.error(error.response?.data?.mensagem || "Erro ao alterar senha");
+    },
+  });
+}
+
+// Hook para criação de usuário
+export function useCreateUser() {
+  return useMutation({
+    mutationFn: async (data: {
+      name: string;
+      email: string;
+      password: string;
+      role: UserRole;
+    }) => {
+      const response = await api.post("/auth/register", data);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Conta criada com sucesso! Você já pode fazer login.");
+    },
+    onError: (error: ApiError) => {
+      toast.error(
+        error.response?.data?.mensagem ||
+          "Erro ao criar conta. Tente novamente."
+      );
     },
   });
 }
