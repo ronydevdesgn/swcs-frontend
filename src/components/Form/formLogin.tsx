@@ -196,7 +196,7 @@ export function FormLogin() {
                 navigate("/signup");
               }}
             >
-              Cadastra-se
+              Cadastre-se
             </a>
           </div>
         </div>

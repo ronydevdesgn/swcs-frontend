@@ -193,28 +193,6 @@ export function FormSignup() {
               )}
             </label>
           </div>
-          <div className="input-field">
-            <label htmlFor="email">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                aria-label="E-mail"
-                aria-required="true"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
-                value={formData.email}
-                onChange={handleInputChange("email")}
-                placeholder="Preencha o seu e-mail"
-                autoComplete="email"
-              />
-              {errors.email && (
-                <span className="error-message" role="alert" id="email-error">
-                  {errors.email}
-                </span>
-              )}
-            </label>
-          </div>
 
           <div className="input-field">
             <label htmlFor="password">

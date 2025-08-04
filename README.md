@@ -6,13 +6,15 @@ O SWCS (Sistema Web de Controle de Sumários) é uma aplicação web desenvolvid
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **React** - Biblioteca para construção de interfaces
+- **React 18** - Biblioteca para construção de interfaces
 - **TypeScript** - Adiciona tipagem estática ao JavaScript
 - **Vite** - Ferramenta de build e desenvolvimento
-- **React Router** - Gerenciamento de rotas
-- **Context API** - Gerenciamento de estado global
+- **React Router 6** - Gerenciamento de rotas
+- **React Query** - Gerenciamento de estado e cache de dados
+- **Context API** - Gerenciamento de estado global de autenticação
+- **React Toastify** - Notificações e feedback ao usuário
+- **Axios** - Cliente HTTP para comunicação com a API
 - **ESLint** - Configuração avançada para verificação de código
-- **Prettier** - Formatação de código
 
 ## 📦 Pré-requisitos
 

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./globol.css";
+import "./global.css";
 import App from "./app";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
