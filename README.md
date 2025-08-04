@@ -80,12 +80,15 @@ src/
 
 ## 📱 Funcionalidades Principais
 
-- Autenticação
-  - Login com email e senha
+- Sistema de Autenticação Completo
+  - Login com email e senha com validação em tempo real
   - Diferentes níveis de acesso (Sumarista/Professor)
-  - Recuperação de senha
-  - Redirecionamento automático para login em rotas inválidas (usuários não autenticados)
-  - Redirecionamento automático para dashboard em rotas inválidas (usuários autenticados)
+  - Recuperação de senha com confirmação por email
+  - Sistema de refresh token para manter a sessão
+  - Redirecionamento inteligente baseado no estado de autenticação
+  - Feedback visual com toasts para todas as operações
+  - Proteção de rotas baseada em autenticação
+  - Validação robusta de formulários
 - Gestão de Sumários
   - Criação e edição de sumários
   - Visualização de histórico

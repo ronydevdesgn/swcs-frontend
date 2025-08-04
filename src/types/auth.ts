@@ -20,6 +20,34 @@ export interface LoginFormErrors {
   submit?: string;
 }
 
+export interface SignupFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: UserRole;
+}
+
+export interface SignupFormErrors {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+  role?: string;
+  submit?: string;
+}
+
+export interface ForgotPasswordFormData {
+  email: string;
+  role: UserRole;
+}
+
+export interface ForgotPasswordFormErrors {
+  email?: string;
+  role?: string;
+  submit?: string;
+}
+
 export interface AuthContextData {
   isAuthenticated: boolean;
   user: User | null;
