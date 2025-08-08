@@ -218,14 +218,14 @@ export function FormSignup() {
                   {errors.password}
                 </span>
               )}
-              <div className="password-requirements" id="password-requirements">
+              {/* <div className="password-requirements" id="password-requirements">
                 <p>A senha deve conter:</p>
                 <ul>
                   <li>Mínimo de 6 caracteres</li>
                   <li>Pelo menos uma letra maiúscula</li>
                   <li>Pelo menos um número</li>
                 </ul>
-              </div>
+              </div> */}
             </label>
           </div>
 
