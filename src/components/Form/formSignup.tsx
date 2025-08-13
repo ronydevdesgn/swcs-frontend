@@ -138,7 +138,7 @@ export function FormSignup() {
       <form onSubmit={handleSubmit} noValidate>
         <div className="group-title" role="heading" aria-level={1}>
           <h1>Acesse o sistema</h1>
-          <p>Preencha os campos abaixos se tiver uma conta</p>
+          <p>Preencha os campos abaixos se não tiver uma conta!</p>
         </div>
 
         {errors.submit && (
