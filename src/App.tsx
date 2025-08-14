@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Layout } from "./components/Layout";
-import { PrivateRoute } from "./components/PrivateRoute";
+// import { PrivateRoute } from "./components/PrivateRoute";
 import { Cursos } from "./pages/Cursos";
 import { Dashboard } from "./pages/Dashboard";
 import { Efetividade } from "./pages/Efetividade";
@@ -35,46 +35,46 @@ const routers = createBrowserRouter([
   // Private routes (rotas privadas)
   // These routes require authentication (estas rotas requerem autenticação)
   {
-    element: <PrivateRoute />,
+    // element: <PrivateRoute />,
+    // children: [
+    //   {
+    element: <Layout />,
     children: [
       {
-        element: <Layout />,
-        children: [
-          {
-            path: "/dashboard",
-            element: <Dashboard />,
-          },
-          {
-            path: "/cursos",
-            element: <Cursos />,
-          },
-          {
-            path: "/efetividade",
-            element: <Efetividade />,
-          },
-          {
-            path: "/perfil",
-            element: <Perfil />,
-          },
-          {
-            path: "/professores",
-            element: <Professores />,
-          },
-          {
-            path: "/relatorios",
-            element: <Relatorios />,
-          },
-          {
-            path: "/definicoes",
-            element: <Definicoes />,
-          },
-          {
-            path: "*",
-            element: <Navigate to="/dashboard" replace />,
-          },
-        ],
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/cursos",
+        element: <Cursos />,
+      },
+      {
+        path: "/efetividade",
+        element: <Efetividade />,
+      },
+      {
+        path: "/perfil",
+        element: <Perfil />,
+      },
+      {
+        path: "/professores",
+        element: <Professores />,
+      },
+      {
+        path: "/relatorios",
+        element: <Relatorios />,
+      },
+      {
+        path: "/definicoes",
+        element: <Definicoes />,
+      },
+      {
+        path: "*",
+        element: <Navigate to="/dashboard" replace />,
       },
     ],
+    //   },
+    // ],
   },
   {
     path: "*",
@@ -87,6 +87,7 @@ function App() {
   return (
     <AuthProvider>
       <RouterProvider router={routers} />
+      {/* <Layout/> */}
     </AuthProvider>
   );
 }

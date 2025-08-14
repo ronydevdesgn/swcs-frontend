@@ -6,9 +6,16 @@
   padding: 2rem 0;
 }
 
+.sidebar-container h1 {
+  color: var(--purple-heart-900);
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
 .sidebar-container nav {
   display: flex;
   flex-direction: column;
+  align-items: start;
   gap: 1rem;
 }
 

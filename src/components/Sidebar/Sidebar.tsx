@@ -7,6 +7,7 @@ export function Sidebar() {
 
   return (
     <div className="sidebar-container">
+      <h1>SWCS</h1>
       <nav>
         <NavLink to="/dashboard">Dashboard</NavLink>
         <NavLink to="/cursos">Cursos</NavLink>

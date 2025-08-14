@@ -7,7 +7,6 @@ export function Header() {
 
   return (
     <div className="header-container">
-      <h1>SWCS</h1>
       <div className="user-info">
         <span>Olá, {user?.name}</span>
         <button onClick={logout}>Sair</button>

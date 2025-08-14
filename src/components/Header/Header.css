@@ -7,11 +7,11 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header-container h1 {
+/* .header-container h1 {
   color: var(--purple-heart-900);
   font-size: 2.4rem;
   font-weight: bold;
-}
+} */
 
 .user-info {
   display: flex;
