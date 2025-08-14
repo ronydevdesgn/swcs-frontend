@@ -1,11 +1,10 @@
-#root {
+.container {
+  /* css login center */
   max-width: 128rem;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
 
-.container {
   display: flex;
   flex-direction: row;
   align-items: center;

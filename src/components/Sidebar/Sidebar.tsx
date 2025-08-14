@@ -1,16 +1,19 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuthentication";
+import { useAuth, useLogout } from "../../hooks/useAuthentication";
 import "./Sidebar.css";
 
 export function Sidebar() {
   const { user } = useAuth();
+  const logout = useLogout();
 
   return (
-    <div className="sidebar-container">
+    <div className="container-item sidebar-container">
       <h1>SWCS</h1>
       <nav>
-        <NavLink to="/dashboard">Dashboard</NavLink>
         <NavLink to="/cursos">Cursos</NavLink>
+
+        <NavLink to="/dashboard">Dashboard</NavLink>
+
         {user?.role === "sumarista" && (
           <>
             <NavLink to="/professores">Professores</NavLink>
@@ -18,8 +21,15 @@ export function Sidebar() {
           </>
         )}
         <NavLink to="/relatorios">Relatórios</NavLink>
-        <NavLink to="/perfil">Perfil</NavLink>
+
         <NavLink to="/definicoes">Definições</NavLink>
+
+        <div className="sidebar-footer">
+          <hr />
+          {/* Editar o nome de Perfil para nome do usuario cadastrado */}
+          <NavLink to="/perfil">{user?.name || "Perfil"}</NavLink>
+          <button onClick={logout} className="logout-button">Terminar sessão</button>
+        </div>
       </nav>
     </div>
   );
