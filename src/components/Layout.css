@@ -1,6 +1,6 @@
 .layout {
   display: grid;
-  grid-template-columns: minmax(14rem, 10%) 1fr;
+  grid-template-columns: minmax(20rem, 10%) 1fr;
 }
 
 .main-content {
