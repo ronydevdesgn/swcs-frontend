@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
 // importando os ícones personalizados do projecto para melhorar a experiência do usuário na navegação.
-import { ReactComponent as DashboardIcon } from "../../assets/svgs/layout.svg";
-import { ReactComponent as CursosIcon } from "../../assets/svgs/layers.svg";
-import { ReactComponent as EfetividadeIcon } from "../../assets/svgs/activity.svg";
-import { ReactComponent as PerfilIcon } from "../../assets/svgs/user.svg";
-import { ReactComponent as UsersIcon } from "../../assets/svgs/users.svg";
-import { ReactComponent as RelatoriosIcon } from "../../assets/svgs/barChart.svg";
-import { ReactComponent as DefinicoesIcon } from "../../assets/svgs/minimize.svg";
+import DashboardIcon from "../../assets/svgs/layout.svg";
+import CursosIcon from "../../assets/svgs/layers.svg";
+import EfetividadeIcon from "../../assets/svgs/activity.svg";
+import PerfilIcon from "../../assets/svgs/user.svg";
+import UsersIcon from "../../assets/svgs/users.svg";
+import RelatoriosIcon from "../../assets/svgs/barChart.svg";
+import DefinicoesIcon from "../../assets/svgs/minimize.svg";
 
 import "./Sidebar.css";
 import { useAuth, useLogout } from "../../hooks/useAuthentication";
@@ -22,43 +22,43 @@ export function Sidebar() {
       <nav>
         <div className="itens-nav-grup">
           <NavLink to="/cursos" className={"Icon-link"}>
-            <CursosIcon />
+            <img src={CursosIcon} alt="Cursos" className="icon" />
             <span>Cursos</span>
           </NavLink>
           <NavLink to="/dashboard" className={"Icon-link"}>
-            <DashboardIcon />
+            <img src={DashboardIcon} alt="Dashboard" className="icon" />
             <span>Dashboard</span>
           </NavLink>
           {user?.role === "sumarista" && (
             <>
               <NavLink to="/professores" className={"Icon-link"}>
-                <UsersIcon />
+                <img src={UsersIcon} alt="Professores" className="icon" />
                 <span>Professores</span>
               </NavLink>
               <NavLink to="/efetividade" className={"Icon-link"}>
-                <EfetividadeIcon />
+                <img src={EfetividadeIcon} alt="Efetividade" className="icon" />
                 <span>Efetividade</span>
               </NavLink>
             </>
           )}
           <NavLink to="/relatorios" className={"Icon-link"}>
-            <RelatoriosIcon />
+            <img src={RelatoriosIcon} alt="Relatórios" className="icon" />
             <span>Relatórios</span>
           </NavLink>
-          <NavLink to="/definicoes" className={"Icon-link"}>
-            <DefinicoesIcon />
+          {/* <NavLink to="/definicoes" className={"Icon-link"}>
+            <img src={DefinicoesIcon} alt="Definições" className="icon" />
             <span>Definições</span>
-          </NavLink>
+          </NavLink> */}
         </div>
 
         <div className="sidebar-footer">
           {/* Editar o nome de Perfil para nome do usuario cadastrado */}
           <NavLink to="/perfil" className={"Icon-link"}>
-            <PerfilIcon />
+            <img src={PerfilIcon} alt="Perfil" className="icon" />
             <span>{user?.name || "Perfil"}</span>
           </NavLink>
           <button onClick={logout} className="logout-button Icon-link">
-            <DashboardIcon />
+            <img src={DefinicoesIcon} alt="Terminar sessão" className="icon" />
             <span>Terminar sessão</span>
           </button>
         </div>
