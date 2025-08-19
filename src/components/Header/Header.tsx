@@ -10,7 +10,7 @@ export function Header({ pageTitle }: HeaderProps) {
     <div className="header-container">
       <div className="user-info">
         <h1>{pageTitle}</h1>
-        <span>Header</span>
+        {/* <span>Header</span> */}
       </div>
     </div>
   );

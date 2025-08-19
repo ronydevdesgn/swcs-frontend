@@ -2,40 +2,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 2.4rem;
   background-color: var(--purple-heart-50);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: .1rem solid var(--purple-heart-200);
 }
 
-/* .header-container h1 {
-  color: var(--purple-heart-900);
+.header-container h1 {
+  color: var(--purple-heart-950);
   font-size: 2.4rem;
   font-weight: bold;
-} */
+}
 
 .user-info {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: space-between;
 }
 
 .user-info span {
   color: var(--purple-heart-900);
   font-size: 1.6rem;
   font-weight: 500;
-}
-
-.user-info button {
-  padding: 0.8rem 1.6rem;
-  background-color: var(--purple-heart-500);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.4rem;
-  transition: background-color 0.2s;
-}
-
-.user-info button:hover {
-  background-color: var(--purple-heart-600);
 }

@@ -4,7 +4,7 @@ import { FormLogin } from "../../components/Form/formLogin";
 
 export function Login() {
   return (
-    <div className="container">
+    <div className="container-main">
       <FormLogin />
       <div className="generec-img">
         <img src={Illustrator} alt="Ilustração de cards flutuando" />

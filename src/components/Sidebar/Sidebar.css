@@ -11,7 +11,7 @@
   font-size: 2.4rem;
   font-weight: bold;
   text-align: center;
-  color: var(--purple-heart-900);
+  color: var(--purple-heart-950);
   padding-bottom: var(--size-24);
   border-bottom: .1rem solid var(--purple-heart-200);
 }

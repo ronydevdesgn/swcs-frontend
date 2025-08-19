@@ -1,0 +1,68 @@
+section.card {
+  display: flex;
+  flex-direction: column;
+  height: 24.8rem;
+  padding: 1.8rem;
+  border-radius: .8rem;
+  background: var(--linear-grad);
+  box-shadow: var(--box-shadow);
+  border: .1rem solid var(--purple-heart-200);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: translateY(-5px);
+  box-shadow: 0 .6rem 1.2rem rgba(0, 0, 0, 0.1);
+}
+
+.card .header-card {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--color-black);
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+
+.card .main-card {
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  margin-top: 3.2rem;
+}
+
+.card .main-card span {
+  font-size: 5.2rem;
+  font-weight: 700;
+  background: local;
+  color: var(--color-black);
+}
+
+.card .main-card span .emoji-plus {
+  font-size: 3.2rem;
+}
+
+.card .main-card span .emoji-up {
+  font-size: 2.8rem;
+  font-weight: bold;
+  float: inline-end;
+  margin-left: .4rem;
+  margin-top: .8rem;
+  color: var(--purple-heart-950);
+}
+
+.card .main-card p {
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  max-width: 22rem;
+  color: var(--purple-heart-800);
+  background: none;
+}
+
+.card .main-card p .color-red {
+  color: red;
+}

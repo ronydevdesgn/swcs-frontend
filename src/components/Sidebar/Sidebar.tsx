@@ -59,7 +59,7 @@ export function Sidebar() {
           </NavLink>
           <button onClick={logout} className="logout-button Icon-link">
             <img src={DefinicoesIcon} alt="Terminar sessão" className="icon" />
-            <span>Terminar sessão</span>
+            <span>Terminar</span>
           </button>
         </div>
       </nav>

@@ -1,6 +1,7 @@
-.container {
+.container-main {
   /* css login center */
-  max-width: 128rem;
+  width: 128rem;
+  height: 100dvh;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -8,10 +9,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 10.3rem;
 }
 
-.container .generec-img img {
+.container-main .generec-img img {
   width: 52.94rem;
   height: 53.99rem;
 }

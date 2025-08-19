@@ -17,6 +17,8 @@
 
 :root {
   /* colors */
+  --color-black: #000;
+
   --purple-heart-50: #f3f1ff;
   --purple-heart-100: #ebe5ff;
   --purple-heart-200: #d9ceff;
@@ -29,6 +31,7 @@
   --purple-heart-900: #4b05ad;
   --purple-heart-950: #2c0076;
   --linear-grad: linear-gradient(to left top, #F3F1FF 0%, #D9CEFF 50%, #9F75FF 100%);
+  --box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.1);
 
   /* size all */
   --size-2: .2rem;
@@ -74,7 +77,7 @@ select {
 }
 
 input::placeholder {
-  color: #000000;
+  color: var(--color-black);
   opacity: 50%;
 }
 

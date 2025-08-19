@@ -20,7 +20,7 @@ export function Layout() {
   return (
     <div className="layout">
       <Sidebar />
-      <div className="container-item main-content">
+      <div className="main-content">
         <Header pageTitle={pageTitle} />
         <main className="container-item">
           <Outlet />

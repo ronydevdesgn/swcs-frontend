@@ -43,30 +43,51 @@ const routers = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard />,
+        handle: {
+          title: "Dashboard",
+        },
       },
       {
         path: "/cursos",
         element: <Cursos />,
+        handle: {
+          title: "Cursos",
+        },
       },
       {
         path: "/efetividade",
         element: <Efetividade />,
+        handle: {
+          title: "Efetividade",
+        },
       },
       {
         path: "/perfil",
         element: <Perfil />,
+        handle: {
+          title: "Perfil",
+        },
       },
       {
         path: "/professores",
         element: <Professores />,
+        handle: {
+          title: "Professores",
+        },
       },
       {
         path: "/relatorios",
         element: <Relatorios />,
+        handle: {
+          title: "Relatórios",
+        },
       },
       {
         path: "/definicoes",
         element: <Definicoes />,
+        handle: {
+          title: "Definições",
+        },
       },
       {
         path: "*",

@@ -4,7 +4,7 @@ import { FormForgot } from "../../components/Form/formForgot";
 
 export function ForgotPassword() {
   return (
-    <div className="container">
+    <div className="container-main">
       <FormForgot />
       <div className="generec-img">
         <img src={Illustrator} alt="Ilustração de cards flutuando" />
