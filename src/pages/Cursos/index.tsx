@@ -1,4 +1,5 @@
 import { InputSearch } from "../../components/InputSearch/InputSearch";
+import { Table } from "../../components/Table/Table";
 import "./index.css";
 export function Cursos() {
   return (
@@ -17,7 +18,7 @@ export function Cursos() {
             <button>Cadastrar</button>
           </div>
           <div className="main-cursos">
-           
+           <Table />
           </div>
         </section>
   )

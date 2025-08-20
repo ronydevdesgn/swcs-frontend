@@ -29,13 +29,13 @@
   color: #000000;
   text-decoration: none;
   font-size: 1.4rem;
+  font-weight: 500;
   transition: background-color 0.2s;
   border-radius: .8rem;
 }
 
 .sidebar-container nav a:hover {
   background-color: var(--purple-heart-100);
-  color: var(--purple-heart-900);
 }
 
 .sidebar-container nav a.active {
@@ -53,11 +53,19 @@
   gap: .8rem;
 }
 
-.sidebar-container nav .Icon-link .icon {
-  width: 1.4rem;
-  height: 1.4rem;
-  fill: currentColor;
-  background-color: transparent;
+.sidebar-container nav .Icon-link svg {
+  stroke: var(--color-black);
+  stroke-width: .15rem;
+  background: transparent;
+}
+
+.sidebar-container nav .Icon-link:hover svg {
+  stroke: var(--purple-heart-900);
+}
+
+.sidebar-container nav .Icon-link.active svg {
+  stroke: var(--purple-heart-900);
+  stroke-width: .2rem;
 }
 
 .sidebar-container nav .Icon-link span {
@@ -66,10 +74,12 @@
   background-color: transparent;
 }
 
-.sidebar-container nav .Icon-link span {
-  font-size: 1.4rem;
-  color: #000000;
-  background-color: transparent;
+.sidebar-container nav .Icon-link:hover span {
+  color: var(--purple-heart-900);
+}
+
+.sidebar-container nav .Icon-link.active span {
+  color: var(--purple-heart-900);
 }
 
 .sidebar-container nav .itens-nav-grup {
@@ -88,14 +98,14 @@
   border-top: .1rem solid var(--purple-heart-200);
 }
 
-.sidebar-container nav .sidebar-footer a {
-  font-weight: 500;
-}
-
 .sidebar-container nav .sidebar-footer a.active {
   background-color: var(--purple-heart-100);
   color: var(--purple-heart-900);
   font-weight: 600;
+}
+
+.sidebar-container nav .sidebar-footer .Icon-link svg {
+  stroke-width: .15rem;
 }
 
 .sidebar-container nav .sidebar-footer button.logout-button {
