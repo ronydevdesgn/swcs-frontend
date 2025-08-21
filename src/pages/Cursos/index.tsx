@@ -14,9 +14,11 @@ export function Cursos() {
               </span>
             </div>
             {/* component Input de pesquisa*/}
-            <InputSearch Placeholder="Pesquisar por curso" />
+            <InputSearch Placeholder="Pesquisar curso" />
             <button>Cadastrar</button>
           </div>
+
+          {/* main of page curso */}
           <div className="main-cursos">
            <Table />
           </div>

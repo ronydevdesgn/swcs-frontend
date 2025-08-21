@@ -88,9 +88,14 @@ input:focus {
 button {
   border: none;
   border-radius: .8rem;
-  padding: 1.2rem 2.4rem;
-  background-color: var(--purple-heart-500);
+  padding: 1.4rem 2.4rem;
   cursor: pointer;
+  background-color: var(--purple-heart-500);
+  transition: background-color .2s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--purple-heart-600);
 }
 
 /* button:focus,

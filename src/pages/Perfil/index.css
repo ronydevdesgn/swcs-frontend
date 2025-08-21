@@ -1,3 +1,4 @@
-.perfil-container h1 {
+.main-perfil h3 {
+  font-size: medium;
   color: var(--purple-heart-900);
 }

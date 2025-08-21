@@ -13,6 +13,7 @@ export function Dashboard() {
         </div>
         <button>Atualizar nº</button>
       </div>
+      {/* main of page dashboard */}
       <div className="main-dashboard">
         <Card
           titleCard="Professores"
