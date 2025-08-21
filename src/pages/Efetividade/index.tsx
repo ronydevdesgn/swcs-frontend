@@ -18,7 +18,15 @@ export function Efetividade() {
 
       {/* main of page efetividade*/}
       <div className="main-efetividade">
-        <Table />
+        {/* <Table
+          columns={columns}
+          data={data}
+          loading={loading}
+          page={page}
+          pageSize={pageSize}
+          totalItems={totalItems}
+          onPageChange={setPage}
+        /> */}
       </div>
     </section>
   );

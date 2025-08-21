@@ -18,7 +18,15 @@ export function Professores() {
 
       {/* main of page professor*/}
       <div className="main-professor">
-        <Table />
+        {/* <Table
+          columns={columns}
+          data={data}
+          loading={loading}
+          page={page}
+          pageSize={pageSize}
+          totalItems={totalItems}
+          onPageChange={setPage}
+        /> */}
       </div>
     </section>
   );

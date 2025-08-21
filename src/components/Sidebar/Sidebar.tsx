@@ -8,6 +8,7 @@ export function Sidebar() {
   const { user } = useAuth();
   const logout = useLogout();
 
+
   return (
     <div className="container-item sidebar-container">
       <h1 className="logo-system">SWCS</h1>
@@ -22,8 +23,8 @@ export function Sidebar() {
             <Activity size={18} />
             <span>Dashboard</span>
           </NavLink>
-          {user?.role === "sumarista" && (
-            <>
+          {/* {user?.role === "sumarista" && (
+            <> */}
               <NavLink to="/professores" className={"Icon-link"}>
                 <Users size={18} />
                 <span>Professores</span>
@@ -32,8 +33,8 @@ export function Sidebar() {
                 <BarChart2 size={18} />
                 <span>Efetividade</span>
               </NavLink>
-            </>
-          )}
+            {/* </>
+          )} */}
           <NavLink to="/relatorios" className={"Icon-link"}>
             <Layers size={18} />
             <span>Relatórios</span>
