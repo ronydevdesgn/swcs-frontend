@@ -18,6 +18,7 @@
 :root {
   /* colors */
   --color-black: #000;
+  --color-gray: #333;
 
   --purple-heart-50: #f3f1ff;
   --purple-heart-100: #ebe5ff;

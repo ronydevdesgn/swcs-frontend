@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './Dialog.css';
+import React, { useState } from "react";
+import "./Dialog.css";
 
 interface DialogProps {
   isOpen: boolean;
@@ -13,18 +13,18 @@ interface ProfessorData {
   cargaHoraria: string;
 }
 
-const Dialog: React.FC<DialogProps> = ({ isOpen, onClose, onSubmit }) => {
+export function Dialog({ isOpen, onClose, onSubmit }: DialogProps) {
   const [formData, setFormData] = useState<ProfessorData>({
-    nome: '',
-    departamento: '',
-    cargaHoraria: ''
+    nome: "",
+    departamento: "",
+    cargaHoraria: "",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -37,9 +37,9 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, onClose, onSubmit }) => {
 
   const handleCancel = () => {
     setFormData({
-      nome: '',
-      departamento: '',
-      cargaHoraria: ''
+      nome: "",
+      departamento: "",
+      cargaHoraria: "",
     });
     onClose();
   };
@@ -53,7 +53,7 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, onClose, onSubmit }) => {
           <h2>Cadastrar professor</h2>
           <p>Preencha os campos abaixo</p>
         </div>
-        
+
         <div className="dialog-form">
           <div className="form-group">
             <input
@@ -108,41 +108,4 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, onClose, onSubmit }) => {
       </div>
     </div>
   );
-};
-
-// Exemplo de uso do componente
-const App: React.FC = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
-
-  const handleSubmitProfessor = (data: ProfessorData) => {
-    console.log('Professor cadastrado:', data);
-    // Aqui você pode adicionar a lógica para salvar os dados
-  };
-
-  return (
-    <div className="app">
-      <button 
-        onClick={handleOpenDialog}
-        className="btn btn-primary"
-      >
-        Cadastrar Professor
-      </button>
-
-      <Dialog
-        isOpen={isDialogOpen}
-        onClose={handleCloseDialog}
-        onSubmit={handleSubmitProfessor}
-      />
-    </div>
-  );
-};
-
-export default App;
+}

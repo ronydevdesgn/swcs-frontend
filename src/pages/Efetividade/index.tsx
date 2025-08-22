@@ -1,6 +1,8 @@
-import { InputSearch } from "../../components/InputSearch/InputSearch";
-import { Table } from "../../components/Table/Table";
 import "./index.css";
+// Adicional (component Table na página)
+// import { Table } from "../../components/Table/Table";
+import { InputSearch } from "../../components/InputSearch/InputSearch";
+
 export function Efetividade() {
   return (
     // CSS deste container vem do CSS da página do dashboard, sem o input
