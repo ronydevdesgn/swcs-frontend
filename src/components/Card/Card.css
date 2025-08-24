@@ -40,17 +40,26 @@ section.card {
   color: var(--color-black);
 }
 
-.card .main-card span .emoji-plus {
-  font-size: 3.2rem;
+.card .main-card span .emoji-plus svg {
+  stroke: var(--color-black);
+  background: none;
 }
 
 .card .main-card span .emoji-up {
   font-size: 2.8rem;
   font-weight: bold;
   float: inline-end;
-  margin-left: .4rem;
-  margin-top: .8rem;
+  margin: .8rem 0 0 .4rem;
   color: var(--purple-heart-950);
+}
+
+.card .main-card span .emoji-up svg {
+  background: none;
+  stroke: var(--purple-heart-950);
+}
+
+.card .main-card span .emoji-up svg.svgdown {
+  stroke: brown;
 }
 
 .card .main-card p {

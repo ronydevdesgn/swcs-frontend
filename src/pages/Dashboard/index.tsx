@@ -1,4 +1,5 @@
 import { Card } from "../../components/Card/Card";
+import { ArrowUp, ArrowDown, ArrowUpRight } from "react-feather";
 import "./index.css";
 export function Dashboard() {
   return (
@@ -19,25 +20,26 @@ export function Dashboard() {
           titleCard="Professores"
           numberCard={88}
           descriptionCard="Cadastro feito no sistema."
-          emojiUp="↗"
+          iconUp={<ArrowUpRight size={24} strokeWidth={4} />}
         />
         <Card
           titleCard="Cursos"
           numberCard={56}
           descriptionCard="Existentes no sistema."
-          emojiUp="↗"
+          iconUp={<ArrowUpRight size={24} strokeWidth={4} />}
         />
         <Card
           titleCard="Sumários"
           numberCard={124}
           descriptionCard="Já cumpridos e não cumpridos até a data de hoje."
-          emojiUp="↑↓"
+          iconUp={<ArrowUp size={24} strokeWidth={4} />}
+          iconDown={<ArrowDown size={24} strokeWidth={4} className="svgdown" />}
         />
         <Card
           titleCard="Relatórios"
           numberCard={48}
           descriptionCard="Prontos para impressão ou serem baixado e guardados."
-          emojiUp="↗"
+          iconUp={<ArrowUpRight size={24} strokeWidth={4} />}
         />
       </div>
     </section>
