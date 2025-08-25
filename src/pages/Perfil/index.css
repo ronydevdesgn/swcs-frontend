@@ -1,3 +1,28 @@
+.main-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.main-perfil .space {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .4rem;
+  user-select: none;
+}
+
+.main-perfil .space label {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--purple-heart-900);
+}
+.main-perfil .space span {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--color-black);
+}
+
 .main-perfil h3 {
   font-size: medium;
   color: var(--purple-heart-900);
