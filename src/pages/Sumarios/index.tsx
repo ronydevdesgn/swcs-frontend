@@ -30,6 +30,12 @@ export function Sumarios() {
     },
   ]);
 
+  // Função para lidar com a mudança de página
+  const handlePageChange = (page: number) => {
+    console.log("Mudou para a página:", page);
+  };
+
+  // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
     {
@@ -64,7 +70,7 @@ export function Sumarios() {
       <div className="main-sumarios">
         {/* <p>Here is the table to list the summaries!</p> */}
         {/* Usando a API genérica do Table */}
-        <Table<Sumario> columns={columns} data={sumarios} />
+        <Table<Sumario> columns={columns} data={sumarios} onPageChange={handlePageChange} />
       </div>
     </section>
   );

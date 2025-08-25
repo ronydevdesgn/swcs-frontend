@@ -1,5 +1,11 @@
 import React from "react";
 import "./Table.css";
+import {
+  ChevronLeft,
+  ChevronsLeft,
+  ChevronsRight,
+  ChevronRight,
+} from "react-feather";
 
 type Column<T> = {
   key: keyof T | string;
@@ -154,26 +160,27 @@ function Pagination({
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   return (
     <div className="pagination">
-      <button onClick={() => onPageChange(1)} disabled={page === 1}>
-        {"<<"}
-      </button>
-      <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>
-        {"<"}
-      </button>
+      <div className="info"></div>
       <span>
         Página {page} de {totalPages}
       </span>
+      <button onClick={() => onPageChange(1)} disabled={page === 1}>
+        {<ChevronsLeft size={14} />}
+      </button>
+      <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>
+        {<ChevronLeft size={14} />}
+      </button>
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
       >
-        {">"}
+        {<ChevronRight size={14} />}
       </button>
       <button
         onClick={() => onPageChange(totalPages)}
         disabled={page === totalPages}
       >
-        {">>"}
+        {<ChevronsRight size={14} />}
       </button>
     </div>
   );

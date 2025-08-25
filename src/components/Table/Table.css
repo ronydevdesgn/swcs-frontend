@@ -37,6 +37,7 @@
 .custom-table tbody tr td {
   color: var(--color-black);
 }
+
 .custom-table tbody tr:last-child td {
   border-bottom: none;
 }
@@ -45,37 +46,57 @@
 /* PAGINAÇÃO */
 .pagination {
   display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: .6rem;
+  padding: 1.2rem;
+  border-top: .1rem solid var(--purple-heart-200);
+}
+
+.pagination .info {
+  color: var(--purple-heart-400);
+  font-size: 1.2rem;
+
+}
+
+.pagination .button {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: .6rem;
   padding: 1.2rem;
-  background: #1a1a1a;
-  border-top: .1rem solid var(--purple-heart-200);
 }
 
 .pagination button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--purple-heart-500);
   border: none;
-  color: var(--purple-heart-50);
-  padding: .6rem 1rem;
+  padding: .6rem .8rem;
   border-radius: .4rem;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
+.pagination button svg {
+  stroke-width: .3rem;
+  stroke: var(--purple-heart-50);
+  background: none;
+}
+
 .pagination button:hover {
   background: var(--purple-heart-900);
-  /* color: #fff; */
 }
 
 .pagination button:disabled {
-  background: #333;
-  color: #555;
+  background: var(--purple-heart-400-50);
+  color: var(--purple-heart-50);
   cursor: not-allowed;
 }
 
 .pagination span {
-  margin: 0 .8rem;
-  color: #aaa;
+  margin: 0 .8rem 0 0;
   font-size: 1.2rem;
+  color: var(--purple-heart-400);
 }
