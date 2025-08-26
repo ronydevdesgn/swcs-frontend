@@ -1,9 +1,42 @@
-// Adicional (component Table na página)
-// import { Table } from "../../components/Table/Table";
+import { Table } from "../../components/Table/Table";
+import { useState } from "react";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 import "./index.css";
 
+interface CursosData {
+  cursosId: string;
+  nome: string;
+  descrição: string;
+}
+
 export function Cursos() {
+  // Dados, estado inicial para uma simulação!
+  const [isCursos, setCursos] = useState<CursosData[]>([
+    {
+      cursosId: "21FF24S3",
+      nome: "Engenharia Informática",
+      descrição: "Especialidade em Programação e Redes de Computador!",
+    },
+    {
+      cursosId: "21FF24S3",
+      nome: "Engenharia de Petroleo",
+      descrição: "Especialidade em Perfuração",
+    },
+  ]);
+
+  // Função para lidar com a mudança de página
+  const handlePageChange = (page: number) => {
+    console.log("Mudou para a página:", page);
+  };
+
+  // Dados para teste, ou seja, dados fictícios
+  // Colunas genéricas para o componente Table
+  const columns = [
+    { key: "cursosId", label: "Identificação" },
+    { key: "nome", label: "Nome" },
+    { key: "descrição", label: "Descrição" },
+  ];
+
   return (
     // CSS deste container vem do CSS da página do dashboard, sem o input
     // OBS: Apenas o cabeçalho do header do main
@@ -20,15 +53,11 @@ export function Cursos() {
 
       {/* main of page curso */}
       <div className="main-cursos">
-        {/* <Table
+        <Table<CursosData>
           columns={columns}
-          data={data}
-          loading={loading}
-          page={page}
-          pageSize={pageSize}
-          totalItems={totalItems}
-          onPageChange={setPage}
-        /> */}
+          data={isCursos}
+          onPageChange={handlePageChange}
+        />
       </div>
     </section>
   );

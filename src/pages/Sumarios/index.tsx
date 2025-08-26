@@ -2,6 +2,7 @@ import { useState } from "react";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 import "./index.css";
 import { Table } from "../../components/Table/Table";
+import { toast } from "react-toastify";
 
 interface Sumario {
   sumarioId: string;
@@ -15,14 +16,14 @@ export function Sumarios() {
   // Dados, estado inicial para uma simulação!
   const [sumarios, setSumarios] = useState<Sumario[]>([
     {
-      sumarioId: "34fffds",
+      sumarioId: "34FF20S5",
       data: "2025-08-20",
       curso: "Engenharia Informática",
       professor: "Prof. João",
       conteudo: "Introdução ao React + JSX",
     },
     {
-      sumarioId: "334fffds",
+      sumarioId: "334FFFD2",
       data: "2025-08-24",
       curso: "Nutrição",
       professor: "Prof. Mariza",
@@ -33,11 +34,13 @@ export function Sumarios() {
   // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
     console.log("Mudou para a página:", page);
+    toast.success("Mudou de página!");
   };
 
   // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
+    { key: "sumarioId", label: "Identificação" },
     {
       key: "data",
       label: "Data",
@@ -70,7 +73,11 @@ export function Sumarios() {
       <div className="main-sumarios">
         {/* <p>Here is the table to list the summaries!</p> */}
         {/* Usando a API genérica do Table */}
-        <Table<Sumario> columns={columns} data={sumarios} onPageChange={handlePageChange} />
+        <Table<Sumario>
+          columns={columns}
+          data={sumarios}
+          onPageChange={handlePageChange}
+        />
       </div>
     </section>
   );

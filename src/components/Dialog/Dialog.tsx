@@ -8,16 +8,18 @@ interface DialogProps {
 }
 
 interface ProfessorData {
+  professorId: string;
   nome: string;
   departamento: string;
-  cargaHoraria: string;
+  cargaHoraria: number;
 }
 
 export function Dialog({ isOpen, onClose, onSubmit }: DialogProps) {
   const [formData, setFormData] = useState<ProfessorData>({
+    professorId: "",
     nome: "",
     departamento: "",
-    cargaHoraria: "",
+    cargaHoraria: 0,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,9 +39,10 @@ export function Dialog({ isOpen, onClose, onSubmit }: DialogProps) {
 
   const handleCancel = () => {
     setFormData({
+      professorId: "",
       nome: "",
       departamento: "",
-      cargaHoraria: "",
+      cargaHoraria: 0,
     });
     onClose();
   };
@@ -79,7 +82,7 @@ export function Dialog({ isOpen, onClose, onSubmit }: DialogProps) {
 
           <div className="form-group">
             <input
-              type="text"
+              type="number"
               name="cargaHoraria"
               value={formData.cargaHoraria}
               onChange={handleInputChange}

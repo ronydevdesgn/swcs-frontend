@@ -1,14 +1,16 @@
 import { useState } from "react";
 // Adicional (component Table na página)
-// import { Table } from "../../components/Table/Table";
+import { Table } from "../../components/Table/Table";
 import { Dialog } from "../../components/Dialog/Dialog";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 import "./index.css";
+import { toast } from "react-toastify";
 
 interface ProfessorData {
+  professorId: string;
   nome: string;
   departamento: string;
-  cargaHoraria: string;
+  cargaHoraria: number;
 }
 
 export function Professores() {
@@ -23,9 +25,39 @@ export function Professores() {
   };
 
   const handleSubmitProfessor = (data: ProfessorData) => {
-    console.log("Professor cadastrado:", data);
+    toast.success("Professor cadastrado:", { data });
     // Aqui vai a lógica para salvar os dados
   };
+
+    // Dados, estado inicial para uma simulação!
+    const [isProfessores, setProfessores] = useState<ProfessorData[]>([
+      {
+        professorId: "43FF24S324",
+        nome: "João Moreira Da Costa",
+        departamento: "Engenharia",
+        cargaHoraria: 7
+      },
+      {
+        professorId: "40FF24S975",
+        nome: "Manuel Da Silva Pereira",
+        departamento: "Engenharia",
+        cargaHoraria: 12
+      },
+    ]);
+
+  // Função para lidar com a mudança de página
+  const handlePageChange = (page: number) => {
+    console.log("Mudou para a página:", page);
+  };
+
+  // Dados para teste, ou seja, dados fictícios
+  // Colunas genéricas para o componente Table
+  const columns = [
+    { key: "professorId", label: "Identificação" },
+    { key: "nome", label: "Nome" },
+    { key: "departamento", label: "Departamento" },
+    { key: "cargaHoraria", label: "Carga Horaria" },
+  ];
 
   return (
     // CSS deste container vem do CSS da página do dashboard, sem o input
@@ -49,15 +81,12 @@ export function Professores() {
 
       {/* main of page professor*/}
       <div className="main-professor">
-        {/* <Table
+        <Table<ProfessorData>
           columns={columns}
-          data={data}
-          loading={loading}
-          page={page}
-          pageSize={pageSize}
-          totalItems={totalItems}
-          onPageChange={setPage}
-        /> */}
+          data={isProfessores}
+          // isLoading={loading}
+          onPageChange={handlePageChange}
+        />
       </div>
     </section>
   );

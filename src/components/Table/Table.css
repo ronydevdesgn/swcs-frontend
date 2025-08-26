@@ -17,13 +17,13 @@
 
 .custom-table th,
 .custom-table td {
-  padding: 1.2rem 1.6rem;
+  padding: 1.2rem 1.4rem;
   text-align: left;
   border-bottom: .1rem solid var(--purple-heart-200);
 }
 
 .custom-table th {
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   font-size: 1.3rem;
   color: var(--purple-heart-900);
