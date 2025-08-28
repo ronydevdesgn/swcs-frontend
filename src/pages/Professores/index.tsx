@@ -1,11 +1,18 @@
 import { useState } from "react";
 // Adicional (component Table na página)
 import { Table } from "../../components/Table/Table";
-import { Dialog } from "../../components/Dialog/Dialog";
+import { ProfessorDialog } from "../../components/Dialog/Dialogs/ProfessorDialog";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 import "./index.css";
 import { toast } from "react-toastify";
 
+interface ProfessorProps {
+  nome: string;
+  departamento: string;
+  cargaHoraria: string;
+}
+
+// dados inventados vindo
 interface ProfessorData {
   professorId: string;
   nome: string;
@@ -24,7 +31,7 @@ export function Professores() {
     setIsDialogOpen(false);
   };
 
-  const handleSubmitProfessor = (data: ProfessorData) => {
+  const handleSubmitProfessor = (data: ProfessorProps) => {
     toast.success("Professor cadastrado:", { data });
     // Aqui vai a lógica para salvar os dados
   };
@@ -72,7 +79,7 @@ export function Professores() {
         <InputSearch Placeholder="Pesquisar professor" />
         <button onClick={handleOpenDialog}>Cadastrar</button>
 
-        <Dialog
+        <ProfessorDialog
           isOpen={isDialogOpen}
           onClose={handleCloseDialog}
           onSubmit={handleSubmitProfessor}
@@ -84,7 +91,7 @@ export function Professores() {
         <Table<ProfessorData>
           columns={columns}
           data={isProfessores}
-          // isLoading={loading}
+          isLoading={true}
           onPageChange={handlePageChange}
         />
       </div>

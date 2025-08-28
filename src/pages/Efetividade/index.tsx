@@ -2,6 +2,7 @@ import "./index.css";
 // Adicional (component Table na página)
 // import { Table } from "../../components/Table/Table";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
+import { EfetividadeDialog } from "../../components/Dialog/Dialogs/Efetividade";
 
 export function Efetividade() {
   return (
@@ -16,6 +17,7 @@ export function Efetividade() {
         {/* component Input de pesquisa*/}
         <InputSearch Placeholder="Pesquisar por..." />
         <button>Efetivar</button>
+        
       </div>
 
       {/* main of page efetividade*/}

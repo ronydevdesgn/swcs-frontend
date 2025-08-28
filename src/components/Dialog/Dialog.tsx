@@ -1,114 +1,132 @@
-import React, { useState } from "react";
-import "./Dialog.css";
+import React, { createContext, useContext } from "react";
+import "./DialogGlobal.css";
 
-interface DialogProps {
+// Context para gerenciar o estado do Dialog
+interface DialogContextType {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: ProfessorData) => void;
 }
 
-interface ProfessorData {
-  professorId: string;
-  nome: string;
-  departamento: string;
-  cargaHoraria: number;
+const DialogContext = createContext<DialogContextType | undefined>(undefined);
+
+function useDialogContext() {
+  const context = useContext(DialogContext);
+  if (!context) {
+    throw new Error("Dialog components must be used within Dialog.Root");
+  }
+  return context;
 }
 
-export function Dialog({ isOpen, onClose, onSubmit }: DialogProps) {
-  const [formData, setFormData] = useState<ProfessorData>({
-    professorId: "",
-    nome: "",
-    departamento: "",
-    cargaHoraria: 0,
-  });
+// Componente Root do Dialog
+interface DialogRootProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+}
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = () => {
-    if (formData.nome && formData.departamento && formData.cargaHoraria) {
-      onSubmit(formData);
-      handleCancel();
-    }
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      professorId: "",
-      nome: "",
-      departamento: "",
-      cargaHoraria: 0,
-    });
-    onClose();
-  };
-
+export function DialogRoot({ isOpen, onClose, children }: DialogRootProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="dialog-overlay" onClick={onClose}>
-      <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
-        <div className="dialog-header">
-          <h2>Cadastrar professor</h2>
-          <p>Preencha os campos abaixo</p>
-        </div>
-
-        <div className="dialog-form">
-          <div className="form-group">
-            <input
-              type="text"
-              name="nome"
-              value={formData.nome}
-              onChange={handleInputChange}
-              placeholder="Digite o nome do professor"
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <input
-              type="text"
-              name="departamento"
-              value={formData.departamento}
-              onChange={handleInputChange}
-              placeholder="Digite o departamento do professor"
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <input
-              type="number"
-              name="cargaHoraria"
-              value={formData.cargaHoraria}
-              onChange={handleInputChange}
-              placeholder="Digite a carga horária do professor"
-              className="form-input"
-            />
-          </div>
-
-          <div className="dialog-actions">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="btn btn-cancel"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="btn btn-submit"
-            >
-              Cadastrar
-            </button>
-          </div>
+    <DialogContext.Provider value={{ isOpen, onClose }}>
+      <div className="dialog-overlay" onClick={onClose}>
+        <div className="dialog-container" onClick={(e) => e.stopPropagation()}>
+          {children}
         </div>
       </div>
+    </DialogContext.Provider>
+  );
+}
+
+// Header do Dialog
+interface DialogHeaderProps {
+  title: string;
+  subtitle?: string;
+}
+
+export function DialogHeader({ title, subtitle }: DialogHeaderProps) {
+  return (
+    <div className="dialog-header">
+      <h2>{title}</h2>
+      {subtitle && <p>{subtitle}</p>}
     </div>
   );
 }
+
+// Body/Content do Dialog
+interface DialogContentProps {
+  children: React.ReactNode;
+}
+
+export function DialogContent({ children }: DialogContentProps) {
+  return <div className="dialog-content">{children}</div>;
+}
+
+// Actions do Dialog
+interface DialogActionsProps {
+  children: React.ReactNode;
+}
+
+export function DialogActions({ children }: DialogActionsProps) {
+  return <div className="dialog-actions">{children}</div>;
+}
+
+// Button do Dialog
+interface DialogButtonProps {
+  variant?: "primary" | "secondary";
+  onClick?: () => void;
+  children: React.ReactNode;
+  disabled?: boolean;
+}
+
+export function DialogButton({
+  variant = "primary",
+  onClick,
+  children,
+  disabled,
+}: DialogButtonProps) {
+  const className = variant === "primary" ? "btn btn-submit" : "btn btn-cancel";
+
+  return (
+    <button className={className} onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  );
+}
+
+// Input do Dialog
+interface DialogInputProps {
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  type?: string;
+}
+
+export function DialogInput({
+  placeholder,
+  value,
+  onChange,
+  type = "text",
+}: DialogInputProps) {
+  return (
+    <div className="form-group">
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="form-input"
+      />
+    </div>
+  );
+}
+
+// Compound component
+export const Dialog = {
+  Root: DialogRoot,
+  Header: DialogHeader,
+  Content: DialogContent,
+  Actions: DialogActions,
+  Button: DialogButton,
+  Input: DialogInput,
+};

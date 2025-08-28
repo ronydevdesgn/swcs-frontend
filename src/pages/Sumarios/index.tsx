@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { InputSearch } from "../../components/InputSearch/InputSearch";
-import "./index.css";
 import { Table } from "../../components/Table/Table";
+import { InputSearch } from "../../components/InputSearch/InputSearch";
+import { SumarioDialog } from "../../components/Dialog/Dialogs/SumarioDialog";
 import { toast } from "react-toastify";
 
+import "./index.css";
+
+interface sumarioData {
+  
+}
+
+// dados feticios...
 interface Sumario {
   sumarioId: string;
   data: string;
@@ -13,6 +20,22 @@ interface Sumario {
 }
 
 export function Sumarios() {
+  // open and close of popups
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+  
+    const handleOpenDialog = () => {
+      setIsDialogOpen(true);
+    };
+  
+    const handleCloseDialog = () => {
+      setIsDialogOpen(false);
+    };
+  
+    const handleSubmitSumario = (data: sumarioData) => {
+      toast.success("Sumário registado:", { data });
+      // Aqui vai a lógica para salvar os dados
+    };
+
   // Dados, estado inicial para uma simulação!
   const [sumarios, setSumarios] = useState<Sumario[]>([
     {
@@ -66,7 +89,13 @@ export function Sumarios() {
         </div>
         <InputSearch Placeholder="Pesquisar por..." />
         {/* Adicionar uma função no <button/>, Abrir popup para cadastro de sumário */}
-        <button>Novo Sumário</button>
+        <button onClick={handleOpenDialog}>Novo Sumário</button>
+        <SumarioDialog
+
+          isOpen={isDialogOpen}
+          onClose={handleCloseDialog}
+          onSubmit={handleSubmitSumario}
+        />
       </div>
 
       {/* main of page sumários */}

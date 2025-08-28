@@ -1,4 +1,8 @@
-/* Dialog.css */
+/* Compound Components Version */
+
+/* 
+   DIALOG ROOT & OVERLAY
+ */
 .dialog-overlay {
   position: fixed;
   top: 0;
@@ -24,6 +28,10 @@
   animation: slideIn 0.3s ease-out;
 }
 
+/* 
+   DIALOG HEADER
+ */
+
 .dialog-header {
   text-align: start;
   margin: 3.2rem 0 3.2rem 0;
@@ -41,6 +49,19 @@
   font-size: 1.4rem;
 }
 
+/* 
+   DIALOG CONTENT
+*/
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+}
+
+/*
+   FORM ELEMENTS
+ */
 .dialog-form {
   display: flex;
   flex-direction: column;
@@ -72,12 +93,18 @@
   color: var(--color-gray);
 }
 
+/*
+   DIALOG ACTIONS
+ */
 .dialog-actions {
   display: flex;
   gap: 1.2rem;
   margin-top: 2.4rem;
 }
 
+/*
+   BUTTONS
+ */
 .btn {
   flex: 1;
   padding: 1.4rem 2.4rem;
@@ -117,6 +144,25 @@
   box-shadow: none;
 }
 
+/* botões primario para test se tudo está fixe */
+.btn-primary {
+  background-color: var(--purple-heart-500);
+  color: white;
+  border: none;
+  padding: 1.2rem 2.4rem;
+  border-radius: .8rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: var(--purple-heart-600);
+  transform: translateY(-1px);
+  box-shadow: 0 .4rem 1.2rem rgba(99, 102, 241, 0.2);
+}
+
 /* Animações */
 @keyframes fadeIn {
   from {
@@ -154,5 +200,9 @@
 
   .btn {
     padding: 1.4rem 2rem;
+  }
+
+  .dialog-header h2 {
+    font-size: 2rem;
   }
 }

@@ -1,6 +1,9 @@
-import { Table } from "../../components/Table/Table";
 import { useState } from "react";
+import { Table } from "../../components/Table/Table";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
+import { CursoDialog } from "../../components/Dialog/Dialogs/CursoDialog";
+
+
 import "./index.css";
 
 interface CursosData {
