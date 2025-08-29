@@ -16,13 +16,7 @@ interface CursosData {
 }
 
 export function Cursos() {
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-    const handleSubmitCurso = (data: CursoProps) => {
-      toast.success("Curso cadastrado:", { data });
-      // Aqui vai a lógica para salvar os dados
-    };
 
   // Dados, estado inicial para uma simulação!
   const [isCursos, setCursos] = useState<CursosData[]>([
@@ -38,6 +32,11 @@ export function Cursos() {
     },
   ]);
 
+  const handleSubmitCurso = (data: CursoProps) => {
+    toast.success("Curso cadastrado com sucesso!");
+    // Aqui vai a lógica para salvar os dados
+  };
+
   // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
@@ -48,8 +47,7 @@ export function Cursos() {
 
   // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
-    console.log("Mudou para a pagina: ", page);
-    toast.success("Mudou para a página: ");
+    toast.success(`Mudou para a página: ${page}`);
   };
 
   return (
