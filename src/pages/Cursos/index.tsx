@@ -3,9 +3,12 @@ import { Table } from "../../components/Table/Table";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 import { CursoDialog } from "../../components/Dialog/Dialogs/CursoDialog";
 
-
 import "./index.css";
+import { toast } from "react-toastify";
 
+interface CursoProps {}
+
+// Dados para testar apresentação da tabela (futuros dados vindo do backend)
 interface CursosData {
   cursosId: string;
   nome: string;
@@ -13,6 +16,21 @@ interface CursosData {
 }
 
 export function Cursos() {
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const handleOpenDialog = () => {
+      setIsDialogOpen(true);
+    };
+  
+    const handleCloseDialog = () => {
+      setIsDialogOpen(false);
+    };
+  
+    const handleSubmitCurso = (data: CursoProps) => {
+      toast.success("Curso cadastrado:", { data });
+      // Aqui vai a lógica para salvar os dados
+    };
+
   // Dados, estado inicial para uma simulação!
   const [isCursos, setCursos] = useState<CursosData[]>([
     {
@@ -27,11 +45,6 @@ export function Cursos() {
     },
   ]);
 
-  // Função para lidar com a mudança de página
-  const handlePageChange = (page: number) => {
-    console.log("Mudou para a página:", page);
-  };
-
   // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
@@ -39,6 +52,12 @@ export function Cursos() {
     { key: "nome", label: "Nome" },
     { key: "descrição", label: "Descrição" },
   ];
+
+  // Função para lidar com a mudança de página
+  const handlePageChange = (page: number) => {
+    console.log("Mudou para a pagina: ", page);
+    toast.success("Mudou para a página: ");
+  };
 
   return (
     // CSS deste container vem do CSS da página do dashboard, sem o input
@@ -51,7 +70,12 @@ export function Cursos() {
         </div>
         {/* component Input de pesquisa*/}
         <InputSearch Placeholder="Pesquisar curso" />
-        <button>Cadastrar</button>
+        <button onClick={handleOpenDialog}>Cadastrar</button>
+        <CursoDialog
+          isOpen={isDialogOpen}
+          onClose={handleCloseDialog}
+          onSubmit={handleSubmitCurso}
+        />
       </div>
 
       {/* main of page curso */}

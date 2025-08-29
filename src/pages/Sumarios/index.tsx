@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import "./index.css";
 
 interface sumarioData {
-  
+
 }
 
 // dados feticios...
@@ -88,10 +88,9 @@ export function Sumarios() {
           <span>Confira os sumários já lecionados.</span>
         </div>
         <InputSearch Placeholder="Pesquisar por..." />
-        {/* Adicionar uma função no <button/>, Abrir popup para cadastro de sumário */}
+
         <button onClick={handleOpenDialog}>Novo Sumário</button>
         <SumarioDialog
-
           isOpen={isDialogOpen}
           onClose={handleCloseDialog}
           onSubmit={handleSubmitSumario}

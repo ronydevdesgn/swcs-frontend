@@ -3,8 +3,26 @@ import "./index.css";
 // import { Table } from "../../components/Table/Table";
 import { InputSearch } from "../../components/InputSearch/InputSearch";
 import { EfetividadeDialog } from "../../components/Dialog/Dialogs/Efetividade";
+import { toast } from "react-toastify";
+import { useState } from "react";
+
+interface EfetividadeProps {}
 
 export function Efetividade() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleSubmitEfetividade = (data: EfetividadeProps) => {
+    toast.success("Efetividade cadastrada:", { data });
+    // Aqui vai a lógica para salvar os dados
+  };
+
   return (
     // CSS deste container vem do CSS da página do dashboard, sem o input
     // OBS: Apenas o cabeçalho do header do main
@@ -16,7 +34,13 @@ export function Efetividade() {
         </div>
         {/* component Input de pesquisa*/}
         <InputSearch Placeholder="Pesquisar por..." />
-        <button>Efetivar</button>
+
+        <button onClick={handleOpenDialog}>Efetivar</button>
+        <EfetividadeDialog
+          isOpen={isDialogOpen}
+          onClose={handleCloseDialog}
+          onSubmit={handleSubmitEfetividade}
+        />
         
       </div>
 

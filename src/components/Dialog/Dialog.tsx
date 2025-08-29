@@ -12,7 +12,7 @@ const DialogContext = createContext<DialogContextType | undefined>(undefined);
 function useDialogContext() {
   const context = useContext(DialogContext);
   if (!context) {
-    throw new Error("Dialog components must be used within Dialog.Root");
+    throw new Error("Os componentes de diálogo devem ser usados dentro do Dialog.Root");
   }
   return context;
 }
@@ -100,6 +100,7 @@ interface DialogInputProps {
   value: string;
   onChange: (value: string) => void;
   type?: string;
+  closeOnEscape?: boolean;
 }
 
 export function DialogInput({
@@ -107,13 +108,22 @@ export function DialogInput({
   value,
   onChange,
   type = "text",
+  closeOnEscape = true
 }: DialogInputProps) {
+  const { onClose } = useDialogContext();
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (closeOnEscape && e.key === 'Escape') {
+      onClose(); // Fecha o dialog ao pressionar o botão Escape
+    }
+  };
+
   return (
     <div className="form-group">
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="form-input"
       />

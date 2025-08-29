@@ -50,7 +50,7 @@ export function SumarioDialog({
           onChange={setData}
         />
         <Dialog.Input
-          placeholder="Preenche com o curso (Ex: Eng. Informática)"
+          placeholder="Preenche o curso (Ex: Eng. Informática)"
           value={curso}
           onChange={setCurso}
         />
