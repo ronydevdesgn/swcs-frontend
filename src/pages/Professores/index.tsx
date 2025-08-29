@@ -23,14 +23,6 @@ interface ProfessorData {
 export function Professores() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
-
   const handleSubmitProfessor = (data: ProfessorProps) => {
     toast.success("Professor cadastrado:", { data });
     // Aqui vai a lógica para salvar os dados
@@ -77,11 +69,11 @@ export function Professores() {
         </div>
         {/* component Input de pesquisa*/}
         <InputSearch Placeholder="Pesquisar professor" />
-        <button onClick={handleOpenDialog}>Cadastrar</button>
+        <button onClick={() => setIsDialogOpen(true)}>Cadastrar</button>
 
         <ProfessorDialog
           isOpen={isDialogOpen}
-          onClose={handleCloseDialog}
+          onClose={() => setIsDialogOpen(false)}
           onSubmit={handleSubmitProfessor}
         />
       </div>

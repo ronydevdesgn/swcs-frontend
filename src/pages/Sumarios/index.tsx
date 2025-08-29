@@ -23,14 +23,6 @@ export function Sumarios() {
   // open and close of popups
     const [isDialogOpen, setIsDialogOpen] = useState(false);
   
-    const handleOpenDialog = () => {
-      setIsDialogOpen(true);
-    };
-  
-    const handleCloseDialog = () => {
-      setIsDialogOpen(false);
-    };
-  
     const handleSubmitSumario = (data: sumarioData) => {
       toast.success("Sumário registado:", { data });
       // Aqui vai a lógica para salvar os dados
@@ -89,10 +81,10 @@ export function Sumarios() {
         </div>
         <InputSearch Placeholder="Pesquisar por..." />
 
-        <button onClick={handleOpenDialog}>Novo Sumário</button>
+        <button onClick={() => setIsDialogOpen(true)}>Novo Sumário</button>
         <SumarioDialog
           isOpen={isDialogOpen}
-          onClose={handleCloseDialog}
+          onClose={() => setIsDialogOpen(false)}
           onSubmit={handleSubmitSumario}
         />
       </div>

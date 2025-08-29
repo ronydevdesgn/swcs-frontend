@@ -18,14 +18,7 @@ interface CursosData {
 export function Cursos() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const handleOpenDialog = () => {
-      setIsDialogOpen(true);
-    };
-  
-    const handleCloseDialog = () => {
-      setIsDialogOpen(false);
-    };
-  
+
     const handleSubmitCurso = (data: CursoProps) => {
       toast.success("Curso cadastrado:", { data });
       // Aqui vai a lógica para salvar os dados
@@ -70,10 +63,10 @@ export function Cursos() {
         </div>
         {/* component Input de pesquisa*/}
         <InputSearch Placeholder="Pesquisar curso" />
-        <button onClick={handleOpenDialog}>Cadastrar</button>
+        <button onClick={() => setIsDialogOpen(true)}>Cadastrar</button>
         <CursoDialog
           isOpen={isDialogOpen}
-          onClose={handleCloseDialog}
+          onClose={() => setIsDialogOpen(false)}
           onSubmit={handleSubmitCurso}
         />
       </div>
