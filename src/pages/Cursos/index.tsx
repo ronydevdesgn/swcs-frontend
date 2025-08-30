@@ -33,8 +33,8 @@ export function Cursos() {
   ]);
 
   const handleSubmitCurso = (data: CursoProps) => {
-    toast.success("Curso cadastrado com sucesso!");
     // Aqui vai a lógica para salvar os dados
+    toast.success("Curso cadastrado com sucesso!");
   };
 
   // Dados para teste, ou seja, dados fictícios
