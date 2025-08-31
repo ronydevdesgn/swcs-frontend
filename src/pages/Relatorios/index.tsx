@@ -12,7 +12,9 @@ export function Relatorios() {
           <span>Verifica ou baixe relatórios</span>
         </div>
         {/* component Input de pesquisa*/}
-        <InputSearch Placeholder="Pesquisar por..." />
+        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
+        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
+        <InputSearch Placeholder="Pesquisar por..." OnSearch={(value) => console.log(value)} />
       </div>
 
       {/* main of page relatorios */}

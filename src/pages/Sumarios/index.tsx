@@ -79,7 +79,10 @@ export function Sumarios() {
           <h2>Gestão de sumários</h2>
           <span>Confira os sumários já lecionados.</span>
         </div>
-        <InputSearch Placeholder="Pesquisar por..." />
+        {/* component Input de pesquisa*/}
+        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
+        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
+        <InputSearch Placeholder="Pesquisar por..." OnSearch={(value) => console.log(value)} />
 
         <button onClick={() => setIsDialogOpen(true)}>Novo Sumário</button>
         <SumarioDialog

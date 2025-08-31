@@ -60,7 +60,9 @@ export function Cursos() {
           <span>Cursos cadastrados</span>
         </div>
         {/* component Input de pesquisa*/}
-        <InputSearch Placeholder="Pesquisar curso" />
+        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
+        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
+        <InputSearch Placeholder="Pesquisar curso" OnSearch={(value) => console.log(value)} />
         <button onClick={() => setIsDialogOpen(true)}>Cadastrar</button>
         <CursoDialog
           isOpen={isDialogOpen}
