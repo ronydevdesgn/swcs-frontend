@@ -1,13 +1,6 @@
-import { useState } from "react";
-import { Dialog } from "../Dialog";
-
-interface CursoData {
-  nome: string;
-  codigo: string;
-  departamento: string;
-  cargaHoraria: string;
-  nivel: string;
-}
+import { useState } from 'react';
+import { Dialog } from '../Dialog';
+import { CursoForm } from '../../../types/entities';
 
 export function CursoDialog({
   isOpen,
@@ -16,13 +9,13 @@ export function CursoDialog({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: CursoData) => void;
+  onSubmit: (data: CursoForm) => void;
 }) {
-  const [nome, setNome] = useState("");
-  const [codigo, setCodigo] = useState("");
-  const [departamento, setDepartamento] = useState("");
-  const [cargaHoraria, setCargaHoraria] = useState("");
-  const [nivel, setNivel] = useState("");
+  const [nome, setNome] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [departamento, setDepartamento] = useState('');
+  const [cargaHoraria, setCargaHoraria] = useState('');
+  const [nivel, setNivel] = useState('');
 
   const handleSubmit = () => {
     if (nome && codigo && departamento && cargaHoraria && nivel) {
@@ -32,31 +25,20 @@ export function CursoDialog({
   };
 
   const handleCancel = () => {
-    setNome("");
-    setCodigo("");
-    setDepartamento("");
-    setCargaHoraria("");
-    setNivel("");
+    setNome('');
+    setCodigo('');
+    setDepartamento('');
+    setCargaHoraria('');
+    setNivel('');
     onClose();
   };
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <Dialog.Header
-        title="Cadastrar curso"
-        subtitle="Preencha os dados do curso"
-      />
+      <Dialog.Header title="Cadastrar curso" subtitle="Preencha os dados do curso" />
       <Dialog.Content>
-        <Dialog.Input
-          placeholder="Digite o nome do curso"
-          value={nome}
-          onChange={setNome}
-        />
-        <Dialog.Input
-          placeholder="Digite o código do curso"
-          value={codigo}
-          onChange={setCodigo}
-        />
+        <Dialog.Input placeholder="Digite o nome do curso" value={nome} onChange={setNome} />
+        <Dialog.Input placeholder="Digite o código do curso" value={codigo} onChange={setCodigo} />
         <Dialog.Input
           placeholder="Digite o departamento do curso"
           value={departamento}

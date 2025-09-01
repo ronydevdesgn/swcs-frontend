@@ -1,0 +1,27 @@
+.shared-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--text);
+}
+
+.shared-loading .loader {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: .2rem solid #ddd;
+  border-top-color: var(--primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.shared-empty,
+.shared-error {
+  padding: 1.2rem;
+  color: var(--muted);
+}

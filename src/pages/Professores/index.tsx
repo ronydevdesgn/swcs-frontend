@@ -1,16 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 // Adicional (component Table na página)
-import { Table } from "../../components/Table/Table";
-import { ProfessorDialog } from "../../components/Dialog/Dialogs/ProfessorDialog";
-import { InputSearch } from "../../components/InputSearch/InputSearch";
-import "./index.css";
-import { toast } from "react-toastify";
-
-interface ProfessorProps {
-  nome: string;
-  departamento: string;
-  cargaHoraria: string;
-}
+import { Table } from '../../components/Table/Table';
+import { ProfessorDialog } from '../../components/Dialog/Dialogs/ProfessorDialog';
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import './index.css';
+import { toast } from 'react-toastify';
 
 // dados inventados vindo
 interface ProfessorData {
@@ -20,42 +14,52 @@ interface ProfessorData {
   cargaHoraria: number;
 }
 
+import { Professor, ProfessorForm } from '../../types/entities';
+
 export function Professores() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleSubmitProfessor = (data: ProfessorProps) => {
-    toast.success("Professor cadastrado:", { data });
+  const handleSubmitProfessor = (data: ProfessorForm) => {
+    // criar novo professor
+    const newProfessor: Professor = {
+      professorId: String(Date.now()),
+      nome: data.nome,
+      departamento: data.departamento,
+      cargaHoraria: Number(data.cargaHoraria),
+    };
+    setProfessores((prev) => [newProfessor, ...prev]);
+    toast.success('Professor cadastrado com sucesso');
     // Aqui vai a lógica para salvar os dados
   };
 
-    // Dados, estado inicial para uma simulação!
-    const [isProfessores, setProfessores] = useState<ProfessorData[]>([
-      {
-        professorId: "43FF24S324",
-        nome: "João Moreira Da Costa",
-        departamento: "Engenharia",
-        cargaHoraria: 7
-      },
-      {
-        professorId: "40FF24S975",
-        nome: "Manuel Da Silva Pereira",
-        departamento: "Engenharia",
-        cargaHoraria: 12
-      },
-    ]);
+  // Dados, estado inicial para uma simulação!
+  const [isProfessores, setProfessores] = useState<ProfessorData[]>([
+    {
+      professorId: '43FF24S324',
+      nome: 'João Moreira Da Costa',
+      departamento: 'Engenharia',
+      cargaHoraria: 7,
+    },
+    {
+      professorId: '40FF24S975',
+      nome: 'Manuel Da Silva Pereira',
+      departamento: 'Engenharia',
+      cargaHoraria: 12,
+    },
+  ]);
 
   // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
-    console.log("Mudou para a página:", page);
+    console.log('Mudou para a página:', page);
   };
 
   // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
-    { key: "professorId", label: "Identificação" },
-    { key: "nome", label: "Nome" },
-    { key: "departamento", label: "Departamento" },
-    { key: "cargaHoraria", label: "Carga Horaria" },
+    { key: 'professorId', label: 'Identificação' },
+    { key: 'nome', label: 'Nome' },
+    { key: 'departamento', label: 'Departamento' },
+    { key: 'cargaHoraria', label: 'Carga Horaria' },
   ];
 
   return (

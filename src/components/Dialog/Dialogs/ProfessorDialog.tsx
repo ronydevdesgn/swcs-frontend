@@ -1,20 +1,15 @@
 import { useState } from 'react';
 import { Dialog } from '../Dialog';
+import { ProfessorForm } from '../../../types/entities';
 
-interface ProfessorData {
-  nome: string;
-  departamento: string;
-  cargaHoraria: string;
-}
-
-export function ProfessorDialog({ 
-  isOpen, 
-  onClose, 
-  onSubmit 
-}: { 
-  isOpen: boolean; 
+export function ProfessorDialog({
+  isOpen,
+  onClose,
+  onSubmit,
+}: {
+  isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: ProfessorData) => void;
+  onSubmit: (data: ProfessorForm) => void;
 }) {
   const [nome, setNome] = useState('');
   const [departamento, setDepartamento] = useState('');
@@ -36,16 +31,9 @@ export function ProfessorDialog({
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <Dialog.Header 
-        title="Cadastrar professor" 
-        subtitle="Preencha os campos abaixo" 
-      />
+      <Dialog.Header title="Cadastrar professor" subtitle="Preencha os campos abaixo" />
       <Dialog.Content>
-        <Dialog.Input
-          placeholder="Digite o nome do professor"
-          value={nome}
-          onChange={setNome}
-        />
+        <Dialog.Input placeholder="Digite o nome do professor" value={nome} onChange={setNome} />
         <Dialog.Input
           placeholder="Digite o departamento do professor"
           value={departamento}
@@ -61,9 +49,7 @@ export function ProfessorDialog({
         <Dialog.Button variant="secondary" onClick={handleCancel}>
           Cancelar
         </Dialog.Button>
-        <Dialog.Button onClick={handleSubmit}>
-          Cadastrar
-        </Dialog.Button>
+        <Dialog.Button onClick={handleSubmit}>Cadastrar</Dialog.Button>
       </Dialog.Actions>
     </Dialog.Root>
   );

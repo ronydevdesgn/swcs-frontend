@@ -1,12 +1,10 @@
-import { useState } from "react";
-import { Table } from "../../components/Table/Table";
-import { InputSearch } from "../../components/InputSearch/InputSearch";
-import { CursoDialog } from "../../components/Dialog/Dialogs/CursoDialog";
+import { useState } from 'react';
+import { Table } from '../../components/Table/Table';
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { CursoDialog } from '../../components/Dialog/Dialogs/CursoDialog';
 
-import "./index.css";
-import { toast } from "react-toastify";
-
-interface CursoProps {}
+import './index.css';
+import { toast } from 'react-toastify';
 
 // Dados para testar apresentação da tabela (futuros dados vindo do backend)
 interface CursosData {
@@ -15,34 +13,42 @@ interface CursosData {
   descrição: string;
 }
 
+import { CursoForm } from '../../types/entities';
+
 export function Cursos() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Dados, estado inicial para uma simulação!
   const [isCursos, setCursos] = useState<CursosData[]>([
     {
-      cursosId: "21FF24S3",
-      nome: "Engenharia Informática",
-      descrição: "Especialidade em Programação e Redes de Computador!",
+      cursosId: '21FF24S3',
+      nome: 'Engenharia Informática',
+      descrição: 'Especialidade em Programação e Redes de Computador!',
     },
     {
-      cursosId: "21FF24S3",
-      nome: "Engenharia de Petroleo",
-      descrição: "Especialidade em Perfuração",
+      cursosId: '21FF24S3',
+      nome: 'Engenharia de Petroleo',
+      descrição: 'Especialidade em Perfuração',
     },
   ]);
 
-  const handleSubmitCurso = (data: CursoProps) => {
-    // Aqui vai a lógica para salvar os dados
-    toast.success("Curso cadastrado com sucesso!");
+  const handleSubmitCurso = (data: CursoForm) => {
+    // criar novo curso compatível com CursosData
+    const newCurso: CursosData = {
+      cursosId: String(Date.now()),
+      nome: data.nome,
+      descrição: data.codigo || data.nivel || '',
+    };
+    setCursos((prev) => [newCurso, ...prev]);
+    toast.success('Curso cadastrado com sucesso!');
   };
 
   // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
-    { key: "cursosId", label: "Identificação" },
-    { key: "nome", label: "Nome" },
-    { key: "descrição", label: "Descrição" },
+    { key: 'cursosId', label: 'Identificação' },
+    { key: 'nome', label: 'Nome' },
+    { key: 'descrição', label: 'Descrição' },
   ];
 
   // Função para lidar com a mudança de página
@@ -73,11 +79,7 @@ export function Cursos() {
 
       {/* main of page curso */}
       <div className="main-cursos">
-        <Table<CursosData>
-          columns={columns}
-          data={isCursos}
-          onPageChange={handlePageChange}
-        />
+        <Table<CursosData> columns={columns} data={isCursos} onPageChange={handlePageChange} />
       </div>
     </section>
   );

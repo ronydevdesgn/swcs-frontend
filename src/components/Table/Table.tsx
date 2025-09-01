@@ -1,11 +1,11 @@
-import React from "react";
-import "./Table.css";
+import React from 'react';
+import './Table.css';
 import {
   ChevronLeft,
   ChevronsLeft,
   ChevronsRight,
   ChevronRight,
-} from "react-feather";
+} from 'react-feather';
 
 type Column<T> = {
   key: keyof T | string;
@@ -25,7 +25,7 @@ type TablePropsGeneric<T> = {
 
 type TablePropsSimple = {
   columns: string[];
-  rows: any[][];
+  rows: unknown[][];
   isLoading?: boolean;
   page?: number;
   pageSize?: number;
@@ -35,8 +35,17 @@ type TablePropsSimple = {
 
 type TableProps<T> = TablePropsGeneric<T> | TablePropsSimple;
 
+import { LoadingSkeleton, EmptyState } from '../Shared/States';
+
 export function Table<T>(props: TableProps<T>) {
-  const isSimple = "rows" in props;
+  const isSimple = 'rows' in props;
+
+  const renderCell = (cell: unknown): React.ReactNode => {
+    if (cell === null || cell === undefined) return null;
+    // se já for um elemento react
+    if (React.isValidElement(cell)) return cell as React.ReactNode;
+    return String(cell);
+  };
 
   if (isSimple) {
     const { columns, rows, isLoading } = props as TablePropsSimple;
@@ -54,17 +63,21 @@ export function Table<T>(props: TableProps<T>) {
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={columns.length}>Carregando...</td>
+                <td colSpan={columns.length}>
+                  <LoadingSkeleton />
+                </td>
               </tr>
             ) : rows.length === 0 ? (
               <tr>
-                <td colSpan={columns.length}>Nenhum dado encontrado.</td>
+                <td colSpan={columns.length}>
+                  <EmptyState />
+                </td>
               </tr>
             ) : (
               rows.map((row, ri) => (
                 <tr key={ri}>
                   {row.map((cell, ci) => (
-                    <td key={ci}>{cell}</td>
+                    <td key={ci}>{renderCell(cell)}</td>
                   ))}
                 </tr>
               ))
@@ -110,11 +123,15 @@ export function Table<T>(props: TableProps<T>) {
           <tbody>
             {isLoading ? (
               <tr>
-                <td colSpan={columns.length}>Carregando...</td>
+                <td colSpan={columns.length}>
+                  <LoadingSkeleton />
+                </td>
               </tr>
             ) : data.length === 0 ? (
               <tr>
-                <td colSpan={columns.length}>Nenhum dado encontrado.</td>
+                <td colSpan={columns.length}>
+                  <EmptyState />
+                </td>
               </tr>
             ) : (
               data.map((row, i) => (
@@ -123,7 +140,11 @@ export function Table<T>(props: TableProps<T>) {
                     <td key={String(col.key) + ci}>
                       {col.render
                         ? col.render(row)
-                        : (row as any)[col.key as keyof T]}
+                        : renderCell(
+                            (row as unknown as Record<string, unknown>)[
+                              String(col.key)
+                            ],
+                          )}
                     </td>
                   ))}
                 </tr>

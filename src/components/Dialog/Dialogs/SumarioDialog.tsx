@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { Dialog } from '../Dialog';
+import { SumarioForm } from '../../../types/entities';
 
-interface SumarioData {
-  data: string;
-  curso: string;
-  professor: string;
-  conteudo: string;
-}
-
-export function SumarioDialog({ 
-  isOpen, 
-  onClose, 
-  onSubmit 
-}: { 
-  isOpen: boolean; 
+export function SumarioDialog({
+  isOpen,
+  onClose,
+  onSubmit,
+}: {
+  isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: SumarioData) => void;
+  onSubmit: (data: SumarioForm) => void;
 }) {
   const [data, setData] = useState('');
   const [curso, setCurso] = useState('');
@@ -39,10 +33,7 @@ export function SumarioDialog({
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <Dialog.Header 
-        title="Gerar sumário" 
-        subtitle="Configure os parâmetros do Sumário" 
-      />
+      <Dialog.Header title="Gerar sumário" subtitle="Configure os parâmetros do Sumário" />
       <Dialog.Content>
         <Dialog.Input
           placeholder="Preenche a data (Ex: 28-08-2025)"
@@ -70,9 +61,7 @@ export function SumarioDialog({
         <Dialog.Button variant="secondary" onClick={handleCancel}>
           Cancelar
         </Dialog.Button>
-        <Dialog.Button onClick={handleSubmit}>
-          Gerar Sumário
-        </Dialog.Button>
+        <Dialog.Button onClick={handleSubmit}>Gerar Sumário</Dialog.Button>
       </Dialog.Actions>
     </Dialog.Root>
   );
