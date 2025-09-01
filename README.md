@@ -43,32 +43,106 @@ npm run dev
 
 ```
 src/
-  ├── assets/        # Arquivos estáticos
-  │   └── img/       # Imagens do projeto
-  ├── components/    # Componentes reutilizáveis
-  │   ├── Form/      # Componentes de formulário
-  │   ├── Header/    # Componente de cabeçalho
-  │   ├── Layout/    # Layout principal da aplicação
-  │   ├── PrivateRoute/ # Componente de proteção de rotas
-  │   ├── SplashScreen/ # Tela de carregamento
-  │   └── Sidebar/   # Barra lateral de navegação
-  ├── contexts/      # Contextos React
-  │   └── AuthContext.tsx  # Contexto de autenticação
-  ├── hooks/         # Hooks personalizados
-  │   └── useAuth.ts # Hook de autenticação
-  ├── pages/         # Páginas da aplicação
-  │   ├── Dashboard/ # Página inicial após login
-  │   ├── Cursos/    # Gestão de cursos
-  │   ├── Definicoes/ # Configurações do sistema
-  │   ├── Efetividade/ # Controle de efetividade
-  │   ├── Login/     # Página de login
-  │   ├── Perfil/    # Perfil do usuário
-  │   ├── Professores/ # Gestão de professores
-  │   ├── Relatorios/ # Geração de relatórios
-  │   ├── SignUp/    # Página de cadastro
-  │   └── Definicoes/ # Configurações do sistema
-  └── types/         # Definições de tipos TypeScript
-      └── auth.ts    # Tipos relacionados à autenticação
+  ├── app.tsx
+  ├── main.tsx
+  ├── global.css
+  ├── vite-env.d.ts
+  ├── assets/
+  │   └── img/
+  │       └── Illustrator.svg
+  ├── components/
+  │   ├── Layout.css
+  │   ├── Layout.tsx
+  │   ├── PrivateRoute.tsx
+  │   ├── SplashScreen.css
+  │   ├── SplashScreen.tsx
+  │   ├── ErrorBoundary/
+  │   │   └── ErrorBoundary.tsx
+  │   ├── Shared/
+  │   │   ├── States.tsx
+  │   │   └── States.css
+  │   ├── Card/
+  │   │   ├── Card.css
+  │   │   └── Card.tsx
+  │   ├── Dialog/
+  │   │   ├── Dialog.tsx
+  │   │   ├── DialogGlobal.css
+  │   │   └── Dialogs/
+  │   │       ├── CursoDialog.tsx
+  │   │       ├── Efetividade.tsx
+  │   │       ├── ProfessorDialog.tsx
+  │   │       └── SumarioDialog.tsx
+  │   ├── Form/
+  │   │   ├── formForgot.css
+  │   │   └── formForgot.tsx
+  │   │   └── formLogin.css
+  │   │   └── formLogin.tsx
+  │   │   └── formSignup.css
+  │   │   └── formSignup.tsx
+  │   ├── Header/
+  │   │   ├── Header.css
+  │   │   └── Header.tsx
+  │   ├── InputSearch/
+  │   │   ├── InputSearch.css
+  │   │   └── InputSearch.tsx
+  │   ├── Sidebar/
+  │   │   ├── Sidebar.css
+  │   │   └── Sidebar.tsx
+  │   └── Table/
+  │       ├── Table.css
+  │       └── Table.tsx
+  ├── contexts/
+  │   ├── AuthContext.tsx
+  │   └── PageTitleContext.tsx
+  ├── hooks/
+  │   ├── useAuthentication.ts
+  │   ├── useCursos.ts
+  │   ├── useEfetividades.ts
+  │   ├── useFuncionarios.ts
+  │   ├── usePresencas.ts
+  │   ├── useProfessores.ts
+  │   └── useSumarios.ts
+  ├── lib/
+  │   ├── api.ts
+  │   └── react-query.ts
+  ├── pages/
+  │   ├── Cursos/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Dashboard/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Definicoes/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Efetividade/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── ForgotPassword/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Login/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Perfil/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Professores/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── Relatorios/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   ├── SignUp/
+  │   │   ├── index.css
+  │   │   └── index.tsx
+  │   └── Sumarios/
+  │       ├── index.css
+  │       └── index.tsx
+  └── types/
+      ├── auth.ts
+      ├── svg.d.ts
+      └── entities.ts
 ```
 
 ## 🔧 Scripts Disponíveis
@@ -78,7 +152,52 @@ src/
 - npm run lint - Executa a verificação de código
 - npm run preview - Visualiza a versão de produção localmente
 
-## 📱 Funcionalidades Principais
+## �️ Mudanças recentes implementadas
+
+As alterações abaixo foram adicionadas ao código durante o desenvolvimento local e já estão presentes no repositório:
+
+- `ErrorBoundary` global em `src/components/ErrorBoundary/ErrorBoundary.tsx` e registrado em `src/main.tsx` para capturar erros inesperados em runtime.
+- Componentes compartilhados de estado em `src/components/Shared/States.tsx` (`LoadingSkeleton`, `EmptyState`, `ErrorState`) e estilos em `src/components/Shared/States.css` — usados pela `Table` e outros componentes.
+- Centralização de tipos em `src/types/entities.ts` (tipos para Sumário, Professor e Curso) e atualização dos Dialogs (`src/components/Dialog/Dialogs/*`) e páginas (`src/pages/*`) para usar essas tipagens.
+- `Table` atualizado (`src/components/Table/Table.tsx`) para usar os estados compartilhados e aceitar tanto a API genérica (`columns + data`) quanto o formato simples (`columns + rows`), com renderização segura de células.
+- Ajustes nos componentes de diálogo (`Dialog`) e nas páginas (`Sumarios`, `Professores`, `Cursos`) para integrar os novos tipos e flows de criação de entidades.
+- Arquivos de configuração base para qualidade de código: `.eslintrc.json` e `.prettierrc` foram adicionados.
+
+## ✅ Como validar localmente (rápido)
+
+1. Instale dependências (se ainda não instalou):
+
+```bash
+npm install
+```
+
+2. Instale as ferramentas de dev para lint/format (opcional, recomendado):
+
+```bash
+npm install --save-dev eslint prettier husky lint-staged @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-config-prettier
+```
+
+3. Rodar ESLint (modo recomendado):
+
+```bash
+npx eslint --ext .ts,.tsx src --fix
+```
+
+4. Iniciar o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+5. (Opcional) Ativar Husky e lint-staged para pré-commit:
+
+```bash
+npx husky install
+npx husky add .husky/pre-commit "npx lint-staged"
+# e adicionar a configuração `lint-staged` em package.json conforme instruções no README
+```
+
+## �📱 Funcionalidades Principais
 
 - Sistema de Autenticação Completo
   - Login com email e senha com validação em tempo real
