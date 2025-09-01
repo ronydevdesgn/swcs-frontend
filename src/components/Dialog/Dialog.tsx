@@ -1,5 +1,6 @@
-import React, { createContext, useContext } from "react";
-import "./DialogGlobal.css";
+/* eslint-disable react-refresh/only-export-components */
+import React, { createContext, useContext } from 'react';
+import './DialogGlobal.css';
 
 // Context para gerenciar o estado do Dialog
 interface DialogContextType {
@@ -12,7 +13,9 @@ const DialogContext = createContext<DialogContextType | undefined>(undefined);
 function useDialogContext() {
   const context = useContext(DialogContext);
   if (!context) {
-    throw new Error("Os componentes de diálogo devem ser usados dentro do Dialog.Root");
+    throw new Error(
+      'Os componentes de diálogo devem ser usados dentro do Dialog.Root',
+    );
   }
   return context;
 }
@@ -73,19 +76,19 @@ export function DialogActions({ children }: DialogActionsProps) {
 
 // Button do Dialog
 interface DialogButtonProps {
-  variant?: "primary" | "secondary";
+  variant?: 'primary' | 'secondary';
   onClick?: () => void;
   children: React.ReactNode;
   disabled?: boolean;
 }
 
 export function DialogButton({
-  variant = "primary",
+  variant = 'primary',
   onClick,
   children,
   disabled,
 }: DialogButtonProps) {
-  const className = variant === "primary" ? "btn btn-submit" : "btn btn-cancel";
+  const className = variant === 'primary' ? 'btn btn-submit' : 'btn btn-cancel';
 
   return (
     <button className={className} onClick={onClick} disabled={disabled}>
@@ -107,11 +110,11 @@ export function DialogInput({
   placeholder,
   value,
   onChange,
-  type = "text",
-  closeOnEscape = true
+  type = 'text',
+  closeOnEscape = true,
 }: DialogInputProps) {
   const { onClose } = useDialogContext();
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (closeOnEscape && e.key === 'Escape') {
       onClose(); // Fecha o dialog ao pressionar o botão Escape
     }
