@@ -16,7 +16,7 @@ import { Professores } from "./pages/Professores";
 import { Relatorios } from "./pages/Relatorios";
 import { SignUp } from "./pages/SignUp";
 import { ForgotPassword } from "./pages/ForgotPassword";
-import { Definicoes } from "./pages/Definicoes";
+import { Sumarios } from "./pages/Sumarios";
 
 // All routes (todas as rotas)
 const routers = createBrowserRouter([
@@ -83,10 +83,10 @@ const routers = createBrowserRouter([
         },
       },
       {
-        path: "/definicoes",
-        element: <Definicoes />,
+        path: "/sumarios",
+        element: <Sumarios />,
         handle: {
-          title: "Definições",
+          title: "Sumários",
         },
       },
       {

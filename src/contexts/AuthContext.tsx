@@ -53,7 +53,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (error instanceof TypeError) {
         toast.error('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
       } else {
-        toast.error(error.message || 'Ocorreu um erro inesperado.');
+        const errorMessage = error instanceof Error ? error.message : 'Ocorreu um erro inesperado.';
+        toast.error(errorMessage);
       }
       throw error;
     }
@@ -61,7 +62,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   function signOut() {
     setUser(null);
-    // In a real application, you would also clear any stored tokens here
     toast.info('Você foi desconectado.');
   }
 
