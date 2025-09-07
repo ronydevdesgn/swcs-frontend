@@ -93,6 +93,48 @@
   color: var(--color-gray);
 }
 
+.form-select {
+  padding: 1.4rem 2rem;
+  border: .1rem solid var(--purple-heart-400);
+  border-radius: .4rem;
+  font-size: 1.2rem;
+  color: var(--color-gray);
+  background-color: var(--purple-heart-100);
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--purple-heart-400);
+  box-shadow: 0 0 0 .2rem var(--purple-heart-300);
+}
+
+.form-select option {
+  background-color: var(--purple-heart-50);
+  color: var(--color-gray);
+}
+
+.form-select option:hover {
+  background-color: var(--purple-heart-200);
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: var(--warning-required);
+}
+
+.field-error {
+  margin-top: .4rem;
+  color: var(--warning-required);
+  font-size: 1.1rem;
+}
+
 /*
    DIALOG ACTIONS
  */

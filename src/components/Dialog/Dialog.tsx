@@ -100,10 +100,12 @@ export function DialogButton({
 // Input do Dialog
 interface DialogInputProps {
   placeholder?: string;
-  value: string;
+  value: string | number;
   onChange: (value: string) => void;
   type?: string;
   closeOnEscape?: boolean;
+  required?: boolean;
+  errorMessage?: string;
 }
 
 export function DialogInput({
@@ -112,6 +114,8 @@ export function DialogInput({
   onChange,
   type = 'text',
   closeOnEscape = true,
+  required = false,
+  errorMessage,
 }: DialogInputProps) {
   const { onClose } = useDialogContext();
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -129,7 +133,54 @@ export function DialogInput({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="form-input"
+        aria-invalid={required && (value === '' || value === undefined || value === 0)}
       />
+      {required && (value === '' || value === undefined) && (
+        <small className="field-error">
+          {errorMessage ?? 'Campo obrigatório'}
+        </small>
+      )}
+    </div>
+  );
+}
+
+// selection do Dialog
+interface DialogSelectProps {
+  options: { label: string; value: string | number }[];
+  value: string | number;
+  onChange: (value: string | number) => void;
+  required?: boolean;
+  errorMessage?: string;
+}
+
+export function DialogSelect({
+  options,
+  value,
+  onChange,
+  required = false,
+  errorMessage,
+}: DialogSelectProps) {
+  const isInvalid = required && (value === '' || value === undefined);
+
+  return (
+    <div className="form-group">
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="form-select"
+        aria-invalid={isInvalid}
+      >
+        {options.map((option) => (
+          <option key={String(option.value)} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {isInvalid && (
+        <small className="field-error">
+          {errorMessage ?? 'Campo obrigatório'}
+        </small>
+      )}
     </div>
   );
 }
@@ -142,4 +193,5 @@ export const Dialog = {
   Actions: DialogActions,
   Button: DialogButton,
   Input: DialogInput,
+  Select: DialogSelect,
 };
