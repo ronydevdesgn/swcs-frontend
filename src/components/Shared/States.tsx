@@ -4,7 +4,7 @@ export function LoadingSkeleton({ message = 'Carregando...' }: { message?: strin
   return (
     <div className="shared-loading">
       <div className="loader" />
-      <span>{message}</span>
+      <span className="message">{message}</span>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import { useState } from 'react';
-// Adicional (component Table na página)
 import { Table } from '../../components/Table/Table';
 import { ProfessorDialog } from '../../components/Dialog/Dialogs/ProfessorDialog';
 import { InputSearch } from '../../components/InputSearch/InputSearch';
 import './index.css';
 import { toast } from 'react-toastify';
+import { Professor, ProfessorForm } from '../../types/entities';
 
 // dados inventados vindo
 interface ProfessorData {
@@ -14,7 +14,6 @@ interface ProfessorData {
   cargaHoraria: number;
 }
 
-import { Professor, ProfessorForm } from '../../types/entities';
 
 export function Professores() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

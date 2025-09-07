@@ -6,6 +6,7 @@ import {
   ChevronsRight,
   ChevronRight,
 } from 'react-feather';
+import { LoadingSkeleton, EmptyState } from '../Shared/States';
 
 type Column<T> = {
   key: keyof T | string;
@@ -35,7 +36,6 @@ type TablePropsSimple = {
 
 type TableProps<T> = TablePropsGeneric<T> | TablePropsSimple;
 
-import { LoadingSkeleton, EmptyState } from '../Shared/States';
 
 export function Table<T>(props: TableProps<T>) {
   const isSimple = 'rows' in props;

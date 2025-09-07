@@ -1,12 +1,37 @@
+// Efetividade
+// Observação: o ID é gerado pelo backend; a entidade registra a data, horas trabalhadas
+// e referências (chaves estrangeiras) para professor e, opcionalmente, curso.
+export interface EfetividadeForm {
+  data: string;
+  horasTrabalhadas: number;
+  professorId: string;
+  cursoId?: string;
+}
+
+export interface Efetividade extends EfetividadeForm {
+  efetividadeId: string;
+}
+
+// Presença: estado que pode ser 'presenca' ou 'falta' e é associado a uma efetividade
+export type PresencaStatus = 'presenca' | 'falta';
+
+export interface PresencaForm {
+  data: string;
+  status: PresencaStatus;
+}
+
+export interface Presenca extends PresencaForm {
+  presencaId: string;
+  efetividadeId: string;
+  professorId: string;
+  cursoId?: string;
+}
 export interface SumarioForm {
+  sumarioId: string;
   data: string;
   curso: string;
   professor: string;
   conteudo: string;
-}
-
-export interface Sumario extends SumarioForm {
-  sumarioId: string;
 }
 
 export interface ProfessorForm {
@@ -21,11 +46,9 @@ export interface Professor extends Omit<ProfessorForm, 'cargaHoraria'> {
 }
 
 export interface CursoForm {
+  // codigo: string; Id é gerado automaticamente
   nome: string;
-  codigo: string;
-  departamento: string;
-  cargaHoraria: string;
-  nivel: string;
+  descricao: string;
 }
 
 export interface Curso extends Omit<CursoForm, 'cargaHoraria'> {

@@ -11,48 +11,40 @@ export function CursoDialog({
   onClose: () => void;
   onSubmit: (data: CursoForm) => void;
 }) {
+  // const [codigo, setCodigo] = useState('');
   const [nome, setNome] = useState('');
-  const [codigo, setCodigo] = useState('');
-  const [departamento, setDepartamento] = useState('');
-  const [cargaHoraria, setCargaHoraria] = useState('');
-  const [nivel, setNivel] = useState('');
+  const [descricao, setDescricao] = useState('');
 
   const handleSubmit = () => {
-    if (nome && codigo && departamento && cargaHoraria && nivel) {
-      onSubmit({ nome, codigo, departamento, cargaHoraria, nivel });
+    if (nome && descricao) {
+      onSubmit({ nome, descricao });
       handleCancel();
     }
   };
 
   const handleCancel = () => {
+    // setCodigo(''); Id ou codigo e gerado automaticamente
     setNome('');
-    setCodigo('');
-    setDepartamento('');
-    setCargaHoraria('');
-    setNivel('');
+    setDescricao('');
     onClose();
   };
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <Dialog.Header title="Cadastrar curso" subtitle="Preencha os dados do curso" />
+      <Dialog.Header
+        title="Cadastrar curso"
+        subtitle="Preencha os dados do curso"
+      />
       <Dialog.Content>
-        <Dialog.Input placeholder="Digite o nome do curso" value={nome} onChange={setNome} />
-        <Dialog.Input placeholder="Digite o código do curso" value={codigo} onChange={setCodigo} />
         <Dialog.Input
-          placeholder="Digite o departamento do curso"
-          value={departamento}
-          onChange={setDepartamento}
+          placeholder="Digite o nome do curso"
+          value={nome}
+          onChange={setNome}
         />
         <Dialog.Input
-          placeholder="Digite a carga horária do curso"
-          value={cargaHoraria}
-          onChange={setCargaHoraria}
-        />
-        <Dialog.Input
-          placeholder="Digite o nível do curso (Graduação/Pós-graduação)"
-          value={nivel}
-          onChange={setNivel}
+          placeholder="Digite a descrição do curso"
+          value={descricao}
+          onChange={setDescricao}
         />
       </Dialog.Content>
       <Dialog.Actions>
