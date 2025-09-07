@@ -32,7 +32,7 @@ export function Efetividade() {
         <EfetividadeDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={handleSubmitEfetividade}
+          onSubmit={handleSubmitEfetividade}          
         />
       </div>
 
