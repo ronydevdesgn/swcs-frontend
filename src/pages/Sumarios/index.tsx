@@ -21,26 +21,10 @@ export function Sumarios() {
     };
     setSumarios((prev) => [newSumario, ...prev]);
     toast.success('Sumário registado com sucesso');
-    // Aqui vai a lógica para salvar os dados no backend
   };
 
   // Dados, estado inicial para uma simulação!
-  const [sumarios, setSumarios] = useState<Sumario[]>([
-    {
-      sumarioId: '34FF20S5',
-      data: '2025-08-20',
-      curso: 'Engenharia Informática',
-      professor: 'Prof. João',
-      conteudo: 'Introdução ao React + JSX',
-    },
-    {
-      sumarioId: '334FFFD2',
-      data: '2025-08-24',
-      curso: 'Nutrição',
-      professor: 'Prof. Mariza',
-      conteudo: 'Bioquímica dos Alimentos',
-    },
-  ]);
+  const [sumarios, setSumarios] = useState<Sumario[]>([]);
 
   // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
@@ -78,7 +62,10 @@ export function Sumarios() {
         {/* component Input de pesquisa*/}
         {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
         isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
-        <InputSearch Placeholder="Pesquisar por..." OnSearch={(value) => console.log(value)} />
+        <InputSearch
+          Placeholder="Pesquisar por..."
+          OnSearch={(value) => console.log(value)}
+        />
 
         <button onClick={() => setIsDialogOpen(true)}>Novo Sumário</button>
         <SumarioDialog
@@ -90,9 +77,12 @@ export function Sumarios() {
 
       {/* main of page sumários */}
       <div className="main-sumarios">
-        {/* <p>Here is the table to list the summaries!</p> */}
-        {/* Usando a API genérica do Table */}
-        <Table<Sumario> columns={columns} data={sumarios} onPageChange={handlePageChange} />
+        <Table<Sumario>
+          columns={columns}
+          data={sumarios}
+          onPageChange={handlePageChange}
+          isLoading={true}
+        />
       </div>
     </section>
   );
