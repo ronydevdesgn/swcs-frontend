@@ -28,11 +28,9 @@ export function Sumarios() {
 
   // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
-    console.log('Mudou para a página:', page);
-    toast.success('Mudou de página!');
+    toast.success(`Mudou de página! ${page}`);
   };
 
-  // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
     { key: 'sumarioId', label: 'Identificação' },
