@@ -2,86 +2,91 @@ import { useState } from 'react';
 import { Dialog } from '../Dialog';
 
 interface EfetividadeData {
+  efetividadeId?: string;
+  data: string;
+  horasTrabalhadas: number;
   professor: string;
-  curso: string;
-  semestre: string;
-  avaliacaoMedia: string;
-  frequenciaMedia: string;
+  status: 'PRESENTE' | 'FALTA';
 }
 
-export function EfetividadeDialog({ 
-  isOpen, 
-  onClose, 
-  onSubmit 
-}: { 
-  isOpen: boolean; 
+export function EfetividadeDialog({
+  isOpen,
+  onClose,
+  onSubmit,
+}: {
+  isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: EfetividadeData) => void;
 }) {
+  const [data, setData] = useState('');
+  const [horasTrabalhadas, setHorasTrabalhadas] = useState(0);
   const [professor, setProfessor] = useState('');
-  const [curso, setCurso] = useState('');
-  const [semestre, setSemestre] = useState('');
-  const [avaliacaoMedia, setAvaliacaoMedia] = useState('');
-  const [frequenciaMedia, setFrequenciaMedia] = useState('');
+  const [status, setStatus] = useState<'PRESENTE' | 'FALTA' | ''>('');
 
   const handleSubmit = () => {
-    if (professor && curso && semestre && avaliacaoMedia && frequenciaMedia) {
-      onSubmit({ professor, curso, semestre, avaliacaoMedia, frequenciaMedia });
+    if (data && horasTrabalhadas && professor && status) {
+      onSubmit({ data, horasTrabalhadas, professor, status });
       handleCancel();
     }
   };
 
   const handleCancel = () => {
     setProfessor('');
-    setCurso('');
-    setSemestre('');
-    setAvaliacaoMedia('');
-    setFrequenciaMedia('');
+    setData('');
+    setHorasTrabalhadas(0);
+    setStatus('');
     onClose();
   };
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <Dialog.Header 
-        title="Registrar efetividade" 
-        subtitle="Registre os dados de desempenho" 
+      <Dialog.Header
+        title="Registrar efetividade"
+        subtitle="Registre os dados de desempenho"
       />
       <Dialog.Content>
         <Dialog.Input
-          placeholder="Digite o nome do professor"
+          required={true}
+          placeholder="Seleciona a data"
+          value={data}
+          onChange={setData}
+          type="date"
+        />
+        {/* Aqui os nomes dos professores devem vir de forma automatica do banco de dados.*/}
+        <Dialog.Select
+          required={true}
+          options={[
+            { label: 'Selecione o professor', value: '' },
+            { label: 'nome do professor', value: 'Prof. João Silva' },
+          ]}
           value={professor}
-          onChange={setProfessor}
+          onChange={(value: string | number) => setProfessor(String(value))}
         />
+        {/* Aqui as horas trabalhadas, possivelmente devem ser calculadas de forma automatica.*/}
         <Dialog.Input
-          placeholder="Digite o nome do curso"
-          value={curso}
-          onChange={setCurso}
-        />
-        <Dialog.Input
-          placeholder="Digite o semestre (Ex: 2024.1)"
-          value={semestre}
-          onChange={setSemestre}
-        />
-        <Dialog.Input
-          placeholder="Digite a avaliação média (0-10)"
-          value={avaliacaoMedia}
-          onChange={setAvaliacaoMedia}
+          muted={true}
+          placeholder="Digite as horas trabalhadas"
+          value={horasTrabalhadas}
+          onChange={(value: string) => setHorasTrabalhadas(Number(value))}
           type="number"
         />
-        <Dialog.Input
-          placeholder="Digite a frequência média (%)"
-          value={frequenciaMedia}
-          onChange={setFrequenciaMedia}
-          type="number"
+        <Dialog.Select
+          options={[
+            { label: 'Selecione o status', value: '' },
+            { label: 'Presente', value: 'PRESENTE' },
+            { label: 'Falta', value: 'FALTA' },
+          ]}
+          value={status}
+          onChange={(value: string | number) =>
+            setStatus(value as '' | 'PRESENTE' | 'FALTA')
+          }
         />
       </Dialog.Content>
       <Dialog.Actions>
         <Dialog.Button variant="secondary" onClick={handleCancel}>
           Cancelar
         </Dialog.Button>
-        <Dialog.Button onClick={handleSubmit}>
-          Cadastrar
-        </Dialog.Button>
+        <Dialog.Button onClick={handleSubmit}>Cadastrar</Dialog.Button>
       </Dialog.Actions>
     </Dialog.Root>
   );

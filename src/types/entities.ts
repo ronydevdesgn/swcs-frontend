@@ -27,17 +27,22 @@ export interface Presenca extends PresencaForm {
   cursoId?: string;
 }
 export interface SumarioForm {
-  sumarioId: string;
   data: string;
   curso: string;
   professor: string;
   conteudo: string;
 }
+export interface Sumario extends SumarioForm {
+  sumarioId: string;
+}
 
+// O curso vem de uma tabela separada, por isso não é obrigatório
 export interface ProfessorForm {
   nome: string;
   departamento: string;
   cargaHoraria: string;
+  // cursoId?: string; // Se quiser referenciar o curso por ID
+  curso?: string;
 }
 
 export interface Professor extends Omit<ProfessorForm, 'cargaHoraria'> {

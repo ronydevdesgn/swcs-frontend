@@ -37,6 +37,7 @@ export function CursoDialog({
       />
       <Dialog.Content>
         <Dialog.Input
+          required={true}
           placeholder="Digite o nome do curso"
           value={nome}
           onChange={setNome}

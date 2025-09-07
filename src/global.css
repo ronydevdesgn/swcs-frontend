@@ -19,6 +19,9 @@
   /* colors */
   --color-black: #010101;
   --color-gray: #333;
+  /* warning required - campo obrigatório */
+  --warning-required: #dc3545;
+  --muted: #6c757d;
 
   --purple-heart-50: #f3f1ff;
   --purple-heart-100: #ebe5ff;

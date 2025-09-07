@@ -14,10 +14,11 @@ export function ProfessorDialog({
   const [nome, setNome] = useState('');
   const [departamento, setDepartamento] = useState('');
   const [cargaHoraria, setCargaHoraria] = useState('');
+  const [curso, setCurso] = useState('');
 
   const handleSubmit = () => {
-    if (nome && departamento && cargaHoraria) {
-      onSubmit({ nome, departamento, cargaHoraria });
+    if (nome && departamento && cargaHoraria && curso) {
+      onSubmit({ nome, departamento, cargaHoraria, curso });
       handleCancel();
     }
   };
@@ -26,6 +27,7 @@ export function ProfessorDialog({
     setNome('');
     setDepartamento('');
     setCargaHoraria('');
+    setCurso('');
     onClose();
   };
 
@@ -33,8 +35,14 @@ export function ProfessorDialog({
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Header title="Cadastrar professor" subtitle="Preencha os campos abaixo" />
       <Dialog.Content>
-        <Dialog.Input placeholder="Digite o nome do professor" value={nome} onChange={setNome} />
         <Dialog.Input
+          required={true}
+          placeholder="Digite o nome do professor"
+          value={nome}
+          onChange={setNome}
+        />
+        <Dialog.Input
+          required={true}
           placeholder="Digite o departamento do professor"
           value={departamento}
           onChange={setDepartamento}
@@ -43,6 +51,17 @@ export function ProfessorDialog({
           placeholder="Digite a carga horária do professor"
           value={cargaHoraria}
           onChange={setCargaHoraria}
+        />
+
+        <Dialog.Select
+          required={true}
+          options={[
+            { label: 'Selecione o curso a lecionar', value: '' },
+            { label: 'Curso 1', value: 'Curso 1' },
+            { label: 'Curso 2', value: 'Curso 2' },
+          ]}
+          value={curso}
+          onChange={(value: string | number) => setCurso(String(value))}
         />
       </Dialog.Content>
       <Dialog.Actions>

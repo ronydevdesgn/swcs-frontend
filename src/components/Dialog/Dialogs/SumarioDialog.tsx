@@ -11,6 +11,8 @@ export function SumarioDialog({
   onClose: () => void;
   onSubmit: (data: SumarioForm) => void;
 }) {
+  // const [data, setData] = useState(''); // Data vem do sistema automaticamente
+  // O professor tambem vem do sistema, pois é o usuario logado
   const [data, setData] = useState('');
   const [curso, setCurso] = useState('');
   const [professor, setProfessor] = useState('');
@@ -33,25 +35,40 @@ export function SumarioDialog({
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
-      <Dialog.Header title="Gerar sumário" subtitle="Configure os parâmetros do Sumário" />
+      <Dialog.Header
+        title="Gerar sumário"
+        subtitle="Configure os parâmetros do Sumário"
+      />
       <Dialog.Content>
         <Dialog.Input
-          placeholder="Preenche a data (Ex: 28-08-2025)"
+          required={true}
+          // O ideal é que a data venha do sistema automaticamente
+          // Por isso o type date
           value={data}
           onChange={setData}
+          type="date"
         />
-        <Dialog.Input
-          placeholder="Preenche o curso (Ex: Eng. Informática)"
+        <Dialog.Select
+          required={true}
+          options={[
+            { label: 'Selecione o curso a lecionar', value: '' },
+            { label: 'Curso 1', value: 'Curso 1' },
+            { label: 'Curso 2', value: 'Curso 2' },
+          ]}
           value={curso}
-          onChange={setCurso}
+          onChange={(value: string | number) => setCurso(String(value))}
         />
-        {/* Aqui o professor vai ser default, vindo do banco */}
+
+        {/* Aqui o professor vai ser default, vindo do banco ou seja, é o usuário logado */}
         <Dialog.Input
+          muted={true}
           placeholder="Preenche com o nome do professor"
           value={professor}
           onChange={setProfessor}
         />
+
         <Dialog.Input
+          required={true}
           placeholder="Preenche o conteudo do Sumário"
           value={conteudo}
           onChange={setConteudo}

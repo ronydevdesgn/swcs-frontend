@@ -1,18 +1,49 @@
-import "./index.css";
-// import { Table } from "../../components/Table/Table";
-import { InputSearch } from "../../components/InputSearch/InputSearch";
-import { EfetividadeDialog } from "../../components/Dialog/Dialogs/Efetividade";
-import { toast } from "react-toastify";
-import { useState } from "react";
+import './index.css';
+import { Table } from '../../components/Table/Table';
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { EfetividadeDialog } from '../../components/Dialog/Dialogs/Efetividade';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
-interface EfetividadeProps {}
+interface EfetividadeProps {
+  efetividadeId?: string;
+  data: string;
+  horasTrabalhadas: number;
+  professor: string;
+  status: 'PRESENTE' | 'FALTA';
+}
 
 export function Efetividade() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Dados, estado inicial para uma simulação!
+  const [isEfetividade, setEfetividade] = useState<EfetividadeProps[]>([]);
+
   const handleSubmitEfetividade = (data: EfetividadeProps) => {
-    toast.success("Efetividade cadastrada:", { data });
-    // Aqui vai a lógica para salvar os dados
+    const newEfetividade: EfetividadeProps = {
+      // gerar id (efetividadeId) automaticamente
+      efetividadeId: String(Date.now()),
+      data: data.data,
+      horasTrabalhadas: data.horasTrabalhadas,
+      professor: data.professor,
+      status: data.status,
+    };
+    setEfetividade((prev) => [newEfetividade, ...prev]);
+    toast.success('Efetividade cadastrada:', { data });
+  };
+
+  // Colunas genéricas para o componente Table
+  const columns = [
+    { key: 'efetividadeId', label: 'Identificação' },
+    { key: 'data', label: 'Data' },
+    { key: 'horasTrabalhadas', label: 'Horas Trabalhadas' },
+    { key: 'professor', label: 'Professor' },
+    { key: 'status', label: 'Estado' },
+  ];
+
+  // Função para lidar com a mudança de página
+  const handlePageChange = (page: number) => {
+    toast.success(`Mudou para a página: ${page}`);
   };
 
   return (
@@ -26,24 +57,27 @@ export function Efetividade() {
         {/* component Input de pesquisa*/}
         {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
         isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
-        <InputSearch Placeholder="Pesquisar por..." OnSearch={(value) => console.log(value)} />
+        <InputSearch
+          Placeholder="Pesquisar por..."
+          OnSearch={(value) => console.log(value)}
+        />
 
         <button onClick={() => setIsDialogOpen(true)}>Efetivar</button>
         <EfetividadeDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={handleSubmitEfetividade}          
+          onSubmit={handleSubmitEfetividade}
         />
       </div>
 
       {/* main of page efetividade*/}
       <div className="main-efetividade">
-        {/* <Table
+        <Table<EfetividadeProps>
           columns={columns}
-          data={data}
-          isLoading={true}
+          data={isEfetividade}
           onPageChange={handlePageChange}
-        /> */}
+          isLoading={true}
+        />
       </div>
     </section>
   );
