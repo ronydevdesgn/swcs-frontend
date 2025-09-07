@@ -135,6 +135,14 @@ select[aria-invalid="true"] {
   font-size: 1.1rem;
 }
 
+.form-input[disabled],
+.form-select[disabled],
+.form-select.muted {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--purple-heart-75);
+}
+
 /*
    DIALOG ACTIONS
  */

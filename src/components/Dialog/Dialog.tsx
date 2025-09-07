@@ -106,6 +106,7 @@ interface DialogInputProps {
   closeOnEscape?: boolean;
   required?: boolean;
   errorMessage?: string;
+  muted?: boolean;
 }
 
 export function DialogInput({
@@ -116,6 +117,7 @@ export function DialogInput({
   closeOnEscape = true,
   required = false,
   errorMessage,
+  muted = false,
 }: DialogInputProps) {
   const { onClose } = useDialogContext();
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -133,9 +135,14 @@ export function DialogInput({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="form-input"
-        aria-invalid={required && (value === '' || value === undefined || value === 0)}
+        aria-invalid={
+          !muted &&
+          required &&
+          (value === '' || value === undefined || value === 0)
+        }
+        disabled={muted}
       />
-      {required && (value === '' || value === undefined) && (
+      {!muted && required && (value === '' || value === undefined) && (
         <small className="field-error">
           {errorMessage ?? 'Campo obrigatório'}
         </small>
@@ -151,6 +158,7 @@ interface DialogSelectProps {
   onChange: (value: string | number) => void;
   required?: boolean;
   errorMessage?: string;
+  muted?: boolean;
 }
 
 export function DialogSelect({
@@ -159,16 +167,18 @@ export function DialogSelect({
   onChange,
   required = false,
   errorMessage,
+  muted = false,
 }: DialogSelectProps) {
-  const isInvalid = required && (value === '' || value === undefined);
+  const isInvalid = !muted && required && (value === '' || value === undefined);
 
   return (
     <div className="form-group">
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="form-select"
+        className={`form-select ${muted ? 'muted' : ''}`}
         aria-invalid={isInvalid}
+        disabled={muted}
       >
         {options.map((option) => (
           <option key={String(option.value)} value={option.value}>
