@@ -38,13 +38,7 @@ export function Professores() {
       nome: 'João Moreira Da Costa',
       departamento: 'Engenharia',
       cargaHoraria: 7,
-    },
-    {
-      professorId: '40FF24S975',
-      nome: 'Manuel Da Silva Pereira',
-      departamento: 'Engenharia',
-      cargaHoraria: 12,
-    },
+    }
   ]);
 
   // Função para lidar com a mudança de página
@@ -52,7 +46,6 @@ export function Professores() {
     console.log('Mudou para a página:', page);
   };
 
-  // Dados para teste, ou seja, dados fictícios
   // Colunas genéricas para o componente Table
   const columns = [
     { key: 'professorId', label: 'Identificação' },

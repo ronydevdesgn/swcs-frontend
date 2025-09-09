@@ -66,6 +66,7 @@ export function FormLogin() {
     (field: keyof LoginFormData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       setFormData((prev) => ({ ...prev, [field]: e.target.value }));
+
       // Limpa o erro do campo quando o usuário começa a digitar
       if (errors[field]) {
         setErrors((prev) => {
@@ -122,7 +123,7 @@ export function FormLogin() {
                 type="password"
                 id="password"
                 name="password"
-                aria-label="Senha"
+                aria-label="senha"
                 aria-required="true"
                 aria-invalid={!!errors.password}
                 aria-describedby={

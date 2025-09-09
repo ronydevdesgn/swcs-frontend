@@ -6,3 +6,9 @@
 .main-content {
   flex-grow: 1;
 }
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

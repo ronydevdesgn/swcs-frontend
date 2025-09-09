@@ -19,10 +19,12 @@
   /* colors */
   --color-black: #010101;
   --color-gray: #333;
-  /* warning required - campo obrigatório */
+  /* warning required */
   --warning-required: #dc3545;
   --muted: #6c757d;
-
+  /* color scrollbar */
+  --scrollbar-background: rgba(159, 117, 255, 0.5) transparent;
+  /* primary colors */
   --purple-heart-50: #f3f1ff;
   --purple-heart-100: #ebe5ff;
   --purple-heart-200: #d9ceff;

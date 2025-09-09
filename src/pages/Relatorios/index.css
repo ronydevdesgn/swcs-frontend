@@ -1,4 +1,18 @@
-.main-relatorios h3 {
-  font-size: medium;
-  color: var(--purple-heart-900);
+.main-relatorios {
+  height: 70dvh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-background);
+}
+
+.main-relatorios .cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.4rem;
+}
+
+.main-relatorios .actions {
+  margin-top: 2.4rem;
+  display: flex;
+  justify-content: space-between;
 }

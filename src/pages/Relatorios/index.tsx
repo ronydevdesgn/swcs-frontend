@@ -1,35 +1,118 @@
-import { InputSearch } from "../../components/InputSearch/InputSearch";
-import "./index.css";
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { Table } from '../../components/Table/Table';
+import { Card } from '../../components/Card/Card';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+import './index.css';
+import { useState } from 'react';
+import { ArrowDown, ArrowUp } from 'react-feather';
+
+interface relatorioData {
+  id: string;
+  titulo: string;
+  descricao: string;
+  data: string;
+}
 
 export function Relatorios() {
+  const [isRelatorios] = useState<relatorioData[]>([
+    {
+      id: '1',
+      titulo: 'Relatório de Atividades',
+      descricao: 'Descrição do relatório de atividades',
+      data: '2023-03-15',
+    },
+  ]);
+
+  // Colunas genéricas para o componente Table
+  const columns = [
+    { key: 'id', label: 'Identificação' },
+    { key: 'titulo', label: 'Título' },
+    { key: 'descricao', label: 'Descrição' },
+    { key: 'data', label: 'Data' },
+  ];
+
+  const rows = isRelatorios.map((rel) => [
+    rel.id,
+    rel.titulo,
+    rel.descricao,
+    rel.data,
+  ]);
+
+  // Função para gerar e baixar o relatório em PDF
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    doc.text('Relatório Geral', 14, 20);
+    autoTable(doc, {
+      startY: 30,
+      head: [columns.map((col) => col.label)],
+      body: rows,
+    });
+    doc.save('relatorio_geral.pdf');
+  };
+
   return (
-    // CSS deste container vem do CSS da página do dashboard, sem o input
-    // OBS: Apenas o cabeçalho do header do main
     <section className="container-dashboard">
       <div className="header-dashboard">
         <div className="title">
           <h2>Relatórios gerais</h2>
           <span>Verifica ou baixe relatórios</span>
         </div>
-        {/* component Input de pesquisa*/}
-        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
-        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
-        <InputSearch Placeholder="Pesquisar por..." OnSearch={(value) => console.log(value)} />
       </div>
 
       {/* main of page relatorios */}
       <div className="main-relatorios">
-        <h3>The official report goes here... and other contents</h3>
-        {/* here's four cards with statistics */}
-        {/* card 1 */}
-        {/* card 2 */}
-        {/* card 3 */}
-        {/* card 4 */}
-        
-        {/* Two buttons for download, one to PDF and other to Excel */}
+        {/* Cards com estatísticas */}
+        <div className="cards-grid">
+          <Card
+            titleCard="Professores"
+            numberCard={12}
+            descriptionCard="Ativos"
+            iconUp={<ArrowUp size={24} strokeWidth={4} />}
+          />
+          <Card
+            titleCard="Sumários"
+            numberCard={124}
+            descriptionCard="Já cumpridos e não cumpridos até a data de hoje."
+            iconUp={<ArrowUp size={24} strokeWidth={4} />}
+            iconDown={
+              <ArrowDown size={24} strokeWidth={4} className="svgdown" />
+            }
+          />
+          <Card
+            titleCard="Faltas"
+            numberCard={45}
+            descriptionCard="Registradas"
+            iconDown={
+              <ArrowDown size={24} strokeWidth={4} className="svgdown" />
+            }
+          />
+          <Card
+            titleCard="Presenças"
+            numberCard={128}
+            descriptionCard="Registradas"
+            iconUp={<ArrowUp size={24} strokeWidth={4} />}
+          />
+        </div>
 
-        {/* here's one table with contents for data visualization */}
-        {/* table */}
+        {/* Botões de exportação */}
+        <div className="actions">
+          <button onClick={generatePDF}>📄 Exportar PDF</button>
+          
+          {/* component Input de pesquisa*/}
+          <InputSearch
+            Placeholder="Pesquisar por..."
+            OnSearch={(value) => console.log(value)}
+          />
+        </div>
+
+        <Table<relatorioData>
+          columns={columns}
+          data={isRelatorios}
+          isLoading={true}
+          // onPageChange={handlePageChange} --- IGNORE ---
+        />
       </div>
     </section>
   );
