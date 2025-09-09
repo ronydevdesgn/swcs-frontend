@@ -16,7 +16,7 @@ export function FormLogin() {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
-    role: "" as UserRole,
+    tipo: "" as UserRole,
   });
   const [errors, setErrors] = useState<LoginFormErrors>({});
 
@@ -30,7 +30,7 @@ export function FormLogin() {
     else if (formData.password.length < 6) {
       newErrors.password = "A senha deve ter no mínimo 6 caracteres";
     }
-    if (!formData.role) newErrors.role = "Cargo é obrigatório";
+    if (!formData.tipo) newErrors.tipo = "Cargo é obrigatório";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -151,18 +151,18 @@ export function FormLogin() {
               name="role"
               aria-label="Selecione seu cargo"
               aria-required="true"
-              aria-invalid={!!errors.role}
-              aria-describedby={errors.role ? "role-error" : undefined}
-              value={formData.role}
-              onChange={handleInputChange("role")}
+              aria-invalid={!!errors.tipo}
+              aria-describedby={errors.tipo ? "role-error" : undefined}
+              value={formData.tipo}
+              onChange={handleInputChange("tipo")}
             >
               <option value="">Selecione o seu cargo</option>
               <option value="sumarista">Sumarista</option>
               <option value="professor">Professor</option>
             </select>
-            {errors.role && (
+            {errors.tipo && (
               <span className="error-message" role="alert" id="role-error">
-                {errors.role}
+                {errors.tipo}
               </span>
             )}
           </div>

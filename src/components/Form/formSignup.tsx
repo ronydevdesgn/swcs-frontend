@@ -2,42 +2,29 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCreateUser } from "../../hooks/useAuthentication";
-import type { UserRole } from "../../types/auth";
+import type {
+  SignupFormData,
+  SignupFormErrors,
+  UserRole,
+} from '../../types/auth';
 import Logoswcs from "../../../public/logoswcs.svg";
 import "./formLogin.css";
 import "./formSignup.css";
 
-interface SignupForm {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  role: UserRole;
-}
-
-interface SignupErrors {
-  name?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-  role?: string;
-  submit?: string;
-}
-
 export function FormSignup() {
   const createUser = useCreateUser();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<SignupForm>({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "" as UserRole,
+  const [formData, setFormData] = useState<SignupFormData>({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    tipo: '' as UserRole,
   });
-  const [errors, setErrors] = useState<SignupErrors>({});
+  const [errors, setErrors] = useState<SignupFormErrors>({});
 
   const validateForm = (): boolean => {
-    const newErrors: SignupErrors = {};
+    const newErrors: SignupFormErrors = {};
 
     // Validação do nome
     if (!formData.name.trim()) {
@@ -70,8 +57,8 @@ export function FormSignup() {
     }
 
     // Validação do cargo
-    if (!formData.role) {
-      newErrors.role = "Cargo é obrigatório";
+    if (!formData.tipo) {
+      newErrors.tipo = "Cargo é obrigatório";
     }
 
     setErrors(newErrors);
@@ -92,14 +79,13 @@ export function FormSignup() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        role: formData.role,
+        tipo: formData.tipo,
       });
 
       toast.success(
         "Conta criada com sucesso! Você será redirecionado para o login."
       );
 
-      // Redireciona após 2 segundos para dar tempo de ler a mensagem de sucesso
       setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -109,7 +95,7 @@ export function FormSignup() {
           ? error.message
           : "Erro ao criar conta. Verifique os dados e tente novamente.";
 
-      setErrors((prev: SignupErrors) => ({
+      setErrors((prev: SignupFormErrors) => ({
         ...prev,
         submit: errorMessage,
       }));
@@ -117,15 +103,16 @@ export function FormSignup() {
       toast.error(errorMessage);
     }
   };
+
   const handleInputChange =
-    (field: keyof SignupForm) =>
+    (field: keyof SignupFormData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       setFormData((prev) => ({ ...prev, [field]: e.target.value }));
       // Limpa o erro do campo quando o usuário começa a digitar
-      if (errors[field as keyof SignupErrors]) {
+      if (errors[field as keyof SignupFormErrors]) {
         setErrors((prev) => {
           const newErrors = { ...prev };
-          delete newErrors[field as keyof SignupErrors];
+          delete newErrors[field as keyof SignupFormErrors];
           return newErrors;
         });
       }
@@ -218,14 +205,6 @@ export function FormSignup() {
                   {errors.password}
                 </span>
               )}
-              {/* <div className="password-requirements" id="password-requirements">
-                <p>A senha deve conter:</p>
-                <ul>
-                  <li>Mínimo de 6 caracteres</li>
-                  <li>Pelo menos uma letra maiúscula</li>
-                  <li>Pelo menos um número</li>
-                </ul>
-              </div> */}
             </label>
           </div>
 
@@ -264,18 +243,18 @@ export function FormSignup() {
               name="role"
               aria-label="Selecione seu cargo"
               aria-required="true"
-              aria-invalid={!!errors.role}
-              aria-describedby={errors.role ? "role-error" : undefined}
-              value={formData.role}
-              onChange={handleInputChange("role")}
+              aria-invalid={!!errors.tipo}
+              aria-describedby={errors.tipo ? "role-error" : undefined}
+              value={formData.tipo}
+              onChange={handleInputChange("tipo")}
             >
               <option value="">Selecione o seu cargo</option>
               <option value="sumarista">Sumarista</option>
               <option value="professor">Professor</option>
             </select>
-            {errors.role && (
+            {errors.tipo && (
               <span className="error-message" role="alert" id="role-error">
-                {errors.role}
+                {errors.tipo}
               </span>
             )}
           </div>
@@ -303,7 +282,9 @@ export function FormSignup() {
             </a>
           </div>
         </div>
+
       </form>
+      
     </div>
   );
 }

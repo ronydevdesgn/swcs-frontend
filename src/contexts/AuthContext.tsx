@@ -12,16 +12,14 @@ interface AuthContextData {
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-const API_BASE_URL = "http://localhost:3333";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // In a real application, you would check for a stored token here
-    // and validate it with the backend to re-authenticate the user.
-    // For now, we'll just simulate a quick check.
+    // Simula uma verificação de autenticação (pode ser substituído por lógica real)
     setTimeout(() => {
       setLoading(false);
     }, 500); 

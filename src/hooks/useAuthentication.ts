@@ -39,7 +39,7 @@ export function useAuth(): AuthContextData {
   return context;
 }
 
-// Hooks específicos para operações de autenticação
+// Hook para login
 export function useLogin() {
   const { signIn } = useAuth();
 
@@ -48,7 +48,7 @@ export function useLogin() {
       const response = await api.post<AuthResponse>("/auth/login", {
         email: credentials.email,
         senha: credentials.password,
-        tipo: credentials.role.toUpperCase(),
+        tipo: credentials.tipo.toUpperCase(),
       });
       return response.data;
     },
@@ -61,7 +61,7 @@ export function useLogin() {
       await signIn({
         email: data.user.email,
         password: "", // Não precisamos da senha aqui
-        role: data.user.role,
+        tipo: data.user.tipo,
       });
 
       toast.success("Login realizado com sucesso!");
@@ -118,7 +118,7 @@ export function useCreateUser() {
       name: string;
       email: string;
       password: string;
-      role: UserRole;
+      tipo: UserRole;
     }) => {
       const response = await api.post("/auth/register", data);
       return response.data;

@@ -1,12 +1,12 @@
 .password-requirements {
   font-size: 1.2rem;
-  color: var(--purple-heart-900);
+  color: var(--warning-required);
   opacity: 0.8;
   margin-top: 0.5rem;
   text-align: left;
 }
 
-.password-requirements ul {
+/* .password-requirements ul {
   list-style: none;
   padding: 0;
   margin: 0.5rem 0;
@@ -22,4 +22,4 @@
 .password-requirements li::before {
   content: "•";
   color: var(--purple-heart-500);
-}
+} */

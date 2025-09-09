@@ -3,27 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useResetPassword } from "../../hooks/useAuthentication";
 import Logoswcs from "../../../public/logoswcs.svg";
-// Esse css é usado globalmente para o formulário,
-// tanto no login quanto no esqueci a senha e cadastro
+import { ForgotPasswordErrors, ForgotPasswordForm, UserRole } from "../../types/auth";
 import "./formLogin.css";
 import "./formForgot.css";
-interface ForgotPasswordForm {
-  email: string;
-  role: "sumarista" | "professor";
-}
-
-interface ForgotPasswordErrors {
-  email?: string;
-  role?: string;
-  submit?: string;
-}
 
 export function FormForgot() {
   const resetPassword = useResetPassword();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<ForgotPasswordForm>({
     email: "",
-    role: "" as "sumarista" | "professor",
+    tipo: "" as UserRole,
   });
   const [errors, setErrors] = useState<ForgotPasswordErrors>({});
   const [success, setSuccess] = useState(false);
@@ -35,8 +24,8 @@ export function FormForgot() {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "E-mail inválido";
     }
-    if (!formData.role) {
-      newErrors.role = "Cargo é obrigatório";
+    if (!formData.tipo) {
+      newErrors.tipo = "Cargo é obrigatório";
     }
 
     setErrors(newErrors);
@@ -134,18 +123,18 @@ export function FormForgot() {
               name="role"
               aria-label="Selecione seu cargo"
               aria-required="true"
-              aria-invalid={!!errors.role}
-              aria-describedby={errors.role ? "role-error" : undefined}
-              value={formData.role}
-              onChange={handleInputChange("role")}
+              aria-invalid={!!errors.tipo}
+              aria-describedby={errors.tipo ? "role-error" : undefined}
+              value={formData.tipo}
+              onChange={handleInputChange("tipo")}
             >
               <option value="">Selecione o seu cargo</option>
               <option value="sumarista">Sumarista</option>
               <option value="professor">Professor</option>
             </select>
-            {errors.role && (
+            {errors.tipo && (
               <span className="error-message" role="alert" id="role-error">
-                {errors.role}
+                {errors.tipo}
               </span>
             )}
           </div>

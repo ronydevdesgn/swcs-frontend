@@ -4,19 +4,19 @@ export interface User {
   id?: string;
   name: string;
   email: string;
-  role: UserRole;
+  tipo: UserRole;
 }
 
 export interface LoginFormData {
   email: string;
   password: string;
-  role: UserRole;
+  tipo: UserRole;
 }
 
 export interface LoginFormErrors {
   email?: string;
   password?: string;
-  role?: string;
+  tipo?: string;
   submit?: string;
 }
 
@@ -25,7 +25,7 @@ export interface SignupFormData {
   email: string;
   password: string;
   confirmPassword: string;
-  role: UserRole;
+  tipo: UserRole;
 }
 
 export interface SignupFormErrors {
@@ -33,18 +33,29 @@ export interface SignupFormErrors {
   email?: string;
   password?: string;
   confirmPassword?: string;
-  role?: string;
+  tipo?: string;
   submit?: string;
 }
 
 export interface ForgotPasswordFormData {
   email: string;
-  role: UserRole;
+  tipo: UserRole;
 }
 
 export interface ForgotPasswordFormErrors {
   email?: string;
-  role?: string;
+  tipo?: string;
+  submit?: string;
+}
+
+export interface ForgotPasswordForm {
+  email: string;
+  tipo: UserRole;
+}
+
+export interface ForgotPasswordErrors {
+  email?: string;
+  tipo?: string;
   submit?: string;
 }
 
