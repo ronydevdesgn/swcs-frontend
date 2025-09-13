@@ -194,6 +194,7 @@ export function FormSignup() {
                 value={formData.password}
                 onChange={handleInputChange('password')}
                 placeholder="Preencha a sua senha"
+                autoComplete="new-password"
               />
               {errors.password && (
                 <span className="error-message" role="alert" id="password-error">
@@ -218,6 +219,7 @@ export function FormSignup() {
                 value={formData.password}
                 onChange={handleInputChange('password')}
                 placeholder="Confirme a senha acima preenchida"
+                autoComplete="new-password"
               />
               {errors.password && (
                 <span

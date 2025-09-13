@@ -127,7 +127,7 @@ export function FormLogin() {
                 value={formData.password}
                 onChange={handleInputChange('password')}
                 placeholder="Preencha a sua senha"
-                autoComplete="password"
+                autoComplete="new-password"
               />
               {errors.password && (
                 <span
