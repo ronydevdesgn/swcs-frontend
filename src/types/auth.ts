@@ -10,7 +10,6 @@ export interface User {
 export interface LoginFormData {
   email: string;
   password: string;
-  tipo: UserRole;
 }
 
 export interface LoginFormErrors {

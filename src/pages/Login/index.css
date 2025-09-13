@@ -13,7 +13,26 @@
   gap: 10.3rem;
 }
 
-.container-main .generec-img img {
+.container-main .generic-img img {
   width: 52.94rem;
   height: 53.99rem;
+}
+
+/* animação de transição infinita da imagem (up and down) */
+.container-main .generic-img img {
+  animation: up-and-down 2s ease-in-out infinite;
+}
+
+@keyframes up-and-down {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }

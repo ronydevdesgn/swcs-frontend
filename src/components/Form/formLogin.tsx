@@ -1,36 +1,31 @@
-import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useLogin } from "../../hooks/useAuthentication";
-import type {
-  LoginFormData,
-  LoginFormErrors,
-  UserRole,
-} from "../../types/auth";
-import Logoswcs from "../../../public/logoswcs.svg";
-import "./formLogin.css";
+import { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useLogin } from '../../hooks/useAuthentication';
+import type { LoginFormData, LoginFormErrors } from '../../types/auth';
+import Logoswcs from '../../../public/logoswcs.svg';
+import './formLogin.css';
 
 export function FormLogin() {
   const login = useLogin();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-    tipo: "" as UserRole,
+    email: '',
+    password: '',
   });
+
   const [errors, setErrors] = useState<LoginFormErrors>({});
 
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
-    if (!formData.email.trim()) newErrors.email = "E-mail é obrigatório";
+    if (!formData.email.trim()) newErrors.email = 'E-mail é obrigatório';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "E-mail inválido";
+      newErrors.email = 'E-mail inválido';
     }
-    if (!formData.password.trim()) newErrors.password = "Senha é obrigatória";
+    if (!formData.password.trim()) newErrors.password = 'Senha é obrigatória';
     else if (formData.password.length < 6) {
-      newErrors.password = "A senha deve ter no mínimo 6 caracteres";
+      newErrors.password = 'A senha deve ter no mínimo 6 caracteres';
     }
-    if (!formData.tipo) newErrors.tipo = "Cargo é obrigatório";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -40,20 +35,20 @@ export function FormLogin() {
     e.preventDefault();
     if (!validateForm()) {
       toast.error(
-        "Por favor, corrija os erros no formulário antes de continuar."
+        'Por favor, corrija os erros no formulário antes de continuar.',
       );
       return;
     }
 
     try {
       await login.mutateAsync(formData);
-      toast.success("Login realizado com sucesso!");
-      navigate("/dashboard");
+      toast.success('Login realizado com sucesso!');
+      navigate('/dashboard');
     } catch (error) {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Erro ao fazer login. Verifique suas credenciais.";
+          : 'Erro ao fazer login. Verifique suas credenciais.';
       setErrors((prev) => ({
         ...prev,
         submit: errorMessage,
@@ -103,9 +98,9 @@ export function FormLogin() {
                 aria-label="E-mail"
                 aria-required="true"
                 aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
+                aria-describedby={errors.email ? 'email-error' : undefined}
                 value={formData.email}
-                onChange={handleInputChange("email")}
+                onChange={handleInputChange('email')}
                 placeholder="Preencha o seu e-mail"
                 autoComplete="email"
               />
@@ -127,12 +122,12 @@ export function FormLogin() {
                 aria-required="true"
                 aria-invalid={!!errors.password}
                 aria-describedby={
-                  errors.password ? "password-error" : undefined
+                  errors.password ? 'password-error' : undefined
                 }
                 value={formData.password}
-                onChange={handleInputChange("password")}
+                onChange={handleInputChange('password')}
                 placeholder="Preencha a sua senha"
-                autoComplete="current-password"
+                autoComplete="password"
               />
               {errors.password && (
                 <span
@@ -146,27 +141,7 @@ export function FormLogin() {
             </label>
           </div>
 
-          <div className="input-field">
-            <select
-              id="role"
-              name="role"
-              aria-label="Selecione seu cargo"
-              aria-required="true"
-              aria-invalid={!!errors.tipo}
-              aria-describedby={errors.tipo ? "role-error" : undefined}
-              value={formData.tipo}
-              onChange={handleInputChange("tipo")}
-            >
-              <option value="">Selecione o seu cargo</option>
-              <option value="sumarista">Sumarista</option>
-              <option value="professor">Professor</option>
-            </select>
-            {errors.tipo && (
-              <span className="error-message" role="alert" id="role-error">
-                {errors.tipo}
-              </span>
-            )}
-          </div>
+          {/* Removed UserRole selection as per updated requirements */}
         </div>
 
         <div className="group-button">
@@ -174,27 +149,27 @@ export function FormLogin() {
             type="submit"
             disabled={login.isPending}
             aria-busy={login.isPending}
-            className={login.isPending ? "loading" : ""}
+            className={login.isPending ? 'loading' : ''}
           >
-            {login.isPending ? "Entrando..." : "Entrar agora"}
+            {login.isPending ? 'Entrando...' : 'Entrar agora'}
           </button>
           <div className="group-button-other">
-            <a
+            {/* <a
               href="/forgotpassword"
               className="forgot-password"
               onClick={(e) => {
                 e.preventDefault();
-                navigate("/forgotpassword");
+                navigate('/forgotpassword');
               }}
             >
               Esqueci minha senha!
-            </a>
+            </a> */}
             <a
               href="/signup"
               className="access"
               onClick={(e) => {
                 e.preventDefault();
-                navigate("/signup");
+                navigate('/signup');
               }}
             >
               Cadastre-se

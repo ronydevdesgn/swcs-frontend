@@ -1,15 +1,15 @@
-import { useState, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useCreateUser } from "../../hooks/useAuthentication";
+import { useState, FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useCreateUser } from '../../hooks/useAuthentication';
 import type {
   SignupFormData,
   SignupFormErrors,
   UserRole,
 } from '../../types/auth';
-import Logoswcs from "../../../public/logoswcs.svg";
-import "./formLogin.css";
-import "./formSignup.css";
+import Logoswcs from '../../../public/logoswcs.svg';
+import './formLogin.css';
+import './formSignup.css';
 
 export function FormSignup() {
   const createUser = useCreateUser();
@@ -28,37 +28,37 @@ export function FormSignup() {
 
     // Validação do nome
     if (!formData.name.trim()) {
-      newErrors.name = "Nome é obrigatório";
+      newErrors.name = 'Nome é obrigatório';
     } else if (formData.name.length < 3) {
-      newErrors.name = "Nome deve ter no mínimo 3 caracteres";
+      newErrors.name = 'Nome deve ter no mínimo 3 caracteres';
     }
 
     // Validação do email
     if (!formData.email.trim()) {
-      newErrors.email = "E-mail é obrigatório";
+      newErrors.email = 'E-mail é obrigatório';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "E-mail inválido";
+      newErrors.email = 'E-mail inválido';
     }
 
     // Validação da senha
     if (!formData.password.trim()) {
-      newErrors.password = "Senha é obrigatória";
+      newErrors.password = 'Senha é obrigatória';
     } else if (formData.password.length < 6) {
-      newErrors.password = "A senha deve ter no mínimo 6 caracteres";
+      newErrors.password = 'A senha deve ter no mínimo 6 caracteres';
     } else if (!/(?=.*[A-Z])/.test(formData.password)) {
-      newErrors.password = "A senha deve conter pelo menos uma letra maiúscula";
+      newErrors.password = 'A senha deve conter pelo menos uma letra maiúscula';
     } else if (!/(?=.*[0-9])/.test(formData.password)) {
-      newErrors.password = "A senha deve conter pelo menos um número";
+      newErrors.password = 'A senha deve conter pelo menos um número';
     }
 
     // Validação da confirmação de senha
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "As senhas não coincidem";
+      newErrors.confirmPassword = 'As senhas não coincidem';
     }
 
     // Validação do cargo
     if (!formData.tipo) {
-      newErrors.tipo = "Cargo é obrigatório";
+      newErrors.tipo = 'Cargo é obrigatório';
     }
 
     setErrors(newErrors);
@@ -69,7 +69,7 @@ export function FormSignup() {
     e.preventDefault();
     if (!validateForm()) {
       toast.error(
-        "Por favor, corrija os erros no formulário antes de continuar."
+        'Por favor, corrija os erros no formulário antes de continuar.',
       );
       return;
     }
@@ -83,17 +83,17 @@ export function FormSignup() {
       });
 
       toast.success(
-        "Conta criada com sucesso! Você será redirecionado para o login."
+        'Conta criada com sucesso! Você será redirecionado para o login.',
       );
 
       setTimeout(() => {
-        navigate("/");
+        navigate('/');
       }, 2000);
     } catch (error) {
       const errorMessage =
         error instanceof Error
           ? error.message
-          : "Erro ao criar conta. Verifique os dados e tente novamente.";
+          : 'Erro ao criar conta. Verifique os dados e tente novamente.';
 
       setErrors((prev: SignupFormErrors) => ({
         ...prev,
@@ -144,9 +144,9 @@ export function FormSignup() {
                 aria-label="Nome"
                 aria-required="true"
                 aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? "name-error" : undefined}
+                aria-describedby={errors.name ? 'name-error' : undefined}
                 value={formData.name}
-                onChange={handleInputChange("name")}
+                onChange={handleInputChange('name')}
                 placeholder="Preencha o seu nome"
                 autoComplete="name"
               />
@@ -167,9 +167,9 @@ export function FormSignup() {
                 aria-label="E-mail"
                 aria-required="true"
                 aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? "email-error" : undefined}
+                aria-describedby={errors.email ? 'email-error' : undefined}
                 value={formData.email}
-                onChange={handleInputChange("email")}
+                onChange={handleInputChange('email')}
                 placeholder="Preencha o seu e-mail"
                 autoComplete="email"
               />
@@ -190,18 +190,13 @@ export function FormSignup() {
                 aria-label="Senha"
                 aria-required="true"
                 aria-invalid={!!errors.password}
-                aria-describedby="password-requirements password-error"
+                aria-describedby={errors.password ? 'password-error' : undefined}
                 value={formData.password}
-                onChange={handleInputChange("password")}
+                onChange={handleInputChange('password')}
                 placeholder="Preencha a sua senha"
-                autoComplete="new-password"
               />
               {errors.password && (
-                <span
-                  className="error-message"
-                  role="alert"
-                  id="password-error"
-                >
+                <span className="error-message" role="alert" id="password-error">
                   {errors.password}
                 </span>
               )}
@@ -218,12 +213,11 @@ export function FormSignup() {
                 aria-required="true"
                 aria-invalid={!!errors.password}
                 aria-describedby={
-                  errors.password ? "password-error" : undefined
+                  errors.password ? 'password-error' : undefined
                 }
                 value={formData.password}
-                onChange={handleInputChange("password")}
+                onChange={handleInputChange('password')}
                 placeholder="Confirme a senha acima preenchida"
-                autoComplete="current-password"
               />
               {errors.password && (
                 <span
@@ -244,9 +238,9 @@ export function FormSignup() {
               aria-label="Selecione seu cargo"
               aria-required="true"
               aria-invalid={!!errors.tipo}
-              aria-describedby={errors.tipo ? "role-error" : undefined}
+              aria-describedby={errors.tipo ? 'role-error' : undefined}
               value={formData.tipo}
-              onChange={handleInputChange("tipo")}
+              onChange={handleInputChange('tipo')}
             >
               <option value="">Selecione o seu cargo</option>
               <option value="sumarista">Sumarista</option>
@@ -265,9 +259,9 @@ export function FormSignup() {
             type="submit"
             disabled={createUser.isPending}
             aria-busy={createUser.isPending}
-            className={createUser.isPending ? "loading" : ""}
+            className={createUser.isPending ? 'loading' : ''}
           >
-            {createUser.isPending ? "Criando conta..." : "Criar conta"}
+            {createUser.isPending ? 'Criando conta...' : 'Criar conta'}
           </button>
           <div className="group-button-other">
             <a
@@ -275,16 +269,14 @@ export function FormSignup() {
               className="access"
               onClick={(e) => {
                 e.preventDefault();
-                navigate("/");
+                navigate('/');
               }}
             >
               Já tenho uma conta
             </a>
           </div>
         </div>
-
       </form>
-      
     </div>
   );
 }

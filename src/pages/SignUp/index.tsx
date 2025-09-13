@@ -6,7 +6,7 @@ export function SignUp() {
   return (
     <div className="container-main">
       <FormSignup />
-      <div className="generec-img">
+      <div className="generic-img">
         <img src={Illustrator} alt="Ilustração de cards flutuando" />
       </div>
     </div>
