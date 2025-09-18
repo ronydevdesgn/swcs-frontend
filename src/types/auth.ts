@@ -1,8 +1,8 @@
-export type UserRole = "sumarista" | "professor";
+export type UserRole = "FUNCIONARIO" | "PROFESSOR";
 
 export interface User {
   id?: string;
-  name: string;
+  nome: string;
   email: string;
   tipo: UserRole;
 }
@@ -20,17 +20,17 @@ export interface LoginFormErrors {
 }
 
 export interface SignupFormData {
-  name: string;
+  nome: string;
   email: string;
-  password: string;
+  senha: string;
   confirmPassword: string;
   tipo: UserRole;
 }
 
 export interface SignupFormErrors {
-  name?: string;
+  nome?: string;
   email?: string;
-  password?: string;
+  senha?: string;
   confirmPassword?: string;
   tipo?: string;
   submit?: string;
@@ -38,26 +38,14 @@ export interface SignupFormErrors {
 
 export interface ForgotPasswordFormData {
   email: string;
-  tipo: UserRole;
 }
 
 export interface ForgotPasswordFormErrors {
   email?: string;
-  tipo?: string;
   submit?: string;
 }
 
-export interface ForgotPasswordForm {
-  email: string;
-  tipo: UserRole;
-}
-
-export interface ForgotPasswordErrors {
-  email?: string;
-  tipo?: string;
-  submit?: string;
-}
-
+// Interface principal do contexto de autenticação
 export interface AuthContextData {
   isAuthenticated: boolean;
   user: User | null;

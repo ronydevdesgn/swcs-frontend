@@ -3,15 +3,9 @@ import { useContext } from "react";
 import { api } from "../lib/api";
 import { AuthContext } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
-import { AuthContextData, LoginFormData, User, UserRole } from "../types/auth";
+import { AuthContextData, UserRole } from "../types/auth";
 
-// Tipos
-interface AuthResponse {
-  token: string;
-  refreshToken: string;
-  user: User;
-}
-
+// Tipos específicos para este hook
 interface ResetPasswordData {
   email: string;
 }
@@ -39,44 +33,12 @@ export function useAuth(): AuthContextData {
   return context;
 }
 
-// Hook para login
-export function useLogin() {
-  const { signIn } = useAuth();
-
-  return useMutation({
-    mutationFn: async (credentials: LoginFormData) => {
-      const response = await api.post<AuthResponse>("/auth/login", {
-        email: credentials.email,
-        senha: credentials.password,
-        tipo: credentials.tipo.toUpperCase(),
-      });
-      return response.data;
-    },
-    onSuccess: async (data) => {
-      // Salvar tokens
-      localStorage.setItem("@swcs:token", data.token);
-      localStorage.setItem("@swcs:refreshToken", data.refreshToken);
-
-      // Atualizar contexto via signIn
-      await signIn({
-        email: data.user.email,
-        password: "", // Não precisamos da senha aqui
-        tipo: data.user.tipo,
-      });
-
-      toast.success("Login realizado com sucesso!");
-    },
-    onError: (error: ApiError) => {
-      toast.error(error.response?.data?.mensagem || "Erro ao fazer login");
-    },
-  });
-}
-
+// Hook para recuperação de senha
 export function useResetPassword() {
   return useMutation({
     mutationFn: async (data: ResetPasswordData) => {
       const response = await api.post<{ mensagem: string }>(
-        "/auth/reset-password",
+        "/auth/forgot-password",
         data
       );
       return response.data;
@@ -93,11 +55,12 @@ export function useResetPassword() {
   });
 }
 
+// Hook para alteração de senha
 export function useChangePassword() {
   return useMutation({
     mutationFn: async (data: ChangePasswordData) => {
       const response = await api.post<{ mensagem: string }>(
-        "/auth/change-password",
+        "/auth/reset-password",
         data
       );
       return response.data;
@@ -111,13 +74,13 @@ export function useChangePassword() {
   });
 }
 
-// Hook para criação de usuário
+// Hook para criação de usuário (registro)
 export function useCreateUser() {
   return useMutation({
     mutationFn: async (data: {
-      name: string;
+      nome: string;
       email: string;
-      password: string;
+      senha: string;
       tipo: UserRole;
     }) => {
       const response = await api.post("/auth/register", data);
@@ -135,14 +98,8 @@ export function useCreateUser() {
   });
 }
 
-// Função auxiliar para logout
+// Hook para logout (simplificado)
 export function useLogout() {
   const { signOut } = useAuth();
-
-  return () => {
-    localStorage.removeItem("@swcs:token");
-    localStorage.removeItem("@swcs:refreshToken");
-    signOut();
-    toast.success("Logout realizado com sucesso!");
-  };
+  return signOut;
 }
