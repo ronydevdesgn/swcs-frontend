@@ -1,10 +1,11 @@
 export type UserRole = "FUNCIONARIO" | "PROFESSOR";
 
 export interface User {
-  id?: string;
+  id: string;
   nome: string;
   email: string;
   tipo: UserRole;
+  permissoes?: string[];
 }
 
 export interface LoginFormData {
