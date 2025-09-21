@@ -2,31 +2,31 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useResetPassword } from "../../hooks/useAuthentication";
+import { validateEmail } from "../../utils/validations";
 import Logoswcs from "../../../public/logoswcs.svg";
-import { ForgotPasswordErrors, ForgotPasswordForm, UserRole } from "../../types/auth";
+import {
+  ForgotPasswordFormErrors,
+  ForgotPasswordFormData,
+} from '../../types/auth';
 import "./formLogin.css";
 import "./formForgot.css";
 
 export function FormForgot() {
   const resetPassword = useResetPassword();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<ForgotPasswordForm>({
+  const [formData, setFormData] = useState<ForgotPasswordFormData>({
     email: "",
-    tipo: "" as UserRole,
   });
-  const [errors, setErrors] = useState<ForgotPasswordErrors>({});
+  const [errors, setErrors] = useState<ForgotPasswordFormErrors>({});
   const [success, setSuccess] = useState(false);
 
   const validateForm = (): boolean => {
-    const newErrors: ForgotPasswordErrors = {};
-    if (!formData.email.trim()) {
-      newErrors.email = "E-mail é obrigatório";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "E-mail inválido";
-    }
-    if (!formData.tipo) {
-      newErrors.tipo = "Cargo é obrigatório";
-    }
+    const newErrors: ForgotPasswordFormErrors = {};
+    
+    // Usar validações do utils
+    const emailError = validateEmail(formData.email);
+
+    if (emailError) newErrors.email = emailError;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -55,7 +55,7 @@ export function FormForgot() {
         error instanceof Error
           ? error.message
           : "Erro ao enviar e-mail de recuperação. Tente novamente.";
-      setErrors((prev: ForgotPasswordErrors) => ({
+      setErrors((prev: ForgotPasswordFormErrors) => ({
         ...prev,
         submit: errorMessage,
       }));
@@ -64,14 +64,14 @@ export function FormForgot() {
   };
 
   const handleInputChange =
-    (field: keyof ForgotPasswordForm) =>
+    (field: keyof ForgotPasswordFormData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       setFormData((prev) => ({ ...prev, [field]: e.target.value }));
       // Limpa o erro do campo quando o usuário começa a digitar
-      if (errors[field as keyof ForgotPasswordErrors]) {
+      if (errors[field as keyof ForgotPasswordFormErrors]) {
         setErrors((prev) => {
           const newErrors = { ...prev };
-          delete newErrors[field as keyof ForgotPasswordErrors];
+          delete newErrors[field as keyof ForgotPasswordFormErrors];
           return newErrors;
         });
       }
@@ -84,7 +84,7 @@ export function FormForgot() {
       <form onSubmit={handleSubmit} noValidate>
         <div className="group-title" role="heading" aria-level={1}>
           <h1>Recuperar o acesso</h1>
-          <p>Preencha os campos abaixos se esqueceu sua senha</p>
+          <p>Preencha o campo abaixo se esqueceu sua senha</p>
         </div>
 
         {errors.submit && (
@@ -115,28 +115,6 @@ export function FormForgot() {
                 </span>
               )}
             </label>
-          </div>
-
-          <div className="input-field">
-            <select
-              id="role"
-              name="role"
-              aria-label="Selecione seu cargo"
-              aria-required="true"
-              aria-invalid={!!errors.tipo}
-              aria-describedby={errors.tipo ? "role-error" : undefined}
-              value={formData.tipo}
-              onChange={handleInputChange("tipo")}
-            >
-              <option value="">Selecione o seu cargo</option>
-              <option value="sumarista">Sumarista</option>
-              <option value="professor">Professor</option>
-            </select>
-            {errors.tipo && (
-              <span className="error-message" role="alert" id="role-error">
-                {errors.tipo}
-              </span>
-            )}
           </div>
         </div>
 
@@ -179,7 +157,7 @@ export function FormForgot() {
                     navigate("/signup");
                   }}
                 >
-                  Cadrastrar-se
+                  Cadastrar-se
                 </a>
               </div>
             </>

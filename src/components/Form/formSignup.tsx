@@ -2,6 +2,13 @@ import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useCreateUser } from '../../hooks/useAuthentication';
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+  validateConfirmPassword,
+  validateRole,
+} from '../../utils/validations';
 import type {
   SignupFormData,
   SignupFormErrors,
@@ -15,9 +22,9 @@ export function FormSignup() {
   const createUser = useCreateUser();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<SignupFormData>({
-    name: '',
+    nome: '',
     email: '',
-    password: '',
+    senha: '',
     confirmPassword: '',
     tipo: '' as UserRole,
   });
@@ -26,40 +33,18 @@ export function FormSignup() {
   const validateForm = (): boolean => {
     const newErrors: SignupFormErrors = {};
 
-    // Validação do nome
-    if (!formData.name.trim()) {
-      newErrors.name = 'Nome é obrigatório';
-    } else if (formData.name.length < 3) {
-      newErrors.name = 'Nome deve ter no mínimo 3 caracteres';
-    }
+    // Usar validações do utils
+    const nameError = validateName(formData.nome);
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.senha);
+    const confirmPasswordError = validateConfirmPassword(formData.senha, formData.confirmPassword);
+    const roleError = validateRole(formData.tipo);
 
-    // Validação do email
-    if (!formData.email.trim()) {
-      newErrors.email = 'E-mail é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'E-mail inválido';
-    }
-
-    // Validação da senha
-    if (!formData.password.trim()) {
-      newErrors.password = 'Senha é obrigatória';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'A senha deve ter no mínimo 6 caracteres';
-    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
-      newErrors.password = 'A senha deve conter pelo menos uma letra maiúscula';
-    } else if (!/(?=.*[0-9])/.test(formData.password)) {
-      newErrors.password = 'A senha deve conter pelo menos um número';
-    }
-
-    // Validação da confirmação de senha
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'As senhas não coincidem';
-    }
-
-    // Validação do cargo
-    if (!formData.tipo) {
-      newErrors.tipo = 'Cargo é obrigatório';
-    }
+    if (nameError) newErrors.nome = nameError;
+    if (emailError) newErrors.email = emailError;
+    if (passwordError) newErrors.senha = passwordError;
+    if (confirmPasswordError) newErrors.confirmPassword = confirmPasswordError;
+    if (roleError) newErrors.tipo = roleError;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -76,9 +61,9 @@ export function FormSignup() {
 
     try {
       await createUser.mutateAsync({
-        name: formData.name,
+        nome: formData.nome,
         email: formData.email,
-        password: formData.password,
+        senha: formData.senha,
         tipo: formData.tipo,
       });
 
@@ -124,8 +109,8 @@ export function FormSignup() {
 
       <form onSubmit={handleSubmit} noValidate>
         <div className="group-title" role="heading" aria-level={1}>
-          <h1>Acesse o sistema</h1>
-          <p>Preencha os campos abaixos se não tiver uma conta!</p>
+          <h1>Criar conta</h1>
+          <p>Preencha os campos abaixo para criar sua conta!</p>
         </div>
 
         {errors.submit && (
@@ -136,23 +121,23 @@ export function FormSignup() {
 
         <div className="group-input">
           <div className="input-field">
-            <label htmlFor="name">
+            <label htmlFor="nome">
               <input
                 type="text"
-                id="name"
-                name="name"
+                id="nome"
+                name="nome"
                 aria-label="Nome"
                 aria-required="true"
-                aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? 'name-error' : undefined}
-                value={formData.name}
-                onChange={handleInputChange('name')}
+                aria-invalid={!!errors.nome}
+                aria-describedby={errors.nome ? 'nome-error' : undefined}
+                value={formData.nome}
+                onChange={handleInputChange('nome')}
                 placeholder="Preencha o seu nome"
                 autoComplete="name"
               />
-              {errors.name && (
-                <span className="error-message" role="alert" id="name-error">
-                  {errors.name}
+              {errors.nome && (
+                <span className="error-message" role="alert" id="nome-error">
+                  {errors.nome}
                 </span>
               )}
             </label>
@@ -182,52 +167,52 @@ export function FormSignup() {
           </div>
 
           <div className="input-field">
-            <label htmlFor="password">
+            <label htmlFor="senha">
               <input
                 type="password"
-                id="password"
-                name="password"
+                id="senha"
+                name="senha"
                 aria-label="Senha"
                 aria-required="true"
-                aria-invalid={!!errors.password}
-                aria-describedby={errors.password ? 'password-error' : undefined}
-                value={formData.password}
-                onChange={handleInputChange('password')}
+                aria-invalid={!!errors.senha}
+                aria-describedby={errors.senha ? 'senha-error' : undefined}
+                value={formData.senha}
+                onChange={handleInputChange('senha')}
                 placeholder="Preencha a sua senha"
                 autoComplete="new-password"
               />
-              {errors.password && (
-                <span className="error-message" role="alert" id="password-error">
-                  {errors.password}
+              {errors.senha && (
+                <span className="error-message" role="alert" id="senha-error">
+                  {errors.senha}
                 </span>
               )}
             </label>
           </div>
 
           <div className="input-field">
-            <label htmlFor="password">
+            <label htmlFor="confirmPassword">
               <input
                 type="password"
-                id="password"
-                name="password"
-                aria-label="Senha"
+                id="confirmPassword"
+                name="confirmPassword"
+                aria-label="Confirmar senha"
                 aria-required="true"
-                aria-invalid={!!errors.password}
+                aria-invalid={!!errors.confirmPassword}
                 aria-describedby={
-                  errors.password ? 'password-error' : undefined
+                  errors.confirmPassword ? 'confirm-password-error' : undefined
                 }
-                value={formData.password}
-                onChange={handleInputChange('password')}
+                value={formData.confirmPassword}
+                onChange={handleInputChange('confirmPassword')}
                 placeholder="Confirme a senha acima preenchida"
                 autoComplete="new-password"
               />
-              {errors.password && (
+              {errors.confirmPassword && (
                 <span
                   className="error-message"
                   role="alert"
-                  id="password-error"
+                  id="confirm-password-error"
                 >
-                  {errors.password}
+                  {errors.confirmPassword}
                 </span>
               )}
             </label>
@@ -235,21 +220,21 @@ export function FormSignup() {
 
           <div className="input-field">
             <select
-              id="role"
-              name="role"
+              id="tipo"
+              name="tipo"
               aria-label="Selecione seu cargo"
               aria-required="true"
               aria-invalid={!!errors.tipo}
-              aria-describedby={errors.tipo ? 'role-error' : undefined}
+              aria-describedby={errors.tipo ? 'tipo-error' : undefined}
               value={formData.tipo}
               onChange={handleInputChange('tipo')}
             >
               <option value="">Selecione o seu cargo</option>
-              <option value="sumarista">Sumarista</option>
-              <option value="professor">Professor</option>
+              <option value="FUNCIONARIO">Funcionário</option>
+              <option value="PROFESSOR">Professor</option>
             </select>
             {errors.tipo && (
-              <span className="error-message" role="alert" id="role-error">
+              <span className="error-message" role="alert" id="tipo-error">
                 {errors.tipo}
               </span>
             )}

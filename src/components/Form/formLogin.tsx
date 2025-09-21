@@ -1,14 +1,16 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useLogin } from '../../hooks/useAuthentication';
+import { useAuth } from '../../hooks/useAuthentication';
 import type { LoginFormData, LoginFormErrors } from '../../types/auth';
+import { validateEmail, validatePassword } from '../../utils/validations';
 import Logoswcs from '../../../public/logoswcs.svg';
 import './formLogin.css';
 
 export function FormLogin() {
-  const login = useLogin();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -18,14 +20,13 @@ export function FormLogin() {
 
   const validateForm = (): boolean => {
     const newErrors: LoginFormErrors = {};
-    if (!formData.email.trim()) newErrors.email = 'E-mail é obrigatório';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'E-mail inválido';
-    }
-    if (!formData.password.trim()) newErrors.password = 'Senha é obrigatória';
-    else if (formData.password.length < 6) {
-      newErrors.password = 'A senha deve ter no mínimo 6 caracteres';
-    }
+    
+    // Usar validações do utils
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    
+    if (emailError) newErrors.email = emailError;
+    if (passwordError) newErrors.password = passwordError;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -33,27 +34,30 @@ export function FormLogin() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    
     if (!validateForm()) {
-      toast.error(
-        'Por favor, corrija os erros no formulário antes de continuar.',
-      );
+      toast.error('Por favor, corrija os erros no formulário antes de continuar.');
       return;
     }
 
+    setIsLoading(true);
+    
     try {
-      await login.mutateAsync(formData);
+      await signIn(formData);
       toast.success('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'Erro ao fazer login. Verifique suas credenciais.';
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Erro ao fazer login. Verifique suas credenciais.';
+      
       setErrors((prev) => ({
         ...prev,
         submit: errorMessage,
       }));
       toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -127,7 +131,7 @@ export function FormLogin() {
                 value={formData.password}
                 onChange={handleInputChange('password')}
                 placeholder="Preencha a sua senha"
-                autoComplete="new-password"
+                autoComplete="current-password"
               />
               {errors.password && (
                 <span
@@ -140,30 +144,18 @@ export function FormLogin() {
               )}
             </label>
           </div>
-
-          {/* Removed UserRole selection as per updated requirements */}
         </div>
 
         <div className="group-button">
           <button
             type="submit"
-            disabled={login.isPending}
-            aria-busy={login.isPending}
-            className={login.isPending ? 'loading' : ''}
+            disabled={isLoading}
+            aria-busy={isLoading}
+            className={isLoading ? 'loading' : ''}
           >
-            {login.isPending ? 'Entrando...' : 'Entrar agora'}
+            {isLoading ? 'Entrando...' : 'Entrar agora'}
           </button>
           <div className="group-button-other">
-            {/* <a
-              href="/forgotpassword"
-              className="forgot-password"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/forgotpassword');
-              }}
-            >
-              Esqueci minha senha!
-            </a> */}
             <a
               href="/signup"
               className="access"
