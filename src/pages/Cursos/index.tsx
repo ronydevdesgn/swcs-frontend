@@ -2,81 +2,74 @@ import { useState } from 'react';
 import { Table } from '../../components/Table/Table';
 import { InputSearch } from '../../components/InputSearch/InputSearch';
 import { CursoDialog } from '../../components/Dialog/Dialogs/CursoDialog';
-import './index.css';
+import { useCursos } from '../../hooks/useCursos';
 import { toast } from 'react-toastify';
-import { CursoForm } from '../../types/entities';
-
-// Dados para testar apresentação da tabela (futuros dados vindo do backend)
-interface CursosData {
-  cursosId: string;
-  nome: string;
-  descricao: string;
-}
 
 export function Cursos() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const { data: cursosData, isLoading, error } = useCursos({
+    search: searchTerm,
+  });
 
-  // Dados, estado inicial para uma simulação!
-  const [isCursos, setCursos] = useState<CursosData[]>([
-    {
-      cursosId: '21FF24S3',
-      nome: 'Engenharia Informática',
-      descricao: 'Especialidade em Programação e Redes de Computador!',
-    }
-  ]);
-
-  const handleSubmitCurso = (data: CursoForm) => {
-    // criar novo curso compatível com CursosData
-    const newCurso: CursosData = {
-      // gerar id (cursosId) automaticamente
-      cursosId: String(Date.now()),
-      nome: data.nome,
-      descricao: data.descricao || '',
-    };
-    setCursos((prev) => [newCurso, ...prev]);
-    toast.success('Curso cadastrado com sucesso!');
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
   };
 
-  // Colunas genéricas para o componente Table
+  // Colunas para o componente Table
   const columns = [
-    { key: 'cursosId', label: 'Identificação' },
+    { key: 'cursoId', label: 'ID' },
     { key: 'nome', label: 'Nome' },
     { key: 'descricao', label: 'Descrição' },
+    { 
+      key: 'professores', 
+      label: 'Professores',
+      render: (curso: any) => {
+        return curso.professores?.map((p: any) => p.nome).join(', ') || 'Nenhum';
+      }
+    },
   ];
 
   // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
-    toast.success(`Mudou para a página: ${page}`);
+    console.log(`Página alterada para: ${page}`);
   };
 
+  if (error) {
+    toast.error('Erro ao carregar cursos');
+  }
+
   return (
-    // CSS deste container vem do CSS da página do dashboard, sem o input. OBS: Apenas o cabeçalho do header do main
     <section className="container-dashboard">
       <div className="header-dashboard">
         <div className="title">
           <h2>Lista de cursos</h2>
-          <span>Cursos cadastrados</span>
+          <span>Cursos cadastrados no sistema</span>
         </div>
         
-        {/* component Input de pesquisa*/}
-        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
-        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
-        <InputSearch Placeholder="Pesquisar curso" OnSearch={(value) => console.log(value)} />
-        <button onClick={() => setIsDialogOpen(true)}>Cadastrar</button>
+        <InputSearch 
+          Placeholder="Pesquisar curso" 
+          OnSearch={handleSearch} 
+        />
+        
+        <button onClick={() => setIsDialogOpen(true)}>
+          Cadastrar Curso
+        </button>
+        
         <CursoDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={handleSubmitCurso}
         />
       </div>
 
-      {/* main of page curso */}
       <div className="main-cursos">
-        <Table<CursosData>
+        <Table
           columns={columns}
-          data={isCursos}
+          data={cursosData?.data || []}
           onPageChange={handlePageChange}
-          isLoading={true}
+          isLoading={isLoading}
+          emptyMessage="Nenhum curso encontrado"
         />
       </div>
     </section>

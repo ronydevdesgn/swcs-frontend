@@ -1,61 +1,111 @@
-// Efetividade
-// Observação: o ID é gerado pelo backend; a entidade registra a data, horas trabalhadas
-// e referências (chaves estrangeiras) para professor e, opcionalmente, curso.
-export interface EfetividadeForm {
-  data: string;
-  horasTrabalhadas: number;
-  professorId: string;
-  cursoId?: string;
+// Interfaces alinhadas com backend
+export interface CursoForm {
+  nome: string;
+  descricao: string;
+  professorId: number;
 }
 
-export interface Efetividade extends EfetividadeForm {
-  efetividadeId: string;
+export interface Curso {
+  cursoId: number;
+  nome: string;
+  descricao: string;
+  professores: Professor[];
 }
 
-// Presença: estado que pode ser 'presenca' ou 'falta' e é associado a uma efetividade
-export type PresencaStatus = 'presenca' | 'falta';
-
-export interface PresencaForm {
-  data: string;
-  status: PresencaStatus;
-}
-
-export interface Presenca extends PresencaForm {
-  presencaId: string;
-  efetividadeId: string;
-  professorId: string;
-  cursoId?: string;
-}
-export interface SumarioForm {
-  data: string;
-  curso: string;
-  professor: string;
-  conteudo: string;
-}
-export interface Sumario extends SumarioForm {
-  sumarioId: string;
-}
-
-// O curso vem de uma tabela separada, por isso não é obrigatório
 export interface ProfessorForm {
   nome: string;
-  departamento: string;
-  cargaHoraria: string;
-  // cursoId?: string; // Se quiser referenciar o curso por ID
-  curso?: string;
-}
-
-export interface Professor extends Omit<ProfessorForm, 'cargaHoraria'> {
-  professorId: string;
+  email: string;
+  senha: string;
+  departamento: 'INFORMATICA' | 'OUTROS';
   cargaHoraria: number;
 }
 
-export interface CursoForm {
-  // codigo: string; Id é gerado automaticamente
+export interface Professor {
+  professorId: number;
   nome: string;
-  descricao: string;
+  departamento: 'INFORMATICA' | 'OUTROS';
+  cargaHoraria: number;
+  email?: string;
+  cursos?: Curso[];
 }
 
-export interface Curso extends Omit<CursoForm, 'cargaHoraria'> {
-  cursosId: string;
+export interface SumarioForm {
+  data: string;
+  conteudo: string;
+  cursoId: number;
+  professorId: number;
+}
+
+export interface Sumario {
+  SumarioID: number;
+  Data: string;
+  Conteudo: string;
+  Curso: {
+    CursoID: number;
+    Nome: string;
+    Descricao?: string;
+  };
+  Professor: {
+    ProfessorID: number;
+    Nome: string;
+    Departamento?: string;
+  };
+}
+
+export interface EfetividadeForm {
+  data: string;
+  horasTrabalhadas: number;
+  professorId: number;
+  cursoId?: number;
+}
+
+export interface Efetividade {
+  efetividadeId: number;
+  data: string;
+  horasTrabalhadas: number;
+  professor: {
+    professorId: number;
+    nome: string;
+  };
+  curso?: {
+    cursoId: number;
+    nome: string;
+  };
+}
+
+export interface PresencaForm {
+  data: string;
+  estado: 'PRESENTE' | 'FALTA';
+  professorId: number;
+  cursoId: number;
+}
+
+export interface Presenca {
+  presencaId: number;
+  data: string;
+  estado: 'PRESENTE' | 'FALTA';
+  professor: {
+    professorId: number;
+    nome: string;
+  };
+  curso: {
+    cursoId: number;
+    nome: string;
+  };
+}
+
+// Interfaces para listagens e selects
+export interface SelectOption {
+  label: string;
+  value: string | number;
+}
+
+export interface ProfessorOption {
+  professorId: number;
+  nome: string;
+}
+
+export interface CursoOption {
+  cursoId: number;
+  nome: string;
 }

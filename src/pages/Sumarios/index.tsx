@@ -2,84 +2,95 @@ import { useState } from 'react';
 import { Table } from '../../components/Table/Table';
 import { InputSearch } from '../../components/InputSearch/InputSearch';
 import { SumarioDialog } from '../../components/Dialog/Dialogs/SumarioDialog';
+import { useSumarios } from '../../hooks/useSumarios';
 import { toast } from 'react-toastify';
 
-import './index.css';
-
-// dados feticios...
-import { Sumario, SumarioForm } from '../../types/entities';
-
 export function Sumarios() {
-  // open and close of popups
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const { data: sumariosData, isLoading, error } = useSumarios({
+    search: searchTerm,
+  });
 
-  const handleSubmitSumario = (data: SumarioForm) => {
-    // criar novo sumario com id e adicionar ao estado
-    const newSumario: Sumario = {
-      sumarioId: String(Date.now()),
-      ...data,
-    };
-    setSumarios((prev) => [newSumario, ...prev]);
-    toast.success('Sumário registado com sucesso');
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
   };
 
-  // Dados, estado inicial para uma simulação!
-  const [sumarios, setSumarios] = useState<Sumario[]>([]);
-
-  // Função para lidar com a mudança de página
-  const handlePageChange = (page: number) => {
-    toast.success(`Mudou de página! ${page}`);
-  };
-
-  // Colunas genéricas para o componente Table
+  // Colunas para o componente Table
   const columns = [
-    { key: 'sumarioId', label: 'Identificação' },
+    { key: 'SumarioID', label: 'ID' },
     {
-      key: 'data',
+      key: 'Data',
       label: 'Data',
-      render: (s: Sumario) => {
+      render: (sumario: any) => {
         try {
-          return new Date(s.data).toLocaleDateString();
+          return new Date(sumario.Data).toLocaleDateString('pt-BR');
         } catch {
-          return s.data;
+          return sumario.Data;
         }
       },
     },
-    { key: 'curso', label: 'Curso' },
-    { key: 'professor', label: 'Professor' },
-    { key: 'conteudo', label: 'Conteúdo' },
+    { 
+      key: 'Curso', 
+      label: 'Curso',
+      render: (sumario: any) => sumario.Curso?.Nome || 'N/A'
+    },
+    { 
+      key: 'Professor', 
+      label: 'Professor',
+      render: (sumario: any) => sumario.Professor?.Nome || 'N/A'
+    },
+    { 
+      key: 'Conteudo', 
+      label: 'Conteúdo',
+      render: (sumario: any) => {
+        const maxLength = 50;
+        return sumario.Conteudo.length > maxLength 
+          ? `${sumario.Conteudo.substring(0, maxLength)}...`
+          : sumario.Conteudo;
+      }
+    },
   ];
+
+  const handlePageChange = (page: number) => {
+    console.log(`Página alterada para: ${page}`);
+  };
+
+  if (error) {
+    toast.error('Erro ao carregar sumários');
+  }
 
   return (
     <section className="container-dashboard">
       <div className="header-dashboard">
         <div className="title">
           <h2>Gestão de sumários</h2>
-          <span>Confira os sumários já lecionados.</span>
+          <span>Confira os sumários já lecionados</span>
         </div>
-        {/* component Input de pesquisa*/}
-        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
-        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
+
         <InputSearch
-          Placeholder="Pesquisar por..."
-          OnSearch={(value) => console.log(value)}
+          Placeholder="Pesquisar sumário"
+          OnSearch={handleSearch}
         />
 
-        <button onClick={() => setIsDialogOpen(true)}>Novo Sumário</button>
+        <button onClick={() => setIsDialogOpen(true)}>
+          Novo Sumário
+        </button>
+        
         <SumarioDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={handleSubmitSumario}
         />
       </div>
 
-      {/* main of page sumários */}
       <div className="main-sumarios">
-        <Table<Sumario>
+        <Table
           columns={columns}
-          data={sumarios}
+          data={sumariosData?.data || []}
           onPageChange={handlePageChange}
-          isLoading={true}
+          isLoading={isLoading}
+          emptyMessage="Nenhum sumário encontrado"
         />
       </div>
     </section>

@@ -3,38 +3,59 @@ import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
 
 export interface Sumario {
-  id: string;
-  data: string;
-  conteudo: string;
-  cursoId: string;
-  professorId: string;
+  SumarioID: number;
+  Data: string;
+  Conteudo: string;
+  Curso: {
+    CursoID: number;
+    Nome: string;
+    Descricao?: string;
+  };
+  Professor: {
+    ProfessorID: number;
+    Nome: string;
+    Departamento?: string;
+  };
 }
 
 export interface CreateSumarioInput {
-  data: string;
-  conteudo: string;
-  cursoId: string;
-  professorId: string;
+  Data: string;
+  Conteudo: string;
+  CursoID: number;
+  ProfessorID: number;
 }
 
-interface SumariosQueryParams {
+export interface SumariosListResponse {
+  data: Sumario[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+}
+
+export function useSumarios(params?: {
   page?: number;
   limit?: number;
-  cursoId?: string;
+  search?: string;
+  cursoId?: number;
+  professorId?: number;
   dataInicio?: string;
-}
-
-export function useSumarios(params?: SumariosQueryParams) {
-  return useQuery({
+  dataFim?: string;
+}) {
+  return useQuery<SumariosListResponse>({
     queryKey: ["sumarios", params],
     queryFn: async () => {
-      const response = await api.get("/sumarios", { params });
+      const response = await api.get<SumariosListResponse>("/sumarios", { params });
       return response.data;
     },
   });
 }
 
-export function useSumario(id: string) {
+export function useSumario(id: number) {
   return useQuery({
     queryKey: ["sumarios", id],
     queryFn: async () => {
@@ -51,11 +72,8 @@ export function useCreateSumario() {
       const response = await api.post<Sumario>("/sumarios", data);
       return response.data;
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["sumarios"] });
-      queryClient.invalidateQueries({
-        queryKey: ["sumarios", { cursoId: variables.cursoId }],
-      });
     },
   });
 }
@@ -66,7 +84,7 @@ export function useUpdateSumario() {
       id,
       data,
     }: {
-      id: string;
+      id: number;
       data: Partial<CreateSumarioInput>;
     }) => {
       const response = await api.put<Sumario>(`/sumarios/${id}`, data);
@@ -81,7 +99,7 @@ export function useUpdateSumario() {
 
 export function useDeleteSumario() {
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       await api.delete(`/sumarios/${id}`);
     },
     onSuccess: () => {

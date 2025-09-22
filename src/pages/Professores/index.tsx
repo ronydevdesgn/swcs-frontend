@@ -2,87 +2,68 @@ import { useState } from 'react';
 import { Table } from '../../components/Table/Table';
 import { ProfessorDialog } from '../../components/Dialog/Dialogs/ProfessorDialog';
 import { InputSearch } from '../../components/InputSearch/InputSearch';
-import './index.css';
+import { useProfessores } from '../../hooks/useProfessores';
 import { toast } from 'react-toastify';
-import { Professor, ProfessorForm } from '../../types/entities';
-
-// dados inventados vindo
-interface ProfessorData {
-  professorId: string;
-  nome: string;
-  departamento: string;
-  cargaHoraria: number;
-}
-
 
 export function Professores() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const { data: professoresData, isLoading, error } = useProfessores({
+    search: searchTerm,
+  });
 
-  const handleSubmitProfessor = (data: ProfessorForm) => {
-    // criar novo professor
-    const newProfessor: Professor = {
-      professorId: String(Date.now()),
-      nome: data.nome,
-      departamento: data.departamento,
-      cargaHoraria: Number(data.cargaHoraria),
-    };
-    setProfessores((prev) => [newProfessor, ...prev]);
-    toast.success('Professor cadastrado com sucesso');
-    // Aqui vai a lógica para salvar os dados
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
   };
 
-  // Dados, estado inicial para uma simulação!
-  const [isProfessores, setProfessores] = useState<ProfessorData[]>([
-    {
-      professorId: '43FF24S324',
-      nome: 'João Moreira Da Costa',
-      departamento: 'Engenharia',
-      cargaHoraria: 7,
-    }
-  ]);
-
-  // Função para lidar com a mudança de página
-  const handlePageChange = (page: number) => {
-    console.log('Mudou para a página:', page);
-  };
-
-  // Colunas genéricas para o componente Table
+  // Colunas para o componente Table
   const columns = [
-    { key: 'professorId', label: 'Identificação' },
+    { key: 'professorId', label: 'ID' },
     { key: 'nome', label: 'Nome' },
     { key: 'departamento', label: 'Departamento' },
-    { key: 'cargaHoraria', label: 'Carga Horaria' },
+    { key: 'cargaHoraria', label: 'Carga Horária' },
+    { key: 'email', label: 'Email' },
   ];
 
+  const handlePageChange = (page: number) => {
+    console.log('Página alterada para:', page);
+  };
+
+  if (error) {
+    toast.error('Erro ao carregar professores');
+  }
+
   return (
-    // CSS deste container vem do CSS da página do dashboard, sem o input
-    // OBS: Apenas o cabeçalho do header do main
     <section className="container-dashboard">
       <div className="header-dashboard">
         <div className="title">
           <h2>Lista nominal</h2>
-          <span>Professores cadastrados</span>
+          <span>Professores cadastrados no sistema</span>
         </div>
-        {/* component Input de pesquisa*/}
-        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
-        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
-        <InputSearch Placeholder="Pesquisar professor" OnSearch={(value) => console.log(value)} />
-        <button onClick={() => setIsDialogOpen(true)}>Cadastrar</button>
+
+        <InputSearch 
+          Placeholder="Pesquisar professor" 
+          OnSearch={handleSearch} 
+        />
+        
+        <button onClick={() => setIsDialogOpen(true)}>
+          Cadastrar Professor
+        </button>
 
         <ProfessorDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={handleSubmitProfessor}
         />
       </div>
 
-      {/* main of page professor*/}
       <div className="main-professor">
-        <Table<ProfessorData>
+        <Table
           columns={columns}
-          data={isProfessores}
-          isLoading={true}
+          data={professoresData?.data || []}
+          isLoading={isLoading}
           onPageChange={handlePageChange}
+          emptyMessage="Nenhum professor encontrado"
         />
       </div>
     </section>

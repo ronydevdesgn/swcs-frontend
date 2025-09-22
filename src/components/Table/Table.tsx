@@ -22,6 +22,7 @@ type TablePropsGeneric<T> = {
   pageSize?: number;
   totalItems?: number;
   onPageChange?: (page: number) => void;
+  emptyMessage?: string;
 };
 
 type TablePropsSimple = {
@@ -32,6 +33,7 @@ type TablePropsSimple = {
   pageSize?: number;
   totalItems?: number;
   onPageChange?: (page: number) => void;
+  emptyMessage?: string;
 };
 
 type TableProps<T> = TablePropsGeneric<T> | TablePropsSimple;
@@ -48,7 +50,7 @@ export function Table<T>(props: TableProps<T>) {
   };
 
   if (isSimple) {
-    const { columns, rows, isLoading } = props as TablePropsSimple;
+    const { columns, rows, isLoading, emptyMessage = 'Nenhum dado encontrado' } = props as TablePropsSimple;
 
     return (
       <section className="table table-wrapper">
@@ -70,7 +72,7 @@ export function Table<T>(props: TableProps<T>) {
             ) : rows.length === 0 ? (
               <tr>
                 <td colSpan={columns.length}>
-                  <EmptyState />
+                  <EmptyState message={emptyMessage} />
                 </td>
               </tr>
             ) : (
@@ -108,6 +110,7 @@ export function Table<T>(props: TableProps<T>) {
       pageSize = data.length || 10,
       totalItems = data.length,
       onPageChange,
+      emptyMessage = 'Nenhum dado encontrado',
     } = props as TablePropsGeneric<T>;
 
     return (
@@ -130,7 +133,7 @@ export function Table<T>(props: TableProps<T>) {
             ) : data.length === 0 ? (
               <tr>
                 <td colSpan={columns.length}>
-                  <EmptyState />
+                  <EmptyState message={emptyMessage} />
                 </td>
               </tr>
             ) : (

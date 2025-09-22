@@ -27,7 +27,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: 24 }}>
+        <div style={{ padding: 24, color: 'black' }}>
           <h2>Ocorreu um erro inesperado.</h2>
           <pre style={{ whiteSpace: 'pre-wrap' }}>
             {String(this.state.error)}

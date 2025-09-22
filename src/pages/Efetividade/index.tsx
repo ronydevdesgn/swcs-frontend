@@ -1,82 +1,103 @@
-import './index.css';
+import { useState } from 'react';
 import { Table } from '../../components/Table/Table';
 import { InputSearch } from '../../components/InputSearch/InputSearch';
 import { EfetividadeDialog } from '../../components/Dialog/Dialogs/Efetividade';
+import { useEfetividades } from '../../hooks/useEfetividades';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
-
-interface EfetividadeProps {
-  efetividadeId?: string;
-  data: string;
-  horasTrabalhadas: number;
-  professor: string;
-  status: 'PRESENTE' | 'FALTA';
-}
 
 export function Efetividade() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const { data: efetividadesData, isLoading, error } = useEfetividades();
 
-  // Dados, estado inicial para uma simulação!
-  const [isEfetividade, setEfetividade] = useState<EfetividadeProps[]>([]);
-
-  const handleSubmitEfetividade = (data: EfetividadeProps) => {
-    const newEfetividade: EfetividadeProps = {
-      // gerar id (efetividadeId) automaticamente
-      efetividadeId: String(Date.now()),
-      data: data.data,
-      horasTrabalhadas: data.horasTrabalhadas,
-      professor: data.professor,
-      status: data.status,
-    };
-    setEfetividade((prev) => [newEfetividade, ...prev]);
-    toast.success('Efetividade cadastrada:', { data });
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
   };
 
-  // Colunas genéricas para o componente Table
+    // Filter data client-side since backend doesn't support search
+    const filteredData = efetividadesData?.data?.filter((efetividade) => {
+      if (!searchTerm) return true;
+      
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        efetividade.Professor?.Nome?.toLowerCase().includes(searchLower) ||
+        efetividade.Professor?.Departamento?.toLowerCase().includes(searchLower) ||
+        efetividade.Data.includes(searchTerm) ||
+        efetividade.EfetividadeID.toString().includes(searchTerm)
+      );
+    }) || [];
+
+  // Colunas para o componente Table
   const columns = [
-    { key: 'efetividadeId', label: 'Identificação' },
-    { key: 'data', label: 'Data' },
-    { key: 'horasTrabalhadas', label: 'Horas Trabalhadas' },
-    { key: 'professor', label: 'Professor' },
-    { key: 'status', label: 'Estado' },
+    { key: 'EfetividadeID', label: 'ID' },
+    {
+      key: 'Data',
+      label: 'Data',
+      render: (efetividade: any) => {
+        try {
+          return new Date(efetividade.Data).toLocaleDateString('pt-BR');
+        } catch {
+          return efetividade.Data;
+        }
+      },
+    },
+    { key: 'HorasTrabalhadas', label: 'Horas Trabalhadas' },
+    { 
+      key: 'Professor', 
+      label: 'Professor',
+      render: (efetividade: any) => efetividade.Professor?.Nome || 'N/A'
+    },
+    { 
+      key: 'Departamento', 
+      label: 'Departamento',
+      render: (efetividade: any) => efetividade.Professor?.Departamento || 'N/A'
+    },
+    { 
+      key: 'Curso', 
+      label: 'Curso',
+      render: (efetividade: any) => efetividade.Curso?.Nome || 'N/A'
+    },
   ];
 
-  // Função para lidar com a mudança de página
   const handlePageChange = (page: number) => {
-    toast.success(`Mudou para a página: ${page}`);
+    console.log(`Página alterada para: ${page}`);
   };
 
+  if (error) {
+    toast.error('Erro ao carregar efetividades');
+  }
+
   return (
-    // CSS deste container vem do CSS da página de dashboard, sem o input. OBS: Apenas o cabeçalho do header do main
     <section className="container-dashboard">
       <div className="header-dashboard">
         <div className="title">
           <h2>Lista de efetividades</h2>
           <span>Confirma a efetividade dos professores</span>
         </div>
-        {/* component Input de pesquisa*/}
-        {/* OnSearch -> (value) => console.log(value)  atributo  que serve para capturar o valor da pesquisa,
-        isso é útil para filtrar os dados da tabela, e quer dizer que temos que criar uma função para lidar com isso! */}
+
         <InputSearch
-          Placeholder="Pesquisar por..."
-          OnSearch={(value) => console.log(value)}
+          Placeholder="Pesquisar efetividade"
+          OnSearch={handleSearch}
         />
 
-        <button onClick={() => setIsDialogOpen(true)}>Efetivar</button>
+        <button onClick={() => setIsDialogOpen(true)}>
+          Registrar Efetividade
+        </button>
+        
         <EfetividadeDialog
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
-          onSubmit={handleSubmitEfetividade}
         />
       </div>
 
-      {/* main of page efetividade*/}
       <div className="main-efetividade">
-        <Table<EfetividadeProps>
+        <Table
           columns={columns}
-          data={isEfetividade}
+          data={filteredData}
           onPageChange={handlePageChange}
-          isLoading={true}
+          isLoading={isLoading}
+          emptyMessage="Nenhuma efetividade encontrada"
         />
       </div>
     </section>

@@ -3,39 +3,58 @@ import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
 
 export interface Funcionario {
-  id: string;
-  nome: string;
-  email: string;
-  cargo: string;
+  FuncionarioID: number;
+  Nome: string;
+  Email: string;
+  Cargo: string;
+  UsuarioID: number;
+  Usuario?: {
+    Email: string;
+    Tipo: string;
+    Permissoes: Array<{
+      Permissao: {
+        PermissaoID: number;
+        Descricao: string;
+      };
+    }>;
+  };
 }
 
 export interface CreateFuncionarioInput {
-  nome: string;
-  email: string;
-  cargo: string;
+  Nome: string;
+  Email: string;
+  Cargo: string;
+  Senha: string;
+}
+
+export interface FuncionariosListResponse {
+  data: Funcionario[];
+  meta: {
+    total: number;
+    porCargo: Record<string, number>;
+  };
 }
 
 interface FuncionariosQueryParams {
-  page?: number;
-  limit?: number;
+  search?: string;
   cargo?: string;
 }
 
 export function useFuncionarios(params?: FuncionariosQueryParams) {
-  return useQuery({
+  return useQuery<FuncionariosListResponse>({
     queryKey: ["funcionarios", params],
     queryFn: async () => {
-      const response = await api.get("/funcionarios", { params });
+      const response = await api.get<FuncionariosListResponse>("/funcionarios", { params });
       return response.data;
     },
   });
 }
 
-export function useFuncionario(id: string) {
+export function useFuncionario(id: number) {
   return useQuery({
     queryKey: ["funcionarios", id],
     queryFn: async () => {
-      const response = await api.get<Funcionario>(`/funcionarios/${id}`);
+      const response = await api.get<{ data: Funcionario }>(`/funcionarios/${id}`);
       return response.data;
     },
     enabled: !!id,
@@ -45,7 +64,7 @@ export function useFuncionario(id: string) {
 export function useCreateFuncionario() {
   return useMutation({
     mutationFn: async (data: CreateFuncionarioInput) => {
-      const response = await api.post<Funcionario>("/funcionarios", data);
+      const response = await api.post<{ data: Funcionario }>("/funcionarios", data);
       return response.data;
     },
     onSuccess: () => {
@@ -60,10 +79,10 @@ export function useUpdateFuncionario() {
       id,
       data,
     }: {
-      id: string;
-      data: Partial<CreateFuncionarioInput>;
+      id: number;
+      data: Partial<Omit<CreateFuncionarioInput, 'Senha'>>;
     }) => {
-      const response = await api.put<Funcionario>(`/funcionarios/${id}`, data);
+      const response = await api.put<{ data: Funcionario }>(`/funcionarios/${id}`, data);
       return response.data;
     },
     onSuccess: (_, variables) => {
@@ -77,7 +96,7 @@ export function useUpdateFuncionario() {
 
 export function useDeleteFuncionario() {
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       await api.delete(`/funcionarios/${id}`);
     },
     onSuccess: () => {

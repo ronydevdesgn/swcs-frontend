@@ -3,35 +3,52 @@ import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
 
 export interface Curso {
-  id: string;
-  nome: string;
-  descricao: string;
-  professorId: string;
+  CursoID: number;
+  Nome: string;
+  Descricao: string;
+  Professores: Professor[];
+  _count?: {
+    Sumarios: number;
+  };
+}
+
+export interface Professor {
+  ProfessorID: number;
+  Nome: string;
+  Departamento: string;
 }
 
 export interface CreateCursoInput {
-  nome: string;
-  descricao: string;
-  professorId: string;
+  Nome: string;
+  Descricao: string;
+  ProfessorID: number;
 }
 
 interface CursosQueryParams {
   page?: number;
   limit?: number;
   search?: string;
+  departamento?: string;
+}
+
+export interface CursosListResponse {
+  data: Curso[];
+  meta: {
+    total: number;
+  };
 }
 
 export function useCursos(params?: CursosQueryParams) {
-  return useQuery({
+  return useQuery<CursosListResponse>({
     queryKey: ["cursos", params],
     queryFn: async () => {
-      const response = await api.get("/cursos", { params });
+      const response = await api.get<CursosListResponse>("/cursos", { params });
       return response.data;
     },
   });
 }
 
-export function useCurso(id: string) {
+export function useCurso(id: number) {
   return useQuery({
     queryKey: ["cursos", id],
     queryFn: async () => {
@@ -60,7 +77,7 @@ export function useUpdateCurso() {
       id,
       data,
     }: {
-      id: string;
+      id: number;
       data: Partial<CreateCursoInput>;
     }) => {
       const response = await api.put<Curso>(`/cursos/${id}`, data);
@@ -75,7 +92,7 @@ export function useUpdateCurso() {
 
 export function useDeleteCurso() {
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       await api.delete(`/cursos/${id}`);
     },
     onSuccess: () => {

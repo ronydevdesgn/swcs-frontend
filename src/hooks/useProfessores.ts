@@ -18,16 +18,25 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Professor {
-  id: string;
+  professorId: number;
   nome: string;
-  departamento: string;
+  departamento: 'INFORMATICA' | 'OUTROS';
   cargaHoraria: number;
+  email?: string;
+  cursos?: Curso[];
+}
+
+export interface Curso {
+  cursoId: number;
+  nome: string;
 }
 
 export interface CreateProfessorInput {
-  nome: string;
-  departamento: string;
-  cargaHoraria: number;
+  Nome: string;
+  Email: string;
+  Senha: string;
+  Departamento: 'INFORMATICA' | 'OUTROS';
+  CargaHoraria: number;
 }
 
 export function useProfessores(
@@ -44,6 +53,17 @@ export function useProfessores(
       );
       return response.data;
     },
+  });
+}
+
+export function useProfessor(id: number) {
+  return useQuery({
+    queryKey: ["professores", id],
+    queryFn: async () => {
+      const response = await api.get<Professor>(`/professores/${id}`);
+      return response.data;
+    },
+    enabled: !!id,
   });
 }
 
@@ -65,8 +85,8 @@ export function useUpdateProfessor() {
       id,
       data,
     }: {
-      id: string;
-      data: Partial<CreateProfessorInput>;
+      id: number;
+      data: Partial<Omit<CreateProfessorInput, 'Senha'>>;
     }) => {
       const response = await api.put<Professor>(`/professores/${id}`, data);
       return response.data;
@@ -79,7 +99,7 @@ export function useUpdateProfessor() {
 
 export function useDeleteProfessor() {
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       const response = await api.delete(`/professores/${id}`);
       return response.data;
     },

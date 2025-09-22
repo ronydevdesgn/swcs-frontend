@@ -3,68 +3,72 @@ import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
 
 export interface Efetividade {
-  id: string;
-  data: string;
-  horasTrabalhadas: number;
-  professorId: string;
-}
-
-export interface EfetividadeStats {
-  totalHoras: number;
-  diasTrabalhados: number;
-  mediaHorasDia: number;
+  EfetividadeID: number;
+  Data: string;
+  HorasTrabalhadas: number;
+  Professor: {
+    ProfessorID: number;
+    Nome: string;
+    Departamento: string;
+    CargaHoraria: number;
+  };
+  Curso?: {
+    CursoID: number;
+    Nome: string;
+  };
 }
 
 export interface CreateEfetividadeInput {
-  data: string;
-  horasTrabalhadas: number;
-  professorId: string;
+  Data: string;
+  HorasTrabalhadas: number;
+  ProfessorID: number;
+  CursoID?: number;
 }
 
-interface EfetividadesQueryParams {
-  page?: number;
-  limit?: number;
-  mes?: number;
-  ano?: number;
+export interface EfetividadesListResponse {
+  data: Efetividade[];
 }
 
-interface StatsQueryParams {
-  mes?: number;
-  ano?: number;
-  professorId?: string;
-}
-
-export function useEfetividades(params?: EfetividadesQueryParams) {
-  return useQuery({
+export function useEfetividades(params?: {
+  inicio?: string;
+  fim?: string;
+  professorId?: number;
+}) {
+  return useQuery<EfetividadesListResponse>({
     queryKey: ["efetividades", params],
     queryFn: async () => {
-      const response = await api.get("/efetividades", { params });
+      // Se há filtros de período, usar o endpoint específico
+      if (params?.inicio || params?.fim) {
+        const response = await api.get<{
+          data: Efetividade[];
+          meta: any;
+        }>("/efetividades/periodo", {
+          params: {
+            dataInicio: params.inicio,
+            dataFim: params.fim,
+          },
+        });
+        return { data: response.data.data };
+      }
+      
+      // Se há filtro por professor, usar o endpoint específico
+      if (params?.professorId) {
+        const response = await api.get<{
+          data: Efetividade[];
+          meta: any;
+        }>(`/efetividades/professor/${params.professorId}`, {
+          params: {
+            inicio: params.inicio,
+            fim: params.fim,
+          },
+        });
+        return { data: response.data.data };
+      }
+      
+      // Caso contrário, usar o endpoint geral
+      const response = await api.get<EfetividadesListResponse>("/efetividades");
       return response.data;
     },
-  });
-}
-
-export function useEfetividadeStats(params?: StatsQueryParams) {
-  return useQuery({
-    queryKey: ["efetividades", "stats", params],
-    queryFn: async () => {
-      const response = await api.get<EfetividadeStats>("/efetividades/stats", {
-        params,
-      });
-      return response.data;
-    },
-    enabled: !!params?.professorId,
-  });
-}
-
-export function useEfetividade(id: string) {
-  return useQuery({
-    queryKey: ["efetividades", id],
-    queryFn: async () => {
-      const response = await api.get<Efetividade>(`/efetividades/${id}`);
-      return response.data;
-    },
-    enabled: !!id,
   });
 }
 
@@ -74,15 +78,9 @@ export function useCreateEfetividade() {
       const response = await api.post<Efetividade>("/efetividades", data);
       return response.data;
     },
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["efetividades"] });
-      queryClient.invalidateQueries({
-        queryKey: [
-          "efetividades",
-          "stats",
-          { professorId: variables.professorId },
-        ],
-      });
+      queryClient.invalidateQueries({ queryKey: ["presencas"] });
     },
   });
 }
@@ -91,31 +89,27 @@ export function useUpdateEfetividade() {
   return useMutation({
     mutationFn: async ({
       id,
-      horasTrabalhadas,
+      data,
     }: {
-      id: string;
-      horasTrabalhadas: number;
+      id: number;
+      data: Partial<CreateEfetividadeInput>;
     }) => {
-      const response = await api.put<Efetividade>(`/efetividades/${id}`, {
-        horasTrabalhadas,
-      });
+      const response = await api.put<Efetividade>(`/efetividades/${id}`, data);
       return response.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["efetividades"] });
-      queryClient.invalidateQueries({ queryKey: ["efetividades", "stats"] });
     },
   });
 }
 
 export function useDeleteEfetividade() {
   return useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async (id: number) => {
       await api.delete(`/efetividades/${id}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["efetividades"] });
-      queryClient.invalidateQueries({ queryKey: ["efetividades", "stats"] });
     },
   });
 }
