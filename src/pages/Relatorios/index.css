@@ -16,3 +16,26 @@
   display: flex;
   justify-content: space-between;
 }
+
+.actions button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+}
+
+.actions button svg {
+  stroke: var(--purple-heart-50);
+  background: none;
+}
+
+Table button {
+  padding: .8rem 1.6rem;
+
+}
+
+Table button svg {
+  stroke: var(--purple-heart-50);
+  background: none;
+}

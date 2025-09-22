@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import "./Sidebar.css";
-import { useLogout } from "../../hooks/useAuthentication";
+import { useAuth, useLogout } from "../../hooks/useAuthentication";
 import {
   Layout,
   Layers,
@@ -14,6 +14,7 @@ import {
 } from "react-feather";
 
 export function Sidebar() {
+  const { user } = useAuth();
   const logout = useLogout();
 
   return (
@@ -30,8 +31,8 @@ export function Sidebar() {
             <Activity size={18} />
             <span>Dashboard</span>
           </NavLink>
-          {/* {user?.role === "sumarista" && (
-            <> */}
+          {user?.tipo === "FUNCIONARIO" && (
+            <>
           <NavLink to="/professores" className={"Icon-link"}>
             <Users size={18} />
             <span>Professores</span>
@@ -40,8 +41,8 @@ export function Sidebar() {
             <BarChart2 size={18} />
             <span>Efetividade</span>
           </NavLink>
-          {/* </>
-          )} */}
+          </>
+          )}
           <NavLink to="/relatorios" className={"Icon-link"}>
             <Layers size={18} />
             <span>Relatórios</span>

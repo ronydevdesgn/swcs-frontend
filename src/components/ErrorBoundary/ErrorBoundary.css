@@ -1,0 +1,13 @@
+.ErrorBoundary {
+  width: 100%;
+  height: 100%;
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  color: var(--purple-heart-600);
+}
+
+.ErrorBoundary button {
+  margin-top: 2.4rem;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import './ErrorBoundary.css';
 
 type Props = {
   children: React.ReactNode;
@@ -20,14 +21,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
-    // Aqui você pode enviar o erro para um serviço de monitoramento
     console.error('Unhandled error:', error, info);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: 24, color: 'black' }}>
+        <div className='ErrorBoundary'>
           <h2>Ocorreu um erro inesperado.</h2>
           <pre style={{ whiteSpace: 'pre-wrap' }}>
             {String(this.state.error)}

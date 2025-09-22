@@ -1,4 +1,3 @@
-import "./index.css";
 import Illustrator from "../../assets/img/Illustrator.svg";
 import { FormSignup } from "../../components/Form/formSignup";
 

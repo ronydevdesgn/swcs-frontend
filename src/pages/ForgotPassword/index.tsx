@@ -1,4 +1,3 @@
-import './index.css';
 import Illustrator from '../../assets/img/Illustrator.svg';
 import { FormForgot } from '../../components/Form/formForgot';
 

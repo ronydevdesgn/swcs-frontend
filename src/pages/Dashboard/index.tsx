@@ -57,14 +57,14 @@ export function Dashboard() {
           titleCard="Sumários"
           numberCard={stats?.totalSumarios ?? 0}
           descriptionCard={`${stats?.sumariosRecentes ?? 0} registrados nos últimos 30 dias.`}
-          iconUp={<ArrowUp size={24} strokeWidth={4} />}
-          iconDown={<ArrowDown size={24} strokeWidth={4} className="svgdown" />}
+          iconUp={<ArrowUpRight size={24} strokeWidth={4} />}
         />
         <Card
           titleCard="Presenças"
           numberCard={stats?.totalPresencas ?? 0}
-          descriptionCard={`${stats?.totalFaltas ?? 0} faltas registradas.`}
-          iconUp={<ArrowUpRight size={24} strokeWidth={4} />}
+          descriptionCard={` Foram registradas: ${stats?.totalFaltas ?? 0} faltas, e ${stats?.totalPresencas ?? 0} presenças até agora.`}
+          iconUp={<ArrowUp size={24} strokeWidth={4} />}
+          iconDown={<ArrowDown size={24} strokeWidth={4} className="svgdown" />}
         />
       </div>
     </section>

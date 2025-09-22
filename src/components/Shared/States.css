@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  color: var(--purple-heart-500);
+  color: var(--purple-heart-600);
 }
 
 .shared-loading .loader {
