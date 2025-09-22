@@ -105,10 +105,19 @@ button:hover {
   background-color: var(--purple-heart-600);
 }
 
-/* button:focus,
-button:focus-visible {
-  outline: .4rem auto -webkit-focus-ring-color;
-} */
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 @media (prefers-color-scheme: light) {
   :root {

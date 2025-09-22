@@ -6,7 +6,7 @@ import autoTable from 'jspdf-autotable';
 
 import './index.css';
 import { useState } from 'react';
-import { ArrowDown, ArrowUp } from 'react-feather';
+import { ArrowDown, ArrowUp, Download } from 'react-feather';
 
 interface relatorioData {
   id: string;
@@ -98,7 +98,7 @@ export function Relatorios() {
 
         {/* Botões de exportação */}
         <div className="actions">
-          <button onClick={generatePDF}>📄 Exportar PDF</button>
+          <button onClick={generatePDF}><Download size={16} /> Exportar PDF</button>
           
           {/* component Input de pesquisa*/}
           <InputSearch
