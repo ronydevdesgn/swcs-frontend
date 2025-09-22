@@ -15,8 +15,7 @@ import type {
   UserRole,
 } from '../../types/auth';
 import Logoswcs from '../../../public/logoswcs.svg';
-import './formLogin.css';
-import './formSignup.css';
+import './form.css';
 
 export function FormSignup() {
   const createUser = useCreateUser();

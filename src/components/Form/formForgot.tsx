@@ -8,8 +8,7 @@ import {
   ForgotPasswordFormErrors,
   ForgotPasswordFormData,
 } from '../../types/auth';
-import "./formLogin.css";
-import "./formForgot.css";
+import "./form.css";
 
 export function FormForgot() {
   const resetPassword = useResetPassword();

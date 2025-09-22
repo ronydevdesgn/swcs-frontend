@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuthentication';
 import type { LoginFormData, LoginFormErrors } from '../../types/auth';
 import { validateEmail, validatePassword } from '../../utils/validations';
 import Logoswcs from '../../../public/logoswcs.svg';
-import './formLogin.css';
+import './form.css';
 
 export function FormLogin() {
   const { signIn } = useAuth();
