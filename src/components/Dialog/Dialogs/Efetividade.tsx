@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { Dialog } from '../Dialog';
+import { EfetividadeForm } from '../../../types/entities';
+import { useCreateEfetividade } from '../../../hooks/useEfetividades';
+import { useProfessores } from '../../../hooks/useProfessores';
+import { useCursos } from '../../../hooks/useCursos';
+import { validateDate, validateHorasTrabalhadas } from '../../../utils/validations';
+import { toast } from 'react-toastify';
 
-interface EfetividadeData {
-  efetividadeId?: string;
-  data: string;
-  horasTrabalhadas: number;
-  professor: string;
-  status: 'PRESENTE' | 'FALTA';
+interface FormErrors {
+  data?: string;
+  horasTrabalhadas?: string;
+  professorId?: string;
+  cursoId?: string;
 }
 
 export function EfetividadeDialog({
@@ -16,77 +21,151 @@ export function EfetividadeDialog({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: EfetividadeData) => void;
+  onSubmit?: (data: EfetividadeForm) => void;
 }) {
-  const [data, setData] = useState('');
-  const [horasTrabalhadas, setHorasTrabalhadas] = useState(0);
-  const [professor, setProfessor] = useState('');
-  const [status, setStatus] = useState<'PRESENTE' | 'FALTA' | ''>('');
+  const createEfetividade = useCreateEfetividade();
+  const { data: professoresData, isLoading: loadingProfessores } = useProfessores();
+  const { data: cursosData, isLoading: loadingCursos } = useCursos();
 
-  const handleSubmit = () => {
-    if (data && horasTrabalhadas && professor && status) {
-      onSubmit({ data, horasTrabalhadas, professor, status });
+  const [formData, setFormData] = useState<EfetividadeForm>({
+    data: new Date().toISOString().split('T')[0],
+    horasTrabalhadas: 0,
+    professorId: 0,
+    cursoId: 0,
+  });
+
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    const dataError = validateDate(formData.data);
+    const horasError = validateHorasTrabalhadas(formData.horasTrabalhadas);
+
+    if (dataError) newErrors.data = dataError;
+    if (horasError) newErrors.horasTrabalhadas = horasError;
+    if (!formData.professorId) newErrors.professorId = 'Professor é obrigatório';
+    if (!formData.cursoId) newErrors.cursoId = 'Curso é obrigatório';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      toast.error('Por favor, corrija os erros no formulário');
+      return;
+    }
+
+    try {
+      await createEfetividade.mutateAsync({
+        Data: formData.data,
+        HorasTrabalhadas: formData.horasTrabalhadas,
+        ProfessorID: formData.professorId,
+        CursoID: formData.cursoId,
+      });
+
+      toast.success('Efetividade registrada com sucesso!');
+      onSubmit?.(formData);
       handleCancel();
+    } catch (error) {
+      console.error('Erro ao registrar efetividade:', error);
+      toast.error('Erro ao registrar efetividade. Tente novamente.');
     }
   };
 
   const handleCancel = () => {
-    setProfessor('');
-    setData('');
-    setHorasTrabalhadas(0);
-    setStatus('');
+    setFormData({
+      data: new Date().toISOString().split('T')[0],
+      horasTrabalhadas: 0,
+      professorId: 0,
+      cursoId: 0,
+    });
+    setErrors({});
     onClose();
   };
+
+  // Preparar opções dos professores e cursos
+  const professorOptions = [
+    { label: 'Selecione o professor', value: '' },
+    ...(professoresData?.data?.map(professor => ({
+      label: `${professor.nome} - ${professor.departamento}`,
+      value: professor.professorId
+    })) || [])
+  ];
+
+  const cursoOptions = [
+    { label: 'Selecione o curso', value: '' },
+    ...(cursosData?.data?.map(curso => ({
+      label: curso.Nome,
+      value: curso.CursoID
+    })) || [])
+  ];
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Header
         title="Registrar efetividade"
-        subtitle="Registre os dados de desempenho"
+        subtitle="Registre os dados de efetividade do professor"
       />
       <Dialog.Content>
         <Dialog.Input
           required={true}
-          placeholder="Seleciona a data"
-          value={data}
-          onChange={setData}
           type="date"
+          value={formData.data}
+          onChange={(value) => setFormData(prev => ({ ...prev, data: value }))}
+          error={errors.data}
         />
-        {/* Aqui os nomes dos professores devem vir de forma automatica do banco de dados.*/}
+
         <Dialog.Select
           required={true}
-          options={[
-            { label: 'Selecione o professor', value: '' },
-            { label: 'nome do professor', value: 'Prof. João Silva' },
-          ]}
-          value={professor}
-          onChange={(value: string | number) => setProfessor(String(value))}
+          options={professorOptions}
+          value={formData.professorId}
+          onChange={(value) => setFormData(prev => ({ 
+            ...prev, 
+            professorId: Number(value) 
+          }))}
+          error={errors.professorId}
+          disabled={loadingProfessores}
         />
-        {/* Aqui as horas trabalhadas, possivelmente devem ser calculadas de forma automatica.*/}
-        <Dialog.Input
-          muted={true}
-          placeholder="Digite as horas trabalhadas"
-          value={horasTrabalhadas}
-          onChange={(value: string) => setHorasTrabalhadas(Number(value))}
-          type="number"
-        />
+
         <Dialog.Select
-          options={[
-            { label: 'Selecione o status', value: '' },
-            { label: 'Presente', value: 'PRESENTE' },
-            { label: 'Falta', value: 'FALTA' },
-          ]}
-          value={status}
-          onChange={(value: string | number) =>
-            setStatus(value as '' | 'PRESENTE' | 'FALTA')
-          }
+          required={true}
+          options={cursoOptions}
+          value={formData.cursoId || '' || 0}
+          onChange={(value) => setFormData(prev => ({ 
+            ...prev, 
+            cursoId: Number(value) 
+          }))}
+          error={errors.cursoId}
+          disabled={loadingCursos}
+        />
+
+        <Dialog.Input
+          required={true}
+          type="number"
+          placeholder="Digite as horas trabalhadas"
+          value={formData.horasTrabalhadas}
+          onChange={(value) => setFormData(prev => ({ 
+            ...prev, 
+            horasTrabalhadas: Number(value) 
+          }))}
+          error={errors.horasTrabalhadas}
+          min={0}
+          max={24}
+          step={0.5}
         />
       </Dialog.Content>
       <Dialog.Actions>
         <Dialog.Button variant="secondary" onClick={handleCancel}>
           Cancelar
         </Dialog.Button>
-        <Dialog.Button onClick={handleSubmit}>Cadastrar</Dialog.Button>
+        <Dialog.Button 
+          onClick={handleSubmit} 
+          disabled={createEfetividade.isPending || loadingProfessores || loadingCursos}
+        >
+          {createEfetividade.isPending ? 'Registrando...' : 'Registrar'}
+        </Dialog.Button>
       </Dialog.Actions>
     </Dialog.Root>
   );

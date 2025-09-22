@@ -81,6 +81,8 @@
   color: var(--color-gray);
   background-color: var(--purple-heart-100);
   transition: all 0.2s ease;
+  resize: vertical;
+  font-family: inherit;
 }
 
 .form-input:focus {
@@ -91,6 +93,12 @@
 
 .form-input::placeholder {
   color: var(--color-gray);
+}
+
+/* Estilo específico para textarea */
+.form-input[rows] {
+  min-height: 8rem;
+  resize: vertical;
 }
 
 .form-select {
@@ -141,6 +149,14 @@ select[aria-invalid="true"] {
   opacity: 0.6;
   cursor: not-allowed;
   background-color: var(--muted);
+}
+
+/* Estilo para textarea desabilitada */
+textarea.form-input[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--muted);
+  resize: none;
 }
 
 /*

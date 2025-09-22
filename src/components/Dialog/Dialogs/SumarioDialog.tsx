@@ -1,6 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog } from '../Dialog';
 import { SumarioForm } from '../../../types/entities';
+import { useCreateSumario } from '../../../hooks/useSumarios';
+import { useCursos } from '../../../hooks/useCursos';
+import { useAuth } from '../../../hooks/useAuthentication';
+import { validateDate, validateSumarioConteudo } from '../../../utils/validations';
+import { toast } from 'react-toastify';
+
+interface FormErrors {
+  data?: string;
+  cursoId?: string;
+  conteudo?: string;
+}
 
 export function SumarioDialog({
   isOpen,
@@ -9,76 +20,142 @@ export function SumarioDialog({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: SumarioForm) => void;
+  onSubmit?: (data: SumarioForm) => void;
 }) {
-  // const [data, setData] = useState(''); // Data vem do sistema automaticamente
-  // O professor tambem vem do sistema, pois é o usuario logado
-  const [data, setData] = useState('');
-  const [curso, setCurso] = useState('');
-  const [professor, setProfessor] = useState('');
-  const [conteudo, setConteudo] = useState('');
+  const createSumario = useCreateSumario();
+  const { data: cursosData, isLoading: loadingCursos } = useCursos();
+  const { user } = useAuth();
 
-  const handleSubmit = () => {
-    if (data && curso && professor && conteudo) {
-      onSubmit({ data, curso, professor, conteudo });
+  const [formData, setFormData] = useState<SumarioForm>({
+    data: new Date().toISOString().split('T')[0], // Data atual
+    conteudo: '',
+    cursoId: 0,
+    professorId: 0,
+  });
+
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  // Preencher professor automaticamente quando o usuário for carregado
+  useEffect(() => {
+    if (user && user.tipo === 'PROFESSOR') {
+      setFormData(prev => ({ 
+        ...prev, 
+        professorId: Number(user.id) 
+      }));
+    }
+  }, [user]);
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    const dataError = validateDate(formData.data);
+    const conteudoError = validateSumarioConteudo(formData.conteudo);
+
+    if (dataError) newErrors.data = dataError;
+    if (conteudoError) newErrors.conteudo = conteudoError;
+    if (!formData.cursoId) newErrors.cursoId = 'Curso é obrigatório';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      toast.error('Por favor, corrija os erros no formulário');
+      return;
+    }
+
+    try {
+      await createSumario.mutateAsync({
+        Data: formData.data,
+        Conteudo: formData.conteudo,
+        CursoID: formData.cursoId,
+        ProfessorID: formData.professorId,
+      });
+
+      toast.success('Sumário criado com sucesso!');
+      onSubmit?.(formData);
       handleCancel();
+    } catch (error) {
+      console.error('Erro ao criar sumário:', error);
+      toast.error('Erro ao criar sumário. Tente novamente.');
     }
   };
 
   const handleCancel = () => {
-    setData('');
-    setCurso('');
-    setProfessor('');
-    setConteudo('');
+    setFormData({
+      data: new Date().toISOString().split('T')[0],
+      conteudo: '',
+      cursoId: 0,
+      professorId: Number(user?.id) || 0,
+    });
+    setErrors({});
     onClose();
   };
+
+  // Preparar opções dos cursos
+  const cursoOptions = [
+    { label: 'Selecione o curso', value: '' },
+    ...(cursosData?.data?.map(curso => ({
+      label: curso.Nome,
+      value: curso.CursoID
+    })) || [])
+  ];
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Header
         title="Gerar sumário"
-        subtitle="Configure os parâmetros do Sumário"
+        subtitle="Configure os parâmetros do sumário"
       />
       <Dialog.Content>
         <Dialog.Input
           required={true}
-          // O ideal é que a data venha do sistema automaticamente
-          // Por isso o type date
-          value={data}
-          onChange={setData}
           type="date"
+          value={formData.data}
+          onChange={(value) => setFormData(prev => ({ ...prev, data: value }))}
+          error={errors.data}
         />
+
         <Dialog.Select
           required={true}
-          options={[
-            { label: 'Selecione o curso a lecionar', value: '' },
-            { label: 'Curso 1', value: 'Curso 1' },
-            { label: 'Curso 2', value: 'Curso 2' },
-          ]}
-          value={curso}
-          onChange={(value: string | number) => setCurso(String(value))}
+          options={cursoOptions}
+          value={formData.cursoId}
+          onChange={(value) => setFormData(prev => ({ 
+            ...prev, 
+            cursoId: Number(value) 
+          }))}
+          error={errors.cursoId}
+          disabled={loadingCursos}
         />
 
-        {/* Aqui o professor vai ser default, vindo do banco ou seja, é o usuário logado */}
         <Dialog.Input
           muted={true}
-          placeholder="Preenche com o nome do professor"
-          value={professor}
-          onChange={setProfessor}
+          placeholder="Professor"
+          value={user?.nome || 'Professor não identificado'}
+          onChange={() => {}}
+          disabled={true}
         />
 
         <Dialog.Input
           required={true}
-          placeholder="Preenche o conteudo do Sumário"
-          value={conteudo}
-          onChange={setConteudo}
+          placeholder="Digite o conteúdo do sumário"
+          value={formData.conteudo}
+          onChange={(value) => setFormData(prev => ({ ...prev, conteudo: value }))}
+          error={errors.conteudo}
+          multiline={true}
         />
       </Dialog.Content>
       <Dialog.Actions>
         <Dialog.Button variant="secondary" onClick={handleCancel}>
           Cancelar
         </Dialog.Button>
-        <Dialog.Button onClick={handleSubmit}>Gerar Sumário</Dialog.Button>
+        <Dialog.Button 
+          onClick={handleSubmit} 
+          disabled={createSumario.isPending || loadingCursos}
+        >
+          {createSumario.isPending ? 'Gerando...' : 'Gerar Sumário'}
+        </Dialog.Button>
       </Dialog.Actions>
     </Dialog.Root>
   );
