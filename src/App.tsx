@@ -94,9 +94,9 @@ const routers = createBrowserRouter([
         element: <Navigate to="/dashboard" replace />,
       },
     ],
-    //   },
-    // ],
-  },
+      },
+  //   ],
+  // },
   {
     path: "*",
     element: <Navigate to="/" replace />,

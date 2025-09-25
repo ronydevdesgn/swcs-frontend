@@ -18,7 +18,7 @@ interface ValidateUserResponse {
     id: number;
     nome: string;
     email: string;
-    tipo: string;
+    tipo?: string;
   };
 }
 
@@ -73,7 +73,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await api.post<AuthResponse>("/auth/login", {
         email: data.email,
         senha: data.password,
-        // tipo: "FUNCIONARIO" // Ou detectar dinamicamente
       });
 
       const { token, refreshToken, user: userData } = response.data;
