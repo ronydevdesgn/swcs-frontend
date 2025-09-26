@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logger } from "../utils/logger";
 
 interface RefreshTokenResponse {
   accessToken: string;
@@ -46,7 +47,7 @@ api.interceptors.response.use(
       
       if (!refreshToken) {
         // Não há refresh token, redirecionar para login
-        console.log('Nenhum refresh token encontrado, redirecionando para login...');
+        logger.error('Erro de autenticação (token):', error);
         localStorage.removeItem("@swcs:token");
         localStorage.removeItem("@swcs:refreshToken");
         window.location.href = "/login";
@@ -54,7 +55,7 @@ api.interceptors.response.use(
       }
 
       try {
-        console.log('Tentando renovar token...');
+        logger.debug('Tentando renovar token...');
         
         // Fazer a requisição de refresh sem interceptors para evitar loop
         const response = await axios.post<RefreshTokenResponse>(
@@ -72,7 +73,7 @@ api.interceptors.response.use(
         localStorage.setItem("@swcs:token", accessToken);
         localStorage.setItem("@swcs:refreshToken", newRefreshToken);
 
-        console.log('Token renovado com sucesso');
+        logger.debug('Token renovado com sucesso.');
 
         // Atualizar o header da requisição original
         if (originalRequest.headers) {
@@ -82,7 +83,7 @@ api.interceptors.response.use(
         // Repetir a requisição original
         return api(originalRequest);
       } catch (refreshError) {
-        console.error('Erro ao renovar token:', refreshError);
+        logger.error('Erro ao renovar token:', refreshError);
         
         // Falha na renovação, limpar tudo e redirecionar
         localStorage.removeItem("@swcs:token");
