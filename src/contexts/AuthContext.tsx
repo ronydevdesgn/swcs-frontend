@@ -3,8 +3,11 @@ import { LoginFormData, User, AuthContextData } from '../types/auth';
 import { SplashScreen } from '../components/SplashScreen';
 import { api } from '../lib/api';
 import { toast } from 'react-toastify';
+import { logger } from '../utils/logger';
 
-export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+export const AuthContext = createContext<AuthContextData>(
+  {} as AuthContextData,
+);
 
 interface AuthResponse {
   token: string;
@@ -33,8 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Função para validar token armazenado
   async function validateStoredToken() {
     try {
-      const token = localStorage.getItem("@swcs:token");
-      const refreshToken = localStorage.getItem("@swcs:refreshToken");
+      const token = localStorage.getItem('@swcs:token');
+      const refreshToken = localStorage.getItem('@swcs:refreshToken');
 
       if (!token || !refreshToken) {
         setLoading(false);
@@ -44,22 +47,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Tentar fazer uma requisição autenticada para validar o token
       // Usando qualquer endpoint protegido - vou usar /usuarios para pegar dados do usuário atual
       const response = await api.get<ValidateUserResponse>('/auth/me');
-      
+
       if (response.data?.data) {
         const userData = response.data.data;
         setUser({
           id: userData.id.toString(),
           nome: userData.nome,
           email: userData.email,
-          tipo: userData.tipo as "FUNCIONARIO" | "PROFESSOR"
+          tipo: userData.tipo as 'FUNCIONARIO' | 'PROFESSOR',
         });
       }
     } catch (error: any) {
       // Se a validação falhar, limpar tokens
       if (error.response?.status === 401) {
         console.log('Token inválido ou expirado, limpando credenciais...');
-        localStorage.removeItem("@swcs:token");
-        localStorage.removeItem("@swcs:refreshToken");
+        localStorage.removeItem('@swcs:token');
+        localStorage.removeItem('@swcs:refreshToken');
       } else {
         console.warn('Erro ao validar token:', error.message);
       }
@@ -70,27 +73,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signIn(data: LoginFormData): Promise<void> {
     try {
-      const response = await api.post<AuthResponse>("/auth/login", {
+      logger.debug('Tentando fazer login...', { email: data.email });
+
+      const response = await api.post<AuthResponse>('/auth/login', {
         email: data.email,
         senha: data.password,
       });
 
+      logger.debug('Tentando fazer login...', { email: data.email });
+      // Verificar se a resposta tem a estrutura esperada
+      if (!response.data) {
+        throw new Error('Resposta inválida do servidor');
+      }
+
       const { token, refreshToken, user: userData } = response.data;
 
       // Salvar tokens no localStorage
-      localStorage.setItem("@swcs:token", token);
-      localStorage.setItem("@swcs:refreshToken", refreshToken);
+      localStorage.setItem('@swcs:token', token);
+      localStorage.setItem('@swcs:refreshToken', refreshToken);
 
       // Atualizar estado do usuário
       setUser(userData);
 
-      toast.success("Login realizado com sucesso!");
-
+      toast.success('Login realizado com sucesso!');
     } catch (error: any) {
-      const errorMessage = error.response?.data?.mensagem || 
-                          error.message || 
-                          'Erro na autenticação';
-      
+      logger.error('Erro no login:', error);
+
+      let errorMessage = 'Erro na autenticação';
+
+      // Verificar tipo de erro
+      if (error.name === 'NetworkError') {
+        errorMessage =
+          'Erro de conexão: Verifique se o servidor está funcionando.';
+      } else if (error.response?.data?.mensagem) {
+        errorMessage = error.response.data.mensagem;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
       toast.error(errorMessage);
       throw new Error(errorMessage);
     }
@@ -103,12 +125,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
 
     // Limpar tokens do localStorage
-    localStorage.removeItem("@swcs:token");
-    localStorage.removeItem("@swcs:refreshToken");
-    
+    localStorage.removeItem('@swcs:token');
+    localStorage.removeItem('@swcs:refreshToken');
+
     // Limpar estado do usuário
     setUser(null);
-    
+
     toast.info('Você foi desconectado.');
   }
 
@@ -117,12 +139,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated: !!user, 
-      signIn, 
-      signOut 
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        signIn,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
