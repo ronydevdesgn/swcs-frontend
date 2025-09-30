@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 interface AuthResponse {
-  token: string;
+  accessToken: string;
   refreshToken: string;
   user: User;
 }
@@ -75,17 +75,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         senha: data.password,
       });
 
-      const { token, refreshToken, user: userData } = response.data;
+      const { accessToken, refreshToken, user: userData } = response.data;
 
       // Salvar tokens no localStorage
-      localStorage.setItem("@swcs:token", token);
+      localStorage.setItem("@swcs:token", accessToken);
       localStorage.setItem("@swcs:refreshToken", refreshToken);
 
       // Atualizar estado do usuário
       setUser(userData);
-
-      toast.success("Login realizado com sucesso!");
-
     } catch (error: any) {
       const errorMessage = error.response?.data?.mensagem || 
                           error.message || 
