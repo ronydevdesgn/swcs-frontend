@@ -1,8 +1,8 @@
 export const logger = {
   debug: (msg: string, data?: any) => {
     if (
-      process.env.NODE_ENV === 'development' ||
-      process.env.NODE_ENV === 'dev'
+      import.meta.env.NODE_ENV === 'development' ||
+      import.meta.env.NODE_ENV === 'dev'
     ) {
       console.log(`[DEBUG] ${msg}`, data);
     }

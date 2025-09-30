@@ -86,11 +86,11 @@ export function FormForgot() {
           <p>Preencha o campo abaixo se esqueceu sua senha</p>
         </div>
 
-        {errors.submit && (
+        {/* {errors.submit && (
           <div className="error-message global-error" role="alert">
             {errors.submit}
           </div>
-        )}
+        )} */}
 
         <div className="group-input">
           <div className="input-field">

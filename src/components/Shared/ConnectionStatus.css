@@ -1,0 +1,48 @@
+.connection-status {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 1.2rem 1.6rem;
+  border-radius: .8rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 .4rem 1.2rem rgba(0, 0, 0, 0.15);
+  min-width: 28rem;
+}
+
+.connection-status.online {
+  background-color: var(--warning-online);
+  color: var(--purple-heart-50);
+}
+
+.connection-status.offline {
+  background-color: var(--warning-required);
+  color: var(--purple-heart-50);
+}
+
+.connection-status button {
+  margin-top: .8rem;
+  padding: .4rem .8rem;
+  border: none;
+  border-radius: .4rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--purple-heart-50);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.connection-status button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.connection-status button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.connection-status p {
+  margin: .4rem 0;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}

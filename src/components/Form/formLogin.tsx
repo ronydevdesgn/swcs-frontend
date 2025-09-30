@@ -86,11 +86,11 @@ export function FormLogin() {
           <p>Preencha os campos abaixos se tiver uma conta</p>
         </div>
 
-        {errors.submit && (
+        {/* {errors.submit && (
           <div className="error-message global-error" role="alert">
             {errors.submit}
           </div>
-        )}
+        )} */}
 
         <div className="group-input">
           <div className="input-field">

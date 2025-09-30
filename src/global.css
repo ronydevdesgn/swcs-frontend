@@ -17,10 +17,12 @@
 
 :root {
   /* colors */
+  /* colors neutral */
   --color-black: #010101;
   --color-gray: #333;
   /* warning required */
   --warning-required: #dc3545;
+  --warning-online: #10b981;
   --muted: #6c757d;
   /* color scrollbar */
   --scrollbar-background: rgba(159, 117, 255, 0.5) transparent;

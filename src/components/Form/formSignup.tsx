@@ -112,11 +112,11 @@ export function FormSignup() {
           <p>Preencha os campos abaixo para criar sua conta!</p>
         </div>
 
-        {errors.submit && (
+        {/* {errors.submit && (
           <div className="error-message global-error" role="alert">
             {errors.submit}
           </div>
-        )}
+        )} */}
 
         <div className="group-input">
           <div className="input-field">
