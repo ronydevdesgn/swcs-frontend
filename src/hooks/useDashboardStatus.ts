@@ -70,5 +70,6 @@ export function useDashboardStats() {
     },
     enabled: !isLoadingProfessores && !isLoadingCursos && !isLoadingSumarios && !isLoadingPresencas,
     staleTime: 5 * 60 * 1000, // 5 minutos
+    gcTime: 10 * 60 * 1000,
   });
 }

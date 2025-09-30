@@ -5,3 +5,7 @@
   height: 100vh;
   font-size: 2rem;
 }
+
+.splash-screen h1 {
+  color: var(--purple-heart-700);
+}

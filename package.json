@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@eslint/config-array": "^0.21.0",
     "@tanstack/react-query": "^5.83.0",
     "axios": "^1.11.0",
+    "glob": "^11.0.3",
     "jspdf": "^3.0.2",
     "jspdf-autotable": "^5.0.2",
     "localforage": "^1.10.0",
@@ -21,11 +23,13 @@
     "react-feather": "^2.0.10",
     "react-router-dom": "^6.24.0",
     "react-toastify": "^11.0.5",
+    "rimraf": "^6.0.1",
     "sort-by": "^0.0.2",
     "vite": "^6.3.5"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",
+    "@types/node": "^24.5.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
