@@ -10,7 +10,7 @@ export const AuthContext = createContext<AuthContextData>(
 );
 
 interface AuthResponse {
-  token: string;
+  accessToken: string;
   refreshToken: string;
   user: User;
 }
@@ -80,22 +80,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         senha: data.password,
       });
 
-      logger.debug('Tentando fazer login...', { email: data.email });
-      // Verificar se a resposta tem a estrutura esperada
-      if (!response.data) {
-        throw new Error('Resposta inválida do servidor');
-      }
-
-      const { token, refreshToken, user: userData } = response.data;
+      const { accessToken, refreshToken, user: userData } = response.data;
 
       // Salvar tokens no localStorage
-      localStorage.setItem('@swcs:token', token);
-      localStorage.setItem('@swcs:refreshToken', refreshToken);
+      localStorage.setItem("@swcs:token", accessToken);
+      localStorage.setItem("@swcs:refreshToken", refreshToken);
 
       // Atualizar estado do usuário
       setUser(userData);
-
-      toast.success('Login realizado com sucesso!');
     } catch (error: any) {
       logger.error('Erro no login:', error);
 

@@ -93,7 +93,7 @@ api.interceptors.response.use(
 
         // Fazer a requisição de refresh sem interceptors para evitar loop
         const response = await axios.post<RefreshTokenResponse>(
-          `${API_BASE_URL}/auth/refresh`,
+          `${import.meta.env.VITE_API_URL}/auth/refresh`,
           { refreshToken },
           {
             headers: {
