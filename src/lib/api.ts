@@ -6,7 +6,7 @@ interface RefreshTokenResponse {
   refreshToken: string;
 }
 
-const API_BASE_URL = process.env.VITE_API_URL || 'http://localhost:3333';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
 logger.debug(`API Base URL configurada: ${API_BASE_URL}`);
 
 export const api = axios.create({
@@ -89,7 +89,7 @@ api.interceptors.response.use(
 
         // Fazer a requisição de refresh sem interceptors para evitar loop
         const response = await axios.post<RefreshTokenResponse>(
-          `${process.env.VITE_API_URL}/auth/refresh`,
+          `${import.meta.env.VITE_API_URL}/auth/refresh`,
           { refreshToken },
           {
             headers: { 'Content-Type': 'application/json' },
