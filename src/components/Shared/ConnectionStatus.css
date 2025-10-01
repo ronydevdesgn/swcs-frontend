@@ -45,4 +45,5 @@
   margin: .4rem 0;
   font-size: 1.2rem;
   opacity: 0.9;
+  color: var(--warning-required);
 }
