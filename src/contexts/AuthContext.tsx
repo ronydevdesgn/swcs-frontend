@@ -83,8 +83,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { accessToken, refreshToken, user: userData } = response.data;
 
       // Salvar tokens no localStorage
-      localStorage.setItem("@swcs:token", accessToken);
-      localStorage.setItem("@swcs:refreshToken", refreshToken);
+      localStorage.setItem('@swcs:token', accessToken);
+      localStorage.setItem('@swcs:refreshToken', refreshToken);
 
       // Atualizar estado do usuário
       setUser(userData);
@@ -113,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function signOut(): void {
     // Fazer logout no backend
     api.post('/auth/logout').catch(() => {
-      // Ignorar erros de logout no backend
+
     });
 
     // Limpar tokens do localStorage
@@ -124,6 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
 
     toast.info('Você foi desconectado.');
+    // navigate("/login", {replace: true});
   }
 
   if (loading) {
