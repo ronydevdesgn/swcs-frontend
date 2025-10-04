@@ -60,6 +60,7 @@ api.interceptors.response.use(
         },
       });
 
+      console.log("BBB")
       // Criar erro mais descritivo
       const networkError = new Error(
         `Erro de conexão: Não foi possível conectar ao servidor em ${API_BASE_URL}. 
@@ -69,6 +70,7 @@ api.interceptors.response.use(
       return Promise.reject(networkError);
     }
 
+    
     const originalRequest = error.config as typeof error.config & {
       _retry?: boolean;
     };
@@ -121,6 +123,7 @@ api.interceptors.response.use(
         // Repetir a requisição original
         return api(originalRequest);
       } catch (refreshError) {
+        
         logger.error('Erro ao renovar token:', refreshError);
 
         // Falha na renovação, limpar tudo e redirecionar

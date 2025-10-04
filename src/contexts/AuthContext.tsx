@@ -28,6 +28,7 @@ interface ValidateUserResponse {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     validateStoredToken();
@@ -88,6 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Atualizar estado do usuário
       setUser(userData);
+      setError(null)
     } catch (error: any) {
       logger.error('Erro no login:', error);
 
@@ -99,22 +101,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           'Erro de conexão: Verifique se o servidor está funcionando.';
       } else if (error.response?.data?.mensagem) {
         errorMessage = error.response.data.mensagem;
-      } else if (error.response?.data?.message) {
-        errorMessage = error.response.data.message;
       } else if (error.message) {
         errorMessage = error.message;
       }
 
       toast.error(errorMessage);
-      throw new Error(errorMessage);
+      setError(errorMessage)
+      throw new Error(error)
     }
   }
 
-  function signOut(): void {
+  async function signOut() {
     // Fazer logout no backend
-    api.post('/auth/logout').catch(() => {
-
-    });
+    await api.post('/auth/logout')
 
     // Limpar tokens do localStorage
     localStorage.removeItem('@swcs:token');
@@ -122,7 +121,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Limpar estado do usuário
     setUser(null);
-
     toast.info('Você foi desconectado.');
     // navigate("/login", {replace: true});
   }
@@ -138,6 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         signIn,
         signOut,
+        error
       }}
     >
       {children}

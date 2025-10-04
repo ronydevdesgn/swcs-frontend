@@ -21,7 +21,7 @@ import { Sumarios } from "./pages/Sumarios";
 // All routes (todas as rotas)
 const routers = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: <Login />,
   },
   {

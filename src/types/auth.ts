@@ -52,4 +52,5 @@ export interface AuthContextData {
   user: User | null;
   signIn: (data: LoginFormData) => Promise<void>;
   signOut: () => void;
+  error: string | null;
 }

@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "./Sidebar.css";
-import { useAuth, useLogout } from "../../hooks/useAuthentication";
+import { useAuth } from "../../hooks/useAuthentication";
 import {
   Layout,
   Layers,
@@ -14,8 +14,14 @@ import {
 } from "react-feather";
 
 export function Sidebar() {
-  const { user } = useAuth();
-  const logout = useLogout();
+  const navigate = useNavigate()
+  const { user, signOut } = useAuth();
+
+
+  async function handleLogout(){
+    await signOut()
+    navigate('/login', { replace: true });
+  }
 
   return (
     <div className="container-item sidebar-container">
@@ -59,7 +65,7 @@ export function Sidebar() {
             <User size={18} />
             <span>Perfil</span>
           </NavLink>
-          <button onClick={logout} className="logout-button Icon-link">
+          <button onClick={handleLogout} className="logout-button Icon-link">
             <Minimize2 size={18} />
             <span>Terminar</span>
           </button>
