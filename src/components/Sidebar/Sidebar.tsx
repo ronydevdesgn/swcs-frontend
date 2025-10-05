@@ -17,7 +17,6 @@ export function Sidebar() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth();
 
-
   async function handleLogout(){
     await signOut()
     navigate('/login', { replace: true });
@@ -29,30 +28,35 @@ export function Sidebar() {
 
       <nav>
         <div className="itens-nav-grup">
-          <NavLink to="/cursos" className={"Icon-link"}>
-            <Layout size={18} />
-            <span>Cursos</span>
-          </NavLink>
+         
           <NavLink to="/dashboard" className={"Icon-link"}>
             <Activity size={18} />
             <span>Dashboard</span>
           </NavLink>
-          {user?.tipo === "FUNCIONARIO" && (
+          {  user?.tipo === "FUNCIONARIO" && (
             <>
-          <NavLink to="/professores" className={"Icon-link"}>
-            <Users size={18} />
-            <span>Professores</span>
-          </NavLink>
-          <NavLink to="/efetividade" className={"Icon-link"}>
-            <BarChart2 size={18} />
-            <span>Efetividade</span>
-          </NavLink>
+            <NavLink to="/cursos" className={"Icon-link"}>
+              <Layout size={18} />
+              <span>Cursos</span>
+            </NavLink>
+
+            <NavLink to="/professores" className={"Icon-link"}>
+              <Users size={18} />
+              <span>Professores</span>
+            </NavLink>
+
+            <NavLink to="/efetividade" className={"Icon-link"}>
+              <BarChart2 size={18} />
+              <span>Efetividade</span>
+            </NavLink>
+
+            <NavLink to="/relatorios" className={"Icon-link"}>
+              <Layers size={18} />
+              <span>Relatórios</span>
+            </NavLink>
           </>
           )}
-          <NavLink to="/relatorios" className={"Icon-link"}>
-            <Layers size={18} />
-            <span>Relatórios</span>
-          </NavLink>
+          
           <NavLink to="/sumarios" className={"Icon-link"}>
             <BookOpen size={18} />
             <span>Sumários</span>

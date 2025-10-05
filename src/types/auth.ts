@@ -53,4 +53,5 @@ export interface AuthContextData {
   signIn: (data: LoginFormData) => Promise<void>;
   signOut: () => void;
   error: string | null;
+  loading: boolean;
 }

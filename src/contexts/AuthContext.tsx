@@ -12,7 +12,7 @@ export const AuthContext = createContext<AuthContextData>(
 interface AuthResponse {
   accessToken: string;
   refreshToken: string;
-  user: User;
+  usuario: User;
 }
 
 // Interface para validação do usuário logado
@@ -31,6 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    
     validateStoredToken();
   }, []);
 
@@ -39,7 +40,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const token = localStorage.getItem('@swcs:token');
       const refreshToken = localStorage.getItem('@swcs:refreshToken');
-
+      console.log("token", token)
+      console.log("refreshToken", token)
       if (!token || !refreshToken) {
         setLoading(false);
         return;
@@ -49,6 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Usando qualquer endpoint protegido - vou usar /usuarios para pegar dados do usuário atual
       const response = await api.get<ValidateUserResponse>('/auth/me');
 
+      
       if (response.data?.data) {
         const userData = response.data.data;
         setUser({
@@ -75,13 +78,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signIn(data: LoginFormData): Promise<void> {
     try {
       logger.debug('Tentando fazer login...', { email: data.email });
-
+      setLoading(true)
       const response = await api.post<AuthResponse>('/auth/login', {
         email: data.email,
         senha: data.password,
       });
 
-      const { accessToken, refreshToken, user: userData } = response.data;
+      const { accessToken, refreshToken, usuario: userData } = response.data;
 
       // Salvar tokens no localStorage
       localStorage.setItem('@swcs:token', accessToken);
@@ -108,6 +111,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       toast.error(errorMessage);
       setError(errorMessage)
       throw new Error(error)
+    }finally{
+      setLoading(false)
     }
   }
 
@@ -132,6 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{
+        loading,
         user,
         isAuthenticated: !!user,
         signIn,
