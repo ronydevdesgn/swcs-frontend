@@ -1,3 +1,5 @@
+import { Professor } from "./entities";
+
 export type UserRole = "FUNCIONARIO" | "PROFESSOR";
 
 export interface User {
@@ -5,6 +7,7 @@ export interface User {
   nome: string;
   email: string;
   tipo: UserRole;
+  professor?: Professor | null;
   permissoes?: string[];
 }
 

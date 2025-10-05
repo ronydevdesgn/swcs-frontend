@@ -4,6 +4,7 @@ import { SplashScreen } from '../components/SplashScreen';
 import { api } from '../lib/api';
 import { toast } from 'react-toastify';
 import { logger } from '../utils/logger';
+import { Professor } from '../types/entities';
 
 export const AuthContext = createContext<AuthContextData>(
   {} as AuthContextData,
@@ -22,6 +23,7 @@ interface ValidateUserResponse {
     nome: string;
     email: string;
     tipo?: string;
+    professor?: Professor | null;
   };
 }
 
@@ -40,8 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const token = localStorage.getItem('@swcs:token');
       const refreshToken = localStorage.getItem('@swcs:refreshToken');
-      console.log("token", token)
-      console.log("refreshToken", token)
+
       if (!token || !refreshToken) {
         setLoading(false);
         return;
@@ -59,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           nome: userData.nome,
           email: userData.email,
           tipo: userData.tipo as 'FUNCIONARIO' | 'PROFESSOR',
+          professor: userData.professor
         });
       }
     } catch (error: any) {
@@ -85,6 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       const { accessToken, refreshToken, usuario: userData } = response.data;
+      console.log("userData", userData)
 
       // Salvar tokens no localStorage
       localStorage.setItem('@swcs:token', accessToken);
