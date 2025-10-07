@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog } from '../Dialog';
 import { SumarioForm } from '../../../types/entities';
 import { useCreateSumario } from '../../../hooks/useSumarios';
@@ -6,6 +6,7 @@ import { useCursos } from '../../../hooks/useCursos';
 import { useAuth } from '../../../hooks/useAuthentication';
 import { validateDate, validateSumarioConteudo } from '../../../utils/validations';
 import { toast } from 'react-toastify';
+import { useProfessores } from '../../../hooks/useProfessores';
 
 interface FormErrors {
   data?: string;
@@ -24,6 +25,8 @@ export function SumarioDialog({
 }) {
   const createSumario = useCreateSumario();
   const { data: cursosData, isLoading: loadingCursos } = useCursos();
+  const { data: professorsData } = useProfessores();
+
   const { user } = useAuth();
 
   const [formData, setFormData] = useState<SumarioForm>({
@@ -37,10 +40,11 @@ export function SumarioDialog({
 
   // Preencher professor automaticamente quando o usuário for carregado
   useEffect(() => {
+    console.log("user", user)
     if (user && user.tipo === 'PROFESSOR') {
       setFormData(prev => ({ 
         ...prev, 
-        professorId: Number(user.id) 
+        professorId: Number(user.professor?.professorId) 
       }));
     }
   }, [user]);
@@ -59,6 +63,21 @@ export function SumarioDialog({
     return Object.keys(newErrors).length === 0;
   };
 
+  const cursosDataFilters = useMemo(()=> {
+    let cursos: any = []
+
+    if((user && user.tipo === 'PROFESSOR') || formData.professorId > 0){
+      console.log("user-aaa", user?.professor?.professorId)
+      cursos = cursosData?.data.filter((curso)=> curso.Professores.some((professor)=> professor.ProfessorID === user?.professor?.professorId || professor.ProfessorID === formData.professorId)).map((curso)=> ({
+      label: curso.Nome,
+      value: curso.CursoID
+      }))
+    }
+    
+
+    return cursos || []
+  }, [formData.professorId, loadingCursos])
+
   const handleSubmit = async () => {
     if (!validateForm()) {
       toast.error('Por favor, corrija os erros no formulário');
@@ -67,7 +86,7 @@ export function SumarioDialog({
 
     try {
       await createSumario.mutateAsync({
-        Data: formData.data,
+        Data: new Date(formData.data).toISOString(),
         Conteudo: formData.conteudo,
         CursoID: formData.cursoId,
         ProfessorID: formData.professorId,
@@ -93,13 +112,32 @@ export function SumarioDialog({
     onClose();
   };
 
+  const professorDataFilter = ()=> {
+    let professors = professorsData?.data.map(professor => ({
+      label: professor.Nome,
+      value: professor.ProfessorID
+    }))
+
+    if(user && user.tipo === 'PROFESSOR'){
+      professors = professorsData?.data.filter((professor)=> professor.ProfessorID === user.professor?.professorId ).map((professor)=> ({
+      label: professor.Nome,
+      value: professor.ProfessorID
+      }))
+    }
+
+    return professors || []
+  }
+
   // Preparar opções dos cursos
   const cursoOptions = [
     { label: 'Selecione o curso', value: '' },
-    ...(cursosData?.data?.map(curso => ({
-      label: curso.Nome,
-      value: curso.CursoID
-    })) || [])
+    ...cursosDataFilters
+  ];
+
+
+   const professorOptions = [
+    { label: 'Selecione o professor', value: '' },
+    ...professorDataFilter()
   ];
 
   return (
@@ -118,6 +156,18 @@ export function SumarioDialog({
         />
 
         <Dialog.Select
+          muted={!!user?.professor?.professorId}
+          required={true}
+          options={professorOptions}
+          value={user?.professor?.professorId || formData.professorId}
+          onChange={(value) => setFormData(prev => ({ 
+            ...prev, 
+            professorId: Number(value) 
+          }))}
+          disabled={!!user?.professor?.professorId}
+        />
+
+        <Dialog.Select
           required={true}
           options={cursoOptions}
           value={formData.cursoId}
@@ -129,13 +179,15 @@ export function SumarioDialog({
           disabled={loadingCursos}
         />
 
-        <Dialog.Input
-          muted={true}
+        {/* <Dialog.Input
+          muted={!!user?.professor?.nome}
           placeholder="Professor"
-          value={user?.nome || 'Professor não identificado'}
-          onChange={() => {}}
-          disabled={true}
-        />
+          value={user?.professor?.nome || ''}
+          onChange={(value) => {
+            setFormData(prev => ({ ...prev, pr }))
+          }}
+         disabled={!!user?.professor?.nome}
+        /> */}
 
         <Dialog.Input
           required={true}

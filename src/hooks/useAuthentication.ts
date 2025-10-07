@@ -103,8 +103,3 @@ export function useCreateUser() {
   });
 }
 
-// Hook para logout (simplificado)
-export function useLogout() {
-  const { signOut } = useAuth();
-  return signOut;
-}

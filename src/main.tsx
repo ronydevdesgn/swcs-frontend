@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { queryClient } from './lib/react-query';
-import App from './app';
+import App from './App';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 import './global.css';
 

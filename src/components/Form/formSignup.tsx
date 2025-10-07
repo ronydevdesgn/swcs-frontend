@@ -14,7 +14,7 @@ import type {
   SignupFormErrors,
   UserRole,
 } from '../../types/auth';
-import Logoswcs from '../../../public/logoswcs.svg';
+import Logoswcs from '/logoswcs.svg';
 import './form.css';
 
 export function FormSignup() {

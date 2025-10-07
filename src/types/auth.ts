@@ -1,3 +1,5 @@
+import { Professor } from "./entities";
+
 export type UserRole = "FUNCIONARIO" | "PROFESSOR";
 
 export interface User {
@@ -5,6 +7,7 @@ export interface User {
   nome: string;
   email: string;
   tipo: UserRole;
+  professor?: Professor | null;
   permissoes?: string[];
 }
 
@@ -52,4 +55,6 @@ export interface AuthContextData {
   user: User | null;
   signIn: (data: LoginFormData) => Promise<void>;
   signOut: () => void;
+  error: string | null;
+  loading: boolean;
 }

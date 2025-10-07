@@ -18,12 +18,12 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Professor {
-  professorId: number;
-  nome: string;
-  departamento: 'INFORMATICA' | 'OUTROS';
-  cargaHoraria: number;
-  email?: string;
-  cursos?: Curso[];
+  ProfessorID: number;
+  Nome: string;
+  Departamento: 'INFORMATICA' | 'OUTROS';
+  CargaHoraria: number;
+  Email?: string;
+  Cursos?: Curso[];
 }
 
 export interface Curso {

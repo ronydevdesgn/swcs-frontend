@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useResetPassword } from "../../hooks/useAuthentication";
 import { validateEmail } from "../../utils/validations";
-import Logoswcs from "../../../public/logoswcs.svg";
+import Logoswcs from "/logoswcs.svg";
 import {
   ForgotPasswordFormErrors,
   ForgotPasswordFormData,

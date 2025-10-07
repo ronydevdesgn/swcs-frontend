@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuthentication';
 import type { LoginFormData, LoginFormErrors } from '../../types/auth';
 import { validateEmail, validatePassword } from '../../utils/validations';
-import Logoswcs from '../../../public/logoswcs.svg';
+import Logoswcs from '/logoswcs.svg';
 import './form.css';
 
 export function FormLogin() {
@@ -55,7 +55,6 @@ export function FormLogin() {
         ...prev,
         submit: errorMessage,
       }));
-      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
