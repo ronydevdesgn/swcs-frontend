@@ -74,14 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signIn(data: LoginFormData): Promise<void> {
     try {
       logger.debug('Tentando fazer login...', { email: data.email });
-
       const response = await api.post<AuthResponse>('/auth/login', {
         email: data.email,
         senha: data.password,
       });
 
       const { accessToken, refreshToken, user: userData } = response.data;
-
       // Salvar tokens no localStorage
       localStorage.setItem('@swcs:token', accessToken);
       localStorage.setItem('@swcs:refreshToken', refreshToken);
@@ -110,21 +108,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  function signOut(): void {
+  function signOut() {
     // Fazer logout no backend
-    api.post('/auth/logout').catch(() => {
+    api.post('/auth/logout').catch(() => {});
 
-    });
-
-    // Limpar tokens do localStorage
     localStorage.removeItem('@swcs:token');
     localStorage.removeItem('@swcs:refreshToken');
-
-    // Limpar estado do usuário
     setUser(null);
-
+    
     toast.info('Você foi desconectado.');
-    // navigate("/login", {replace: true});
   }
 
   if (loading) {

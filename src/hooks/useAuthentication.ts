@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
@@ -107,10 +106,5 @@ export function useCreateUser() {
 // Hook para logout (simplificado)
 export function useLogout() {
   const { signOut } = useAuth();
-  const navegate = useNavigate();
-  
-  return () => {
-    signOut();
-    navegate('/login', { replace: true });
-  };
+  return signOut;
 }

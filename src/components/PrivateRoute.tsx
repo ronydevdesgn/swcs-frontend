@@ -1,5 +1,5 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../hooks/useAuthentication";
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuthentication';
 
 /**
  * O componente PrivateRoute verifica se o usuário está autenticado.
@@ -9,5 +9,5 @@ import { useAuth } from "../hooks/useAuthentication";
 
 export function PrivateRoute() {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace/>;
 }
