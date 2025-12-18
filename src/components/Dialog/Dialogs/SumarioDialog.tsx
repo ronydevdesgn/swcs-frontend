@@ -74,7 +74,6 @@ export function SumarioDialog({
       }))
     }
     
-
     return cursos || []
   }, [formData.professorId, loadingCursos])
 
@@ -133,7 +132,6 @@ export function SumarioDialog({
     { label: 'Selecione o curso', value: '' },
     ...cursosDataFilters
   ];
-
 
    const professorOptions = [
     { label: 'Selecione o professor', value: '' },

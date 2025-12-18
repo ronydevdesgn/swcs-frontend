@@ -82,8 +82,8 @@ export function CursoDialog({
   const professorOptions = [
     { label: 'Selecione o professor responsável', value: '' },
     ...(professoresData?.data?.map(professor => ({
-      label: `${professor.nome} - ${professor.departamento}`,
-      value: professor.professorId
+      label: `${professor.Nome} - ${professor.Departamento}`,
+      value: professor.ProfessorID
     })) || [])
   ];
 

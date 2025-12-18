@@ -19,11 +19,16 @@ export function Professores() {
 
   // Colunas para o componente Table
   const columns = [
-    { key: 'professorId', label: 'ID' },
-    { key: 'nome', label: 'Nome' },
-    { key: 'departamento', label: 'Departamento' },
-    { key: 'cargaHoraria', label: 'Carga Horária' },
-    { key: 'email', label: 'Email' },
+    { key: 'ProfessorID', label: 'ID' },
+    { key: 'Nome', label: 'Nome' },
+    { key: 'Departamento', label: 'Departamento' },
+    { key: 'CargaHoraria', label: 'Carga Horária' },
+    { 
+      key: 'Usuario', 
+      label: 'Email',  
+      render: (professor: any) => {
+        return professor.Usuario.Email || 'Nenhum';
+      } },
   ];
 
   const handlePageChange = (page: number) => {

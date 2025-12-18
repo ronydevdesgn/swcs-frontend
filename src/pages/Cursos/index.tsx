@@ -19,14 +19,14 @@ export function Cursos() {
 
   // Colunas para o componente Table
   const columns = [
-    { key: 'cursoId', label: 'ID' },
-    { key: 'nome', label: 'Nome' },
-    { key: 'descricao', label: 'Descrição' },
+    { key: 'CursoID', label: 'ID' },
+    { key: 'Nome', label: 'Nome' },
+    { key: 'Descricao', label: 'Descrição' },
     { 
       key: 'professores', 
       label: 'Professores',
       render: (curso: any) => {
-        return curso.professores?.map((p: any) => p.nome).join(', ') || 'Nenhum';
+        return curso.Professores?.map((p: any) => p.Professor.Nome).join(', ') || 'Nenhum';
       }
     },
   ];

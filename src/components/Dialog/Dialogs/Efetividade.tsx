@@ -59,7 +59,7 @@ export function EfetividadeDialog({
 
     try {
       await createEfetividade.mutateAsync({
-        Data: formData.data,
+        Data: new Date(formData.data).toISOString(),
         HorasTrabalhadas: formData.horasTrabalhadas,
         ProfessorID: formData.professorId,
         CursoID: formData.cursoId,
@@ -89,8 +89,8 @@ export function EfetividadeDialog({
   const professorOptions = [
     { label: 'Selecione o professor', value: '' },
     ...(professoresData?.data?.map(professor => ({
-      label: `${professor.nome} - ${professor.departamento}`,
-      value: professor.professorId
+      label: `${professor.Nome} - ${professor.Departamento}`,
+      value: professor.ProfessorID
     })) || [])
   ];
 
