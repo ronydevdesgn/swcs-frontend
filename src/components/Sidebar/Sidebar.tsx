@@ -11,7 +11,7 @@ import {
   User,
   Minimize2,
   BookOpen,
-} from "react-feather";
+} from 'react-feather';
 
 export function Sidebar() {
   const navigate = useNavigate()
@@ -65,7 +65,7 @@ export function Sidebar() {
 
         <div className="sidebar-footer">
           {/* Editar o nome de Perfil para nome do usuario cadastrado */}
-          <NavLink to="/perfil" className={"Icon-link"}>
+          <NavLink to="/perfil" className={'Icon-link'}>
             <User size={18} />
             <span>Perfil</span>
           </NavLink>

@@ -126,11 +126,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Limpar tokens do localStorage
     localStorage.removeItem('@swcs:token');
     localStorage.removeItem('@swcs:refreshToken');
-
-    // Limpar estado do usuário
     setUser(null);
     toast.info('Você foi desconectado.');
-    // navigate("/login", {replace: true});
   }
 
   if (loading) {
