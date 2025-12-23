@@ -21,7 +21,7 @@ export function Perfil() {
       <div className="main-perfil">
         <div className="space">
           <label>Nome completo: </label>
-          <span>{user?.name || "Usuário não encontrado..."}</span>
+          <span>{user?.nome || "Usuário não encontrado..."}</span>
         </div>
         <div className="space">
           <label>E-mail: </label>
@@ -29,7 +29,7 @@ export function Perfil() {
         </div>
         <div className="space">
           <label>Cargo: </label>
-          <span>{user?.role || "Cargo não encontrado..."}</span>
+          <span>{user?.tipo || "Cargo não encontrado..."}</span>
         </div>
       </div>
     </section>
