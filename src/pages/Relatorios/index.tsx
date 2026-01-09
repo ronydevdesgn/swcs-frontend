@@ -1,78 +1,97 @@
-import { InputSearch } from '../../components/InputSearch/InputSearch';
 import { Table } from '../../components/Table/Table';
 import { Card } from '../../components/Card/Card';
 import { useDashboardStats } from '../../hooks/useDashboardStatus';
-import { useRelatoriosData, RelatorioData } from '../../hooks/useRelatoriosData';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { useRelatorioPorMesData } from '../../hooks/useRelatoriosData';
 
 import './index.css';
-import { useState } from 'react';
-import { ArrowDown, ArrowUp, Download, FileText } from 'react-feather';
+import {  useEffect, useState } from 'react';
+import { ArrowDown, ArrowUp, Download } from 'react-feather';
+import { Link } from 'react-router-dom';
 
 export function Relatorios() {
-  const [search, setSearch] = useState('');
-  
+  //const [search, setSearch] = useState('');
+  const [departamento, setDepartamento] = useState('')
+  const [startDate, setStartDate] = useState<string>('')
+  const [endDate, setEndDate] = useState<string>('')
   const { data: stats } = useDashboardStats();
-  const { data: relatoriosData, isLoading: isLoadingRelatorios } = useRelatoriosData();
+  //const { data: relatoriosData, isLoading: isLoadingRelatorios } = useRelatoriosData();
+  const {data: relatoriosPorMes, isLoading: isLoadingRelatoriosPorMes} = 
+  useRelatorioPorMesData(
+    startDate,
+    endDate, 
+    departamento
+  )
+
+
+  useEffect(()=> {
+    console.log("Relatorios", relatoriosPorMes)
+    
+  })
 
   // Filtrar relatórios com base na pesquisa
-  const relatoriosFiltrados = relatoriosData?.filter(rel => 
-    rel.titulo.toLowerCase().includes(search.toLowerCase()) ||
-    rel.descricao.toLowerCase().includes(search.toLowerCase())
-  ) ?? [];
+  const relatoriosFiltrados = relatoriosPorMes ?? [];
+
+  const options = [
+    { label: 'Selecione o departamento', value: '' },
+    { label: 'Informática', value: 'INFORMATICA' },
+    { label: 'Outros', value: 'OUTROS' }
+  ]
 
   // Colunas genéricas para o componente Table
   const columns = [
-    { key: 'id', label: 'ID' },
-    { key: 'titulo', label: 'Título' },
-    { key: 'descricao', label: 'Descrição' },
-    { key: 'data', label: 'Data' },
-    { key: 'tipo', label: 'Tipo' },
+    { key: 'professorID', label: 'ID' },
+    { key: 'professorName', label: 'name' },
+    { key: 'carga', label: 'Carga Horária' },
+    { key: 'horasTrabalhadas', label: 'Horas Trabalhadas' },
+    { key: 'faltas', label: 'Faltas' },
+    { key: 'presencas', label: 'Presenças' },
   ];
 
   // Função para gerar e baixar o relatório em PDF
-  const generatePDF = (relatorio?: RelatorioData) => {
-    console.log(relatorio)
-    const doc = new jsPDF();
+  // const generatePDF = (relatorio?: RelatorioData) => {
+  //   console.log(relatorio)
+  //   //const doc = new jsPDF();
     
-    if (relatorio) {
-      // PDF específico do relatório
-      doc.text(relatorio.titulo, 14, 20);
-      doc.text(`Descrição: ${relatorio.descricao}`, 14, 30);
-      doc.text(`Data: ${relatorio.data}`, 14, 40);
-      doc.text(`Tipo: ${relatorio.tipo}`, 14, 50);
+  //   // if (relatorio) {
+  //   //   // PDF específico do relatório
+  //   //   doc.text(relatorio.titulo, 14, 20);
+  //   //   doc.text(`Descrição: ${relatorio.descricao}`, 14, 30);
+  //   //   doc.text(`Data: ${relatorio.data}`, 14, 40);
+  //   //   doc.text(`Tipo: ${relatorio.tipo}`, 14, 50);
       
-      if (relatorio.dados?.data) {
-        autoTable(doc, {
-          startY: 60,
-          head: [['Professor', 'Data', 'Estado']],
-          body: relatorio.dados.data.slice(0, 50).map((item: any) => [
-            item.Professor?.Nome || 'N/A',
-            item.Data || 'N/A',
-            item.Estado || 'N/A'
-          ]),
-        });
-      }
+  //   //   if (relatorio.dados?.data) {
+  //   //     autoTable(doc, {
+  //   //       startY: 60,
+  //   //       head: [['Professor', 'Data', 'Estado']],
+  //   //       body: relatorio.dados.data.slice(0, 50).map((item: any) => [
+  //   //         item.Professor?.Nome || 'N/A',
+  //   //         item.Data || 'N/A',
+  //   //         item.Estado || 'N/A'
+  //   //       ]),
+  //   //     });
+  //   //   }
       
-      doc.save(`${relatorio.titulo.toLowerCase().replace(/\s+/g, '_')}.pdf`);
-    } else {
-      // PDF geral com todos os relatórios
-      doc.text('Relatórios Gerais do Sistema', 14, 20);
-      autoTable(doc, {
-        startY: 30,
-        head: [columns.map((col) => col.label)],
-        body: relatoriosFiltrados.map(rel => [
-          rel.id,
-          rel.titulo,
-          rel.descricao,
-          rel.data,
-          rel.tipo
-        ]),
-      });
-      doc.save('relatorios_geral.pdf');
-    }
-  };
+  //   //   doc.save(`${relatorio.titulo.toLowerCase().replace(/\s+/g, '_')}.pdf`);
+  //   // } else {
+  //   //   // PDF geral com todos os relatórios
+  //   //   doc.text('Relatórios Gerais do Sistema', 14, 20);
+  //   //   autoTable(doc, {
+  //   //     startY: 30,
+  //   //     head: [columns.map((col) => col.label)],
+  //   //     body: relatoriosFiltrados.map(rel => [
+  //   //       rel.id,
+  //   //       rel.titulo,
+  //   //       rel.descricao,
+  //   //       rel.data,
+  //   //       rel.tipo
+  //   //     ]),
+  //   //   });
+  //   //   doc.save('relatorios_geral.pdf');
+  //   // }
+  
+
+  // };
+
 
   return (
     <section className="container-dashboard">
@@ -120,37 +139,80 @@ export function Relatorios() {
 
         {/* Botões de exportação */}
         <div className="actions">
-          <button onClick={() => generatePDF()} disabled={!relatoriosFiltrados.length}>
+
+          
+          {
+            relatoriosFiltrados.length !== 0 && (
+              <Link className='button-export' to={`http://localhost:3333/reports/relatorios?startDate=${new Date(startDate).toISOString()}&endDate=${new Date(endDate).toISOString()}&departamento=${departamento}`} target='_blank'>
             <Download size={16} />
             Exportar todos PDF
-          </button>
+          </Link>
+            )    
+          }
+          
+          {
+            relatoriosFiltrados.length === 0  && (
+              <div className='button-no-export'>
+                <Download size={16} />
+            Exportar todos PDF
+              </div>  
+            )
+          }
           
           {/* component Input de pesquisa*/}
-          <InputSearch
-            Placeholder="Pesquisar relatórios..."
-            OnSearch={setSearch}
+
+          <div className='search-wrap'>
+           <select
+            value={departamento}
+            onChange={(e) => setDepartamento(e.target.value)}
+            className={`form-select`}
+             >
+              {options.map((option) => (
+                <option key={String(option.value)} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+          </select>
+
+           <input
+            type="date"
+            required={true}
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            placeholder="Selecione uma data de inicio"
+            className="form-input"  
           />
+
+          <input
+            type="date"
+            required={true}
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            placeholder="Selecione uma data de fim"
+            className="form-input"  
+          />
+          </div>
         </div>
 
         <Table
           columns={[
             ...columns,
-            {
-              key: 'acoes',
-              label: 'Ações',
-              render: (relatorio) => (
-                <button
-                  onClick={() => generatePDF(relatorio)}
-                  className="btn-download"
-                  title="Baixar relatório específico"
-                >
-                  <FileText size={16} />
-                </button>
-              )
-            }
+            // {
+            //   key: 'acoes',
+            //   label: 'Ações',
+            //   render: (relatorio) => (
+            //     <button
+            //       onClick={() => generatePDF(relatorio as any)}
+            //       className="btn-download"
+            //       title="Baixar relatório específico"
+            //     >
+            //       <FileText size={16} />
+            //     </button>
+            //   )
+            // }
           ]}
           data={relatoriosFiltrados}
-          isLoading={isLoadingRelatorios}
+          isLoading={isLoadingRelatoriosPorMes}
           emptyMessage="Nenhum relatório encontrado"
         />
       </div>

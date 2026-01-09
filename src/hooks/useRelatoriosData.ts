@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { usePresencas } from "./usePresencas";
 import { useSumarios } from "./useSumarios";
 import { useProfessores } from "./useProfessores";
+import { api } from "../lib/api";
 
 export interface RelatorioData {
   id: number;
@@ -118,5 +119,32 @@ export function useRelatoriosData() {
     },
     enabled: true,
     staleTime: 10 * 60 * 1000, // 10 minutos
+  });
+}
+
+export type RelatorioFalta = {
+  professorID: number,
+  professorName: string,
+  carga: number,
+  horasTrabalhadas: number,
+  faltas: number,
+  presencas: number
+  dados: any;
+}
+
+export function useRelatorioPorMesData(startDate: string, endDate: string, departamento: string){
+  return useQuery({
+    queryKey: ["relatorio-presencas", startDate, endDate, departamento],
+    queryFn: async () =>{
+      const response = await api.get<{ data: RelatorioFalta[] }>(`/presencas/list/relatorios`, {
+        params: {
+          startDate: new Date(startDate).toISOString(),
+          endDate: new Date(endDate).toISOString(),
+          departamento
+        }
+      });
+      return response.data.data?.map((d)=> ({...d, dados: {professores: "any_professor",}}));
+    },
+    enabled: !!startDate && !!endDate && !!departamento, // só executa quando tudo estiver preenchido
   });
 }

@@ -94,7 +94,7 @@ input:focus {
   outline: var(--purple-heart-900);
 }
 
-button {
+button, .button-export, .button-no-export {
   border: none;
   border-radius: .8rem;
   padding: 1.4rem 2.4rem;
@@ -103,8 +103,14 @@ button {
   transition: background-color .2s ease-in-out;
 }
 
-button:hover {
+
+button:hover, .button-export:hover {
   background-color: var(--purple-heart-600);
+}
+
+.button-no-export{
+  cursor: not-allowed;
+  background-color: var(--muted);
 }
 
 .spinning {
