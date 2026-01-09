@@ -2,6 +2,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import "./Sidebar.css";
 import { useAuth } from "../../hooks/useAuthentication";
+import { usePermission } from "../../hooks/usePermission";
+import { PERMISSIONS } from "../../utils/permissions";
 import {
   Layout,
   Layers,
@@ -16,6 +18,7 @@ import {
 export function Sidebar() {
   const navigate = useNavigate()
   const { user, signOut } = useAuth();
+  const { can } = usePermission();
 
   async function handleLogout(){
     await signOut()
@@ -45,10 +48,12 @@ export function Sidebar() {
               <span>Professores</span>
             </NavLink>
 
-            <NavLink to="/efetividade" className={"Icon-link"}>
-              <BarChart2 size={18} />
-              <span>Efetividade</span>
-            </NavLink>
+            {can(PERMISSIONS.VISUALIZAR_EFETIVIDADES) && (
+              <NavLink to="/efetividade" className={"Icon-link"}>
+                <BarChart2 size={18} />
+                <span>Efetividade</span>
+              </NavLink>
+            )}
 
             <NavLink to="/relatorios" className={"Icon-link"}>
               <Layers size={18} />

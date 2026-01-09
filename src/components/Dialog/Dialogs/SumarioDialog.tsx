@@ -75,7 +75,7 @@ export function SumarioDialog({
     }
     
     return cursos || []
-  }, [formData.professorId, loadingCursos])
+  }, [formData.professorId, loadingCursos, cursosData, user])
 
   const handleSubmit = async () => {
     if (!validateForm()) {

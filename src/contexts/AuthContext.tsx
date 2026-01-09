@@ -24,6 +24,7 @@ interface ValidateUserResponse {
     email: string;
     tipo?: string;
     professor?: Professor | null;
+    permissoes?: string[];
   };
 }
 
@@ -60,7 +61,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           nome: userData.nome,
           email: userData.email,
           tipo: userData.tipo as 'FUNCIONARIO' | 'PROFESSOR',
-          professor: userData.professor
+          professor: userData.professor,
+          permissoes: userData.permissoes
         });
       }
     } catch (error: any) {

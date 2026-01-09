@@ -4,8 +4,11 @@ import { InputSearch } from '../../components/InputSearch/InputSearch';
 import { SumarioDialog } from '../../components/Dialog/Dialogs/SumarioDialog';
 import { useSumarios } from '../../hooks/useSumarios';
 import { toast } from 'react-toastify';
+import { usePermission } from '../../hooks/usePermission';
+import { PERMISSIONS } from '../../utils/permissions';
 
 export function Sumarios() {
+  const { can } = usePermission();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -74,9 +77,11 @@ export function Sumarios() {
           OnSearch={handleSearch}
         />
 
-        <button onClick={() => setIsDialogOpen(true)}>
-          Novo Sumário
-        </button>
+        {can(PERMISSIONS.REGISTRAR_SUMARIO) && (
+          <button onClick={() => setIsDialogOpen(true)}>
+            Novo Sumário
+          </button>
+        )}
         
         <SumarioDialog
           isOpen={isDialogOpen}
