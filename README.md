@@ -1,253 +1,214 @@
-# SWCS - Sistema Web de Controle de Sumários
+# SWCS — Frontend
 
-## 📋 Sobre o Projeto
+> **Sistema Web para Controlo de Sumário Universitário**  
+> Interface web moderna para gestão académica de sumários, presenças, efetividades e utilizadores, construída com React, Vite e TypeScript.
 
-O SWCS (Sistema Web de Controle de Sumários) é uma aplicação web desenvolvida para facilitar a gestão e controle de sumários acadêmicos. O sistema permite a interação eficiente entre professores e sumaristas, automatizando o processo de registro e acompanhamento de sumários.
+---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Stack Tecnológica
 
-- **React 18** - Biblioteca para construção de interfaces
-- **TypeScript** - Adiciona tipagem estática ao JavaScript
-- **Vite** - Ferramenta de build e desenvolvimento
-- **React Router 6** - Gerenciamento de rotas
-- **React Query** - Gerenciamento de estado e cache de dados
-- **Context API** - Gerenciamento de estado global de autenticação
-- **React Toastify** - Notificações e feedback ao usuário
-- **Axios** - Cliente HTTP para comunicação com a API
-- **ESLint** - Configuração avançada para verificação de código
+| Tecnologia | Função |
+|---|---|
+| **React 18** | Biblioteca de interfaces de utilizador |
+| **TypeScript** | Tipagem estática |
+| **Vite 6** | Bundler e servidor de desenvolvimento ultra-rápido |
+| **React Router 6** | Gestão de rotas com suporte a rotas protegidas |
+| **TanStack React Query 5** | Gestão de estado do servidor, cache e re-fetching |
+| **Axios** | Cliente HTTP para comunicação com a API |
+| **Context API** | Estado global de autenticação (`AuthContext`) |
+| **React Toastify** | Notificações e feedback ao utilizador |
+| **jsPDF + autotable** | Geração e exportação de relatórios em PDF |
+| **React Feather** | Biblioteca de ícones SVG |
+| **ESLint + Prettier** | Qualidade e formatação de código |
 
-## 📦 Pré-requisitos
-
-- Node.js (versão 14 ou superior)
-- npm ou yarn
-
-## 🚀 Como Executar
-
-1. Clone o repositório
-2. Instale as dependências:
-
-```bash
-npm install
-```
-
-3. Configure o ambiente:
-   - Crie um arquivo .env baseado no .env.example
-   - Configure a URL da API e outras variáveis necessárias
-4. Execute o projeto:
-
-```bash
-npm run dev
-```
+---
 
 ## 📂 Estrutura do Projeto
 
 ```
-src/
-  ├── app.tsx
-  ├── main.tsx
-  ├── global.css
-  ├── vite-env.d.ts
-  ├── assets/
-  │   └── img/
-  │       └── Illustrator.svg
-  ├── components/
-  │   ├── Layout.css
-  │   ├── Layout.tsx
-  │   ├── PrivateRoute.tsx
-  │   ├── SplashScreen.css
-  │   ├── SplashScreen.tsx
-  │   ├── ErrorBoundary/
-  │   │   └── ErrorBoundary.tsx
-  │   ├── Shared/
-  │   │   ├── States.tsx
-  │   │   └── States.css
-  │   ├── Card/
-  │   │   ├── Card.css
-  │   │   └── Card.tsx
-  │   ├── Dialog/
-  │   │   ├── Dialog.tsx
-  │   │   ├── DialogGlobal.css
-  │   │   └── Dialogs/
-  │   │       ├── CursoDialog.tsx
-  │   │       ├── Efetividade.tsx
-  │   │       ├── ProfessorDialog.tsx
-  │   │       └── SumarioDialog.tsx
-  │   ├── Form/
-  │   │   ├── formForgot.css
-  │   │   └── formForgot.tsx
-  │   │   └── formLogin.css
-  │   │   └── formLogin.tsx
-  │   │   └── formSignup.css
-  │   │   └── formSignup.tsx
-  │   ├── Header/
-  │   │   ├── Header.css
-  │   │   └── Header.tsx
-  │   ├── InputSearch/
-  │   │   ├── InputSearch.css
-  │   │   └── InputSearch.tsx
-  │   ├── Sidebar/
-  │   │   ├── Sidebar.css
-  │   │   └── Sidebar.tsx
-  │   └── Table/
-  │       ├── Table.css
-  │       └── Table.tsx
-  ├── contexts/
-  │   ├── AuthContext.tsx
-  │   └── PageTitleContext.tsx
-  ├── hooks/
-  │   ├── useAuthentication.ts
-  │   ├── useCursos.ts
-  │   ├── useEfetividades.ts
-  │   ├── useFuncionarios.ts
-  │   ├── usePresencas.ts
-  │   ├── useProfessores.ts
-  │   └── useSumarios.ts
-  ├── lib/
-  │   ├── api.ts
-  │   └── react-query.ts
-  ├── pages/
-  │   ├── Cursos/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Dashboard/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Definicoes/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Efetividade/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── ForgotPassword/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Login/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Perfil/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Professores/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── Relatorios/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   ├── SignUp/
-  │   │   ├── index.css
-  │   │   └── index.tsx
-  │   └── Sumarios/
-  │       ├── index.css
-  │       └── index.tsx
-  └── types/
-      ├── auth.ts
-      ├── svg.d.ts
-      └── entities.ts
+swcs-frontend/
+├── src/
+│   ├── App.tsx              # Configuração do router e rotas da aplicação
+│   ├── main.tsx             # Ponto de entrada (React, QueryClient, ErrorBoundary)
+│   ├── global.css           # Estilos globais
+│   ├── assets/              # Imagens e recursos estáticos
+│   ├── components/          # Componentes reutilizáveis
+│   │   ├── Layout.tsx        # Layout principal (Sidebar + Header + conteúdo)
+│   │   ├── PrivateRoute.tsx  # Guarda de rotas autenticadas
+│   │   ├── SplashScreen.tsx  # Ecrã de carregamento inicial
+│   │   ├── Card/             # Componente Card genérico
+│   │   ├── Dialog/           # Dialogs de criação/edição (Curso, Professor, Sumário, Efetividade)
+│   │   ├── ErrorBoundary/    # Captura global de erros em runtime
+│   │   ├── Form/             # Formulários de autenticação (Login, SignUp, ForgotPassword)
+│   │   ├── Header/           # Barra de navegação superior
+│   │   ├── InputSearch/      # Componente de pesquisa reutilizável
+│   │   ├── Shared/           # Estados partilhados (LoadingSkeleton, EmptyState, ErrorState)
+│   │   ├── Sidebar/          # Menu de navegação lateral
+│   │   └── Table/            # Tabela genérica com suporte a colunas e dados
+│   ├── contexts/
+│   │   ├── AuthContext.tsx       # Contexto de autenticação global
+│   │   └── PageTitleContext.tsx  # Contexto para título dinâmico das páginas
+│   ├── hooks/               # Hooks customizados por recurso
+│   │   ├── useAuthentication.ts
+│   │   ├── useCursos.ts
+│   │   ├── useEfetividades.ts
+│   │   ├── useFuncionarios.ts
+│   │   ├── usePresencas.ts
+│   │   ├── useProfessores.ts
+│   │   ├── useSumarios.ts
+│   │   ├── useDashboardStatus.ts
+│   │   ├── useRelatoriosData.ts
+│   │   └── usePermission.ts
+│   ├── lib/
+│   │   ├── api.ts           # Instância configurada do Axios (baseURL, interceptores JWT)
+│   │   └── react-query.ts   # Configuração do QueryClient
+│   ├── pages/               # Páginas da aplicação
+│   │   ├── Login/           # Ecrã de login
+│   │   ├── SignUp/          # Ecrã de registo
+│   │   ├── ForgotPassword/  # Recuperação de senha
+│   │   ├── Dashboard/       # Painel principal com estatísticas
+│   │   ├── Cursos/          # Gestão de cursos
+│   │   ├── Professores/     # Gestão de professores
+│   │   ├── Sumarios/        # Gestão de sumários
+│   │   ├── Efetividade/     # Registo de horas trabalhadas
+│   │   ├── Relatorios/      # Geração de relatórios PDF
+│   │   └── Perfil/          # Perfil do utilizador autenticado
+│   ├── types/               # Interfaces e tipos TypeScript
+│   │   ├── auth.ts          # Tipos de autenticação (User, LoginResponse, etc.)
+│   │   └── entities.ts      # Tipos das entidades (Professor, Curso, Sumario, etc.)
+│   └── utils/               # Funções utilitárias
 ```
 
-## 🔧 Scripts Disponíveis
+---
 
-- npm run dev - Inicia o servidor de desenvolvimento
-- npm run build - Gera a versão de produção
-- npm run lint - Executa a verificação de código
-- npm run preview - Visualiza a versão de produção localmente
+## 🗺️ Rotas da Aplicação
 
-## �️ Mudanças recentes implementadas
+### Rotas Públicas
+| Rota | Página |
+|---|---|
+| `/login` | Ecrã de login |
+| `/signup` | Registo de novo utilizador |
+| `/forgotpassword` | Recuperação de senha |
 
-As alterações abaixo foram adicionadas ao código durante o desenvolvimento local e já estão presentes no repositório:
+### Rotas Privadas (requerem autenticação)
+| Rota | Página |
+|---|---|
+| `/dashboard` | Painel com estatísticas gerais |
+| `/cursos` | Listagem e gestão de cursos |
+| `/professores` | Listagem e gestão de professores |
+| `/sumarios` | Gestão de sumários académicos |
+| `/efetividade` | Registo de efetividade/horas trabalhadas |
+| `/relatorios` | Geração e exportação de relatórios |
+| `/perfil` | Perfil e dados do utilizador autenticado |
 
-- `ErrorBoundary` global em `src/components/ErrorBoundary/ErrorBoundary.tsx` e registrado em `src/main.tsx` para capturar erros inesperados em runtime.
-- Componentes compartilhados de estado em `src/components/Shared/States.tsx` (`LoadingSkeleton`, `EmptyState`, `ErrorState`) e estilos em `src/components/Shared/States.css` — usados pela `Table` e outros componentes.
-- Centralização de tipos em `src/types/entities.ts` (tipos para Sumário, Professor e Curso) e atualização dos Dialogs (`src/components/Dialog/Dialogs/*`) e páginas (`src/pages/*`) para usar essas tipagens.
-- `Table` atualizado (`src/components/Table/Table.tsx`) para usar os estados compartilhados e aceitar tanto a API genérica (`columns + data`) quanto o formato simples (`columns + rows`), com renderização segura de células.
-- Ajustes nos componentes de diálogo (`Dialog`) e nas páginas (`Sumarios`, `Professores`, `Cursos`) para integrar os novos tipos e flows de criação de entidades.
-- Arquivos de configuração base para qualidade de código: `.eslintrc.json` e `.prettierrc` foram adicionados.
+---
 
-## ✅ Como validar localmente (rápido)
+## ⚙️ Pré-requisitos
 
-1. Instale dependências (se ainda não instalou):
+- Node.js >= 18
+- npm
+- Backend SWCS em execução (ver [swcs-backend](https://github.com/ronydevdesgn/swcs-backend))
+
+---
+
+## 🛠️ Instalação e Configuração
+
+### 1. Instalar dependências
 
 ```bash
 npm install
 ```
 
-2. Instale as ferramentas de dev para lint/format (opcional, recomendado):
+### 2. Configurar variáveis de ambiente
 
-```bash
-npm install --save-dev eslint prettier husky lint-staged @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-config-prettier
+Criar um ficheiro `.env` na raiz do projeto:
+
+```env
+VITE_API_URL=http://localhost:3333
+VITE_APP_NAME=SWCS
 ```
 
-3. Rodar ESLint (modo recomendado):
+---
 
-```bash
-npx eslint --ext .ts,.tsx src --fix
-```
+## ▶️ Executar o Projeto
 
-4. Iniciar o servidor de desenvolvimento:
+### Desenvolvimento
 
 ```bash
 npm run dev
 ```
 
-5. (Opcional) Ativar Husky e lint-staged para pré-commit:
+A aplicação estará disponível em `http://localhost:5173`.
+
+### Build para Produção
 
 ```bash
-npx husky install
-npx husky add .husky/pre-commit "npx lint-staged"
-# e adicionar a configuração `lint-staged` em package.json conforme instruções no README
+npm run build
+npm run preview
 ```
 
-## �📱 Funcionalidades Principais
+### Verificação de código (lint)
 
-- Sistema de Autenticação Completo
-  - Login com email e senha com validação em tempo real
-  - Diferentes níveis de acesso (Sumarista/Professor)
-  - Recuperação de senha com confirmação por email
-  - Sistema de refresh token para manter a sessão
-  - Redirecionamento inteligente baseado no estado de autenticação
-  - Feedback visual com toasts para todas as operações
-  - Proteção de rotas baseada em autenticação
-  - Validação robusta de formulários
-- Gestão de Sumários
-  - Criação e edição de sumários
-  - Visualização de histórico
-  - Aprovação/rejeição de sumários
-- Gestão de Usuários
-  - Cadastro de professores
-  - Cadastro de sumaristas
-  - Gerenciamento de permissões
-  - Controlo de presenças e faltas de professores
-- Relatórios
-  - Geração de relatórios de efetividade (presenças e faltas dos professores)
-  - Estatísticas de sumários (x)
-  - Exportação de dados
-
-## 📝 Padrões de Código
-
-- Utilize TypeScript para todo código novo
-- Siga as regras do ESLint configuradas
-- Mantenha os componentes pequenos e reutilizáveis
-- Documente funções e componentes complexos
-
-## 🔒 Variáveis de Ambiente
-
-```
-VITE_API_URL=http://localhost:3333
-VITE_APP_NAME=SWCS
+```bash
+npm run lint
 ```
 
-## 👥 Equipe
+---
 
-- [Rodivânio_Alberto_Da_Costa] - Desenvolvedor Frontend
+## ✨ Funcionalidades Principais
 
-## 📞 Suporte
+### 🔐 Autenticação Completa
+- Login com email e senha com validação em tempo real
+- Registo de novo utilizador com seleção de tipo (Funcionário, Professor, Sumarista)
+- Recuperação de senha por email
+- Sistema de refresh token para manutenção da sessão
+- Proteção de rotas com redirecionamento automático
+- Feedback visual com notificações toast
 
-Para reportar bugs ou sugerir melhorias, abra uma issue no repositório do projeto.
+### 📚 Gestão de Sumários
+- Criação, edição e listagem de sumários por professor e curso
+- Pesquisa e filtragem de registos
 
-## API
+### 👨‍🏫 Gestão de Professores e Cursos
+- CRUD completo de professores e cursos
+- Associação de professores a cursos
 
-Este projeto utiliza um backend desenvolvido como uma API RESTful para gerenciar os dados e funcionalidades do sistema. Certifique-se de configurar corretamente a URL da API nas variáveis de ambiente para garantir o funcionamento adequado.
+### 📊 Dashboard com Estatísticas
+- Visão geral do sistema com indicadores chave
+- Gráficos de presenças, sumários e efetividade
 
-### Repositório do Backend
+### 📋 Relatórios
+- Geração de relatórios de efetividade (presenças/faltas)
+- Exportação em formato PDF via jsPDF
 
-- [SWCS-Backend](https://github.com/ronydevdesgn/swcs-backend)
+### 🔒 Controlo de Acesso
+- Controlo de permissões baseado no tipo de utilizador
+- Hook `usePermission` para verificação granular de acesso
+
+---
+
+## 📝 Padrões de Desenvolvimento
+
+- Todo o código usa **TypeScript** com tipos definidos em `src/types/`
+- Toda a comunicação com a API é feita via **hooks customizados** em `src/hooks/`
+- Os dados do servidor são geridos pelo **React Query** (caching, refetching automático)
+- Os componentes são pequenos, reutilizáveis e separados por responsabilidade
+- Seguir as regras do **ESLint** configuradas no projeto
+
+---
+
+## 👥 Equipa
+
+- **Rodivânio Alberto Da Costa** — Desenvolvimento Frontend
+
+---
+
+## 🔗 Repositório do Backend
+
+- [SWCS Backend](https://github.com/ronydevdesgn/swcs-backend)
+
+---
+
+## 📄 Licença
+
+MIT
