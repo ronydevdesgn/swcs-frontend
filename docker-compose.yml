@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swcs_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      # Mantém a permissão para HMR
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      # Sincroniza o código local com o container para Hot Reloading
+      - .:/app
+      # Evita que o node_modules local sobrescreva o node_modules do container criado no build
+      - /app/node_modules

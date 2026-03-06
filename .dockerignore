@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.git/
+.vscode/
+
+# Ignore markdown or temporary files not needed to build/run the app inside the container
+*.md
+.eslintrc.*
+.prettierrc
