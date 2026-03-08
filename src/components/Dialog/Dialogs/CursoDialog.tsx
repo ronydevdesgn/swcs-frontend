@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Dialog } from '../Dialog';
-import { CursoForm } from '../../../types/entities';
+import { toast } from 'react-toastify';
 import { useCreateCurso } from '../../../hooks/useCursos';
 import { useProfessores } from '../../../hooks/useProfessores';
-import { validateCursoNome, validateCursoDescricao } from '../../../utils/validations';
-import { toast } from 'react-toastify';
+import { CursoForm } from '../../../types/entities';
+import { validateCursoDescricao, validateCursoNome } from '../../../utils/validations';
+import { Dialog } from '../Dialog';
 
 interface FormErrors {
   nome?: string;
@@ -53,11 +53,7 @@ export function CursoDialog({
     }
 
     try {
-      await createCurso.mutateAsync({
-        Nome: formData.nome,
-        Descricao: formData.descricao,
-        ProfessorID: formData.professorId,
-      });
+      await createCurso.mutateAsync(formData);
 
       toast.success('Curso cadastrado com sucesso!');
       onSubmit?.(formData);
@@ -82,8 +78,8 @@ export function CursoDialog({
   const professorOptions = [
     { label: 'Selecione o professor responsável', value: '' },
     ...(professoresData?.data?.map(professor => ({
-      label: `${professor.Nome} - ${professor.Departamento}`,
-      value: professor.ProfessorID
+      label: `${professor.nome} - ${professor.departamento}`,
+      value: professor.professorId
     })) || [])
   ];
 

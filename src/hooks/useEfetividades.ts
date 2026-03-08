@@ -1,72 +1,42 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
+import { Efetividade, EfetividadeForm, PaginatedResponse } from "../types/entities";
 
-export interface Efetividade {
-  EfetividadeID: number;
-  Data: string;
-  HorasTrabalhadas: number;
-  Professor: {
-    ProfessorID: number;
-    Nome: string;
-    Departamento: string;
-    CargaHoraria: number;
-  };
-  Curso?: {
-    CursoID: number;
-    Nome: string;
-  };
-}
-
-export interface CreateEfetividadeInput {
-  Data: string;
-  HorasTrabalhadas: number;
-  ProfessorID: number;
-  CursoID?: number;
-}
-
-export interface EfetividadesListResponse {
-  data: Efetividade[];
-}
-
-export function useEfetividades(params?: {
+interface EfetividadesQueryParams {
   inicio?: string;
   fim?: string;
   professorId?: number;
-}) {
-  return useQuery<EfetividadesListResponse>({
+}
+
+export function useEfetividades(params?: EfetividadesQueryParams) {
+  return useQuery<PaginatedResponse<Efetividade>>({
     queryKey: ["efetividades", params],
     queryFn: async () => {
       // Se há filtros de período, usar o endpoint específico
       if (params?.inicio || params?.fim) {
-        const response = await api.get<{
-          data: Efetividade[];
-          meta: any;
-        }>("/efetividades/periodo", {
+        const response = await api.get<PaginatedResponse<Efetividade>>("/efetividades/periodo", {
           params: {
             dataInicio: params.inicio,
             dataFim: params.fim,
           },
         });
-        return { data: response.data.data };
+        return response.data;
       }
       
       // Se há filtro por professor, usar o endpoint específico
       if (params?.professorId) {
-        const response = await api.get<{
-          data: Efetividade[];
-          meta: any;
-        }>(`/efetividades/professor/${params.professorId}`, {
+        const response = await api.get<PaginatedResponse<Efetividade>>(`/efetividades/professor/${params.professorId}`, {
           params: {
             inicio: params.inicio,
             fim: params.fim,
           },
         });
-        return { data: response.data.data };
+        return response.data;
       }
       
       // Caso contrário, usar o endpoint geral
-      const response = await api.get<EfetividadesListResponse>("/efetividades");
+      const response = await api.get<PaginatedResponse<Efetividade>>("/efetividades");
       return response.data;
     },
   });
@@ -74,7 +44,7 @@ export function useEfetividades(params?: {
 
 export function useCreateEfetividade() {
   return useMutation({
-    mutationFn: async (data: CreateEfetividadeInput) => {
+    mutationFn: async (data: EfetividadeForm) => {
       const response = await api.post<Efetividade>("/efetividades", data);
       return response.data;
     },
@@ -92,7 +62,7 @@ export function useUpdateEfetividade() {
       data,
     }: {
       id: number;
-      data: Partial<CreateEfetividadeInput>;
+      data: Partial<EfetividadeForm>;
     }) => {
       const response = await api.put<Efetividade>(`/efetividades/${id}`, data);
       return response.data;

@@ -1,28 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
-
-export interface Curso {
-  CursoID: number;
-  Nome: string;
-  Descricao: string;
-  Professores: Professor[];
-  _count?: {
-    Sumarios: number;
-  };
-}
-
-export interface Professor {
-  ProfessorID: number;
-  Nome: string;
-  Departamento: string;
-}
-
-export interface CreateCursoInput {
-  Nome: string;
-  Descricao: string;
-  ProfessorID: number;
-}
+import { Curso, CursoForm, PaginatedResponse } from "../types/entities";
 
 interface CursosQueryParams {
   page?: number;
@@ -31,18 +10,11 @@ interface CursosQueryParams {
   departamento?: string;
 }
 
-export interface CursosListResponse {
-  data: Curso[];
-  meta: {
-    total: number;
-  };
-}
-
 export function useCursos(params?: CursosQueryParams) {
-  return useQuery<CursosListResponse>({
+  return useQuery<PaginatedResponse<Curso>>({
     queryKey: ["cursos", params],
     queryFn: async () => {
-      const response = await api.get<CursosListResponse>("/cursos", { params });
+      const response = await api.get<PaginatedResponse<Curso>>("/cursos", { params });
       return response.data;
     },
   });
@@ -61,7 +33,7 @@ export function useCurso(id: number) {
 
 export function useCreateCurso() {
   return useMutation({
-    mutationFn: async (data: CreateCursoInput) => {
+    mutationFn: async (data: CursoForm) => {
       const response = await api.post<Curso>("/cursos", data);
       return response.data;
     },
@@ -78,7 +50,7 @@ export function useUpdateCurso() {
       data,
     }: {
       id: number;
-      data: Partial<CreateCursoInput>;
+      data: Partial<CursoForm>;
     }) => {
       const response = await api.put<Curso>(`/cursos/${id}`, data);
       return response.data;

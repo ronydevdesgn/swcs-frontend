@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Table } from '../../components/Table/Table';
-import { InputSearch } from '../../components/InputSearch/InputSearch';
-import { EfetividadeDialog } from '../../components/Dialog/Dialogs/Efetividade';
-import { useEfetividades } from '../../hooks/useEfetividades';
 import { toast } from 'react-toastify';
+import { EfetividadeDialog } from '../../components/Dialog/Dialogs/Efetividade';
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { Table } from '../../components/Table/Table';
+import { useEfetividades } from '../../hooks/useEfetividades';
+import { Efetividade as EfetividadeType } from '../../types/entities';
 
 export function Efetividade() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -16,47 +17,47 @@ export function Efetividade() {
   };
 
     // Filter data client-side since backend doesn't support search
-    const filteredData = efetividadesData?.data?.filter((efetividade) => {
+    const filteredData = efetividadesData?.data?.filter((efetividade: EfetividadeType) => {
       if (!searchTerm) return true;
       
       const searchLower = searchTerm.toLowerCase();
       return (
-        efetividade.Professor?.Nome?.toLowerCase().includes(searchLower) ||
-        efetividade.Professor?.Departamento?.toLowerCase().includes(searchLower) ||
-        efetividade.Data.includes(searchTerm) ||
-        efetividade.EfetividadeID.toString().includes(searchTerm)
+        efetividade.professor?.nome?.toLowerCase().includes(searchLower) ||
+        efetividade.professor?.departamento?.toLowerCase().includes(searchLower) ||
+        efetividade.data.includes(searchTerm) ||
+        efetividade.efetividadeId.toString().includes(searchTerm)
       );
     }) || [];
 
   // Colunas para o componente Table
   const columns = [
-    { key: 'EfetividadeID', label: 'ID' },
+    { key: 'efetividadeId', label: 'ID' },
     {
-      key: 'Data',
+      key: 'data',
       label: 'Data',
-      render: (efetividade: any) => {
+      render: (efetividade: EfetividadeType) => {
         try {
-          return new Date(efetividade.Data).toLocaleDateString('pt-BR');
+          return new Date(efetividade.data).toLocaleDateString('pt-BR');
         } catch {
-          return efetividade.Data;
+          return efetividade.data;
         }
       },
     },
-    { key: 'HorasTrabalhadas', label: 'Horas Trabalhadas' },
+    { key: 'horasTrabalhadas', label: 'Horas Trabalhadas' },
     { 
-      key: 'Professor', 
+      key: 'professor', 
       label: 'Professor',
-      render: (efetividade: any) => efetividade.Professor?.Nome || 'N/A'
+      render: (efetividade: EfetividadeType) => efetividade.professor?.nome || 'N/A'
     },
     { 
-      key: 'Departamento', 
+      key: 'departamento', 
       label: 'Departamento',
-      render: (efetividade: any) => efetividade.Professor?.Departamento || 'N/A'
+      render: (efetividade: EfetividadeType) => efetividade.professor?.departamento || 'N/A'
     },
     { 
-      key: 'Curso', 
+      key: 'curso', 
       label: 'Curso',
-      render: (efetividade: any) => efetividade.Curso?.Nome || 'N/A'
+      render: (efetividade: EfetividadeType) => efetividade.curso?.nome || 'N/A'
     },
   ];
 

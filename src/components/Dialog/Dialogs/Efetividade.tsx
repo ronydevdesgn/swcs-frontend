@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Dialog } from '../Dialog';
-import { EfetividadeForm } from '../../../types/entities';
+import { toast } from 'react-toastify';
+import { useCursos } from '../../../hooks/useCursos';
 import { useCreateEfetividade } from '../../../hooks/useEfetividades';
 import { useProfessores } from '../../../hooks/useProfessores';
-import { useCursos } from '../../../hooks/useCursos';
+import { EfetividadeForm } from '../../../types/entities';
 import { validateDate, validateHorasTrabalhadas } from '../../../utils/validations';
-import { toast } from 'react-toastify';
+import { Dialog } from '../Dialog';
 
 interface FormErrors {
   data?: string;
@@ -58,12 +58,7 @@ export function EfetividadeDialog({
     }
 
     try {
-      await createEfetividade.mutateAsync({
-        Data: new Date(formData.data).toISOString(),
-        HorasTrabalhadas: formData.horasTrabalhadas,
-        ProfessorID: formData.professorId,
-        CursoID: formData.cursoId,
-      });
+      await createEfetividade.mutateAsync(formData);
 
       toast.success('Efetividade registrada com sucesso!');
       onSubmit?.(formData);
@@ -89,16 +84,16 @@ export function EfetividadeDialog({
   const professorOptions = [
     { label: 'Selecione o professor', value: '' },
     ...(professoresData?.data?.map(professor => ({
-      label: `${professor.Nome} - ${professor.Departamento}`,
-      value: professor.ProfessorID
+      label: `${professor.nome} - ${professor.departamento}`,
+      value: professor.professorId
     })) || [])
   ];
 
   const cursoOptions = [
     { label: 'Selecione o curso', value: '' },
     ...(cursosData?.data?.map(curso => ({
-      label: curso.Nome,
-      value: curso.CursoID
+      label: curso.nome,
+      value: curso.cursoId
     })) || [])
   ];
 

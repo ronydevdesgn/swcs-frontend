@@ -1,10 +1,9 @@
-import { createContext, useState, ReactNode, useEffect } from 'react';
-import { LoginFormData, User, AuthContextData } from '../types/auth';
+import { createContext, ReactNode, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { SplashScreen } from '../components/SplashScreen';
 import { api } from '../lib/api';
-import { toast } from 'react-toastify';
+import { AuthContextData, LoginFormData, User } from '../types/auth';
 import { logger } from '../utils/logger';
-import { Professor } from '../types/entities';
 
 export const AuthContext = createContext<AuthContextData>(
   {} as AuthContextData,
@@ -18,14 +17,7 @@ interface AuthResponse {
 
 // Interface para validação do usuário logado
 interface ValidateUserResponse {
-  data: {
-    id: number;
-    nome: string;
-    email: string;
-    tipo?: string;
-    professor?: Professor | null;
-    permissoes?: string[];
-  };
+  data: User;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -34,7 +26,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    
     validateStoredToken();
   }, []);
 
@@ -50,20 +41,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Tentar fazer uma requisição autenticada para validar o token
-      // Usando qualquer endpoint protegido - vou usar /usuarios para pegar dados do usuário atual
       const response = await api.get<ValidateUserResponse>('/auth/me');
 
-      
       if (response.data?.data) {
-        const userData = response.data.data;
-        setUser({
-          id: userData.id.toString(),
-          nome: userData.nome,
-          email: userData.email,
-          tipo: userData.tipo as 'FUNCIONARIO' | 'PROFESSOR',
-          professor: userData.professor,
-          permissoes: userData.permissoes
-        });
+        setUser(response.data.data);
       }
     } catch (error: any) {
       // Se a validação falhar, limpar tokens

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Table } from '../../components/Table/Table';
-import { InputSearch } from '../../components/InputSearch/InputSearch';
-import { CursoDialog } from '../../components/Dialog/Dialogs/CursoDialog';
-import { useCursos } from '../../hooks/useCursos';
 import { toast } from 'react-toastify';
+import { CursoDialog } from '../../components/Dialog/Dialogs/CursoDialog';
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { Table } from '../../components/Table/Table';
+import { useCursos } from '../../hooks/useCursos';
+import { Curso } from '../../types/entities';
 
 export function Cursos() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -19,14 +20,14 @@ export function Cursos() {
 
   // Colunas para o componente Table
   const columns = [
-    { key: 'CursoID', label: 'ID' },
-    { key: 'Nome', label: 'Nome' },
-    { key: 'Descricao', label: 'Descrição' },
+    { key: 'cursoId', label: 'ID' },
+    { key: 'nome', label: 'Nome' },
+    { key: 'descricao', label: 'Descrição' },
     { 
       key: 'professores', 
       label: 'Professores',
-      render: (curso: any) => {
-        return curso.Professores?.map((p: any) => p.Professor.Nome).join(', ') || 'Nenhum';
+      render: (curso: Curso) => {
+        return curso.professores?.map((p: any) => p.nome).join(', ') || 'Nenhum';
       }
     },
   ];

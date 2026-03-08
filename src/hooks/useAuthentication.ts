@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { useContext } from 'react';
-import { api } from '../lib/api';
-import { AuthContext } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../contexts/AuthContext';
+import { api } from '../lib/api';
 import { AuthContextData, UserRole } from '../types/auth';
 
 // Tipos específicos para este hook
@@ -83,12 +83,7 @@ export function useCreateUser() {
       senha: string;
       tipo: UserRole;
     }) => {
-      const response = await api.post('/auth/register', {
-        Nome: data.nome, // Backend espera PascalCase
-        Email: data.email,
-        Senha: data.senha,
-        Tipo: data.tipo,
-      });
+      const response = await api.post('/auth/register', data);
       return response.data;
     },
     onSuccess: () => {
@@ -102,4 +97,3 @@ export function useCreateUser() {
     },
   });
 }
-

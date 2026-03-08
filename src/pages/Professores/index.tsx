@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Table } from '../../components/Table/Table';
+import { toast } from 'react-toastify';
 import { ProfessorDialog } from '../../components/Dialog/Dialogs/ProfessorDialog';
 import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { Table } from '../../components/Table/Table';
 import { useProfessores } from '../../hooks/useProfessores';
-import { toast } from 'react-toastify';
+import { Professor } from '../../types/entities';
 
 export function Professores() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -19,15 +20,15 @@ export function Professores() {
 
   // Colunas para o componente Table
   const columns = [
-    { key: 'ProfessorID', label: 'ID' },
-    { key: 'Nome', label: 'Nome' },
-    { key: 'Departamento', label: 'Departamento' },
-    { key: 'CargaHoraria', label: 'Carga Horária' },
+    { key: 'professorId', label: 'ID' },
+    { key: 'nome', label: 'Nome' },
+    { key: 'departamento', label: 'Departamento' },
+    { key: 'cargaHoraria', label: 'Carga Horária' },
     { 
-      key: 'Usuario', 
+      key: 'email', 
       label: 'Email',  
-      render: (professor: any) => {
-        return professor.Usuario.Email || 'Nenhum';
+      render: (professor: Professor) => {
+        return professor.email || 'Nenhum';
       } },
   ];
 

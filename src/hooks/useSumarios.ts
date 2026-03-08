@@ -1,43 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
+import { PaginatedResponse, Sumario, SumarioForm } from "../types/entities";
 
-export interface Sumario {
-  SumarioID: number;
-  Data: string;
-  Conteudo: string;
-  Curso: {
-    CursoID: number;
-    Nome: string;
-    Descricao?: string;
-  };
-  Professor: {
-    ProfessorID: number;
-    Nome: string;
-    Departamento?: string;
-  };
-}
-
-export interface CreateSumarioInput {
-  Data: string;
-  Conteudo: string;
-  CursoID: number;
-  ProfessorID: number;
-}
-
-export interface SumariosListResponse {
-  data: Sumario[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    totalPages: number;
-    hasNext: boolean;
-    hasPrev: boolean;
-  };
-}
-
-export function useSumarios(params?: {
+interface SumariosQueryParams {
   page?: number;
   limit?: number;
   search?: string;
@@ -45,11 +11,13 @@ export function useSumarios(params?: {
   professorId?: number;
   dataInicio?: string;
   dataFim?: string;
-}) {
-  return useQuery<SumariosListResponse>({
+}
+
+export function useSumarios(params?: SumariosQueryParams) {
+  return useQuery<PaginatedResponse<Sumario>>({
     queryKey: ["sumarios", params],
     queryFn: async () => {
-      const response = await api.get<SumariosListResponse>("/sumarios", { params });
+      const response = await api.get<PaginatedResponse<Sumario>>("/sumarios", { params });
       return response.data;
     },
   });
@@ -68,7 +36,7 @@ export function useSumario(id: number) {
 
 export function useCreateSumario() {
   return useMutation({
-    mutationFn: async (data: CreateSumarioInput) => {
+    mutationFn: async (data: SumarioForm) => {
       const response = await api.post<Sumario>("/sumarios", data);
       return response.data;
     },
@@ -85,7 +53,7 @@ export function useUpdateSumario() {
       data,
     }: {
       id: number;
-      data: Partial<CreateSumarioInput>;
+      data: Partial<SumarioForm>;
     }) => {
       const response = await api.put<Sumario>(`/sumarios/${id}`, data);
       return response.data;

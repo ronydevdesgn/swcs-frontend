@@ -1,35 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
-
-export interface Presenca {
-  PresencaID: number;
-  Data: string;
-  Estado: "PRESENTE" | "FALTA";
-  ProfessorID: number;
-  Professor?: {
-    Nome: string;
-    Departamento: string;
-  };
-}
-
-export interface CreatePresencaInput {
-  Data: string;
-  Estado: "PRESENTE" | "FALTA";
-  ProfessorID: number;
-}
-
-export interface PresencasListResponse {
-  data: Presenca[];
-  meta: {
-    total: number;
-    porEstado: Record<"PRESENTE" | "FALTA", number>;
-    periodo?: {
-      inicio: string;
-      fim: string;
-    };
-  };
-}
+import { PaginatedResponse, Presenca, PresencaForm } from "../types/entities";
 
 interface PresencasQueryParams {
   inicio?: string;
@@ -39,10 +11,10 @@ interface PresencasQueryParams {
 }
 
 export function usePresencas(params?: PresencasQueryParams) {
-  return useQuery<PresencasListResponse>({
+  return useQuery<PaginatedResponse<Presenca>>({
     queryKey: ["presencas", params],
     queryFn: async () => {
-      const response = await api.get<PresencasListResponse>("/presencas", { params });
+      const response = await api.get<PaginatedResponse<Presenca>>("/presencas", { params });
       return response.data;
     },
   });
@@ -52,7 +24,7 @@ export function usePresenca(id: number) {
   return useQuery({
     queryKey: ["presencas", id],
     queryFn: async () => {
-      const response = await api.get<{ data: Presenca }>(`/presencas/${id}`);
+      const response = await api.get<Presenca>(`/presencas/${id}`);
       return response.data;
     },
     enabled: !!id,
@@ -61,14 +33,14 @@ export function usePresenca(id: number) {
 
 export function useCreatePresenca() {
   return useMutation({
-    mutationFn: async (data: CreatePresencaInput) => {
-      const response = await api.post<{ data: Presenca }>("/presencas", data);
+    mutationFn: async (data: PresencaForm) => {
+      const response = await api.post<Presenca>("/presencas", data);
       return response.data;
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["presencas"] });
       queryClient.invalidateQueries({
-        queryKey: ["presencas", { professorId: variables.ProfessorID }],
+        queryKey: ["presencas", { professorId: variables.professorId }],
       });
     },
   });
@@ -76,8 +48,8 @@ export function useCreatePresenca() {
 
 export function useCreatePresencasEmLote() {
   return useMutation({
-    mutationFn: async (presencas: CreatePresencaInput[]) => {
-      const response = await api.post<{ data: { registrosCriados: number } }>("/presencas/batch", {
+    mutationFn: async (presencas: PresencaForm[]) => {
+      const response = await api.post<{ registrosCriados: number }>("/presencas/batch", {
         presencas,
       });
       return response.data;
@@ -95,9 +67,9 @@ export function useUpdatePresenca() {
       estado,
     }: {
       id: number;
-      estado: Presenca["Estado"];
+      estado: Presenca["estado"];
     }) => {
-      const response = await api.put<{ data: Presenca }>(`/presencas/${id}`, { Estado: estado });
+      const response = await api.put<Presenca>(`/presencas/${id}`, { estado });
       return response.data;
     },
     onSuccess: (_, variables) => {

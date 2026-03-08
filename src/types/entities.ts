@@ -1,4 +1,14 @@
-// Interfaces alinhadas com backend
+// Interfaces alinhadas com backend (camelCase)
+
+export interface User {
+  id: string;
+  nome: string;
+  email: string;
+  tipo: 'FUNCIONARIO' | 'PROFESSOR';
+  professor?: Professor | null;
+  permissoes?: string[];
+}
+
 export interface CursoForm {
   nome: string;
   descricao: string;
@@ -10,6 +20,9 @@ export interface Curso {
   nome: string;
   descricao: string;
   professores: Professor[];
+  _count?: {
+    sumarios: number;
+  };
 }
 
 export interface ProfessorForm {
@@ -29,6 +42,31 @@ export interface Professor {
   cursos?: Curso[];
 }
 
+export interface FuncionarioForm {
+  nome: string;
+  email: string;
+  cargo: string;
+  senha?: string;
+}
+
+export interface Funcionario {
+  funcionarioId: number;
+  nome: string;
+  email: string;
+  cargo: string;
+  usuarioId: number;
+  usuario?: {
+    email: string;
+    tipo: string;
+    permissoes: Array<{
+      permissao: {
+        permissaoId: number;
+        descricao: string;
+      };
+    }>;
+  };
+}
+
 export interface SumarioForm {
   data: string;
   conteudo: string;
@@ -37,18 +75,18 @@ export interface SumarioForm {
 }
 
 export interface Sumario {
-  SumarioID: number;
-  Data: string;
-  Conteudo: string;
-  Curso: {
-    CursoID: number;
-    Nome: string;
-    Descricao?: string;
+  sumarioId: number;
+  data: string;
+  conteudo: string;
+  curso: {
+    cursoId: number;
+    nome: string;
+    descricao?: string;
   };
-  Professor: {
-    ProfessorID: number;
-    Nome: string;
-    Departamento?: string;
+  professor: {
+    professorId: number;
+    nome: string;
+    departamento?: string;
   };
 }
 
@@ -66,6 +104,8 @@ export interface Efetividade {
   professor: {
     professorId: number;
     nome: string;
+    departamento?: string;
+    cargaHoraria?: number;
   };
   curso?: {
     cursoId: number;
@@ -77,7 +117,7 @@ export interface PresencaForm {
   data: string;
   estado: 'PRESENTE' | 'FALTA';
   professorId: number;
-  cursoId: number;
+  cursoId?: number;
 }
 
 export interface Presenca {
@@ -87,8 +127,9 @@ export interface Presenca {
   professor: {
     professorId: number;
     nome: string;
+    departamento?: string;
   };
-  curso: {
+  curso?: {
     cursoId: number;
     nome: string;
   };
@@ -108,4 +149,20 @@ export interface ProfessorOption {
 export interface CursoOption {
   cursoId: number;
   nome: string;
+}
+
+// Common API Response Types
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages?: number;
+    lastPage?: number;
+    hasNext?: boolean;
+    hasPrev?: boolean;
+    porEstado?: Record<string, number>;
+    porCargo?: Record<string, number>;
+  };
 }

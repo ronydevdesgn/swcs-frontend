@@ -1,12 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Dialog } from '../Dialog';
-import { SumarioForm } from '../../../types/entities';
-import { useCreateSumario } from '../../../hooks/useSumarios';
-import { useCursos } from '../../../hooks/useCursos';
-import { useAuth } from '../../../hooks/useAuthentication';
-import { validateDate, validateSumarioConteudo } from '../../../utils/validations';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useAuth } from '../../../hooks/useAuthentication';
+import { useCursos } from '../../../hooks/useCursos';
 import { useProfessores } from '../../../hooks/useProfessores';
+import { useCreateSumario } from '../../../hooks/useSumarios';
+import { SumarioForm } from '../../../types/entities';
+import { validateDate, validateSumarioConteudo } from '../../../utils/validations';
+import { Dialog } from '../Dialog';
 
 interface FormErrors {
   data?: string;
@@ -40,7 +40,6 @@ export function SumarioDialog({
 
   // Preencher professor automaticamente quando o usuário for carregado
   useEffect(() => {
-    console.log("user", user)
     if (user && user.tipo === 'PROFESSOR') {
       setFormData(prev => ({ 
         ...prev, 
@@ -64,18 +63,22 @@ export function SumarioDialog({
   };
 
   const cursosDataFilters = useMemo(()=> {
-    let cursos: any = []
+    if (!cursosData?.data) return [];
+    
+    let cursos = cursosData.data;
 
     if((user && user.tipo === 'PROFESSOR') || formData.professorId > 0){
-      console.log("user-aaa", user?.professor?.professorId)
-      cursos = cursosData?.data.filter((curso)=> curso.Professores.some((professor)=> professor.ProfessorID === user?.professor?.professorId || professor.ProfessorID === formData.professorId)).map((curso)=> ({
-      label: curso.Nome,
-      value: curso.CursoID
-      }))
+      const profId = user?.professor?.professorId || formData.professorId;
+      cursos = cursos.filter((curso)=> 
+        curso.professores?.some((professor)=> professor.professorId === profId)
+      );
     }
     
-    return cursos || []
-  }, [formData.professorId, loadingCursos, cursosData, user])
+    return cursos.map((curso)=> ({
+      label: curso.nome,
+      value: curso.cursoId
+    })) || []
+  }, [formData.professorId, cursosData, user])
 
   const handleSubmit = async () => {
     if (!validateForm()) {
@@ -85,10 +88,10 @@ export function SumarioDialog({
 
     try {
       await createSumario.mutateAsync({
-        Data: new Date(formData.data).toISOString(),
-        Conteudo: formData.conteudo,
-        CursoID: formData.cursoId,
-        ProfessorID: formData.professorId,
+        data: new Date(formData.data).toISOString(),
+        conteudo: formData.conteudo,
+        cursoId: formData.cursoId,
+        professorId: formData.professorId,
       });
 
       toast.success('Sumário criado com sucesso!');
@@ -105,27 +108,26 @@ export function SumarioDialog({
       data: new Date().toISOString().split('T')[0],
       conteudo: '',
       cursoId: 0,
-      professorId: Number(user?.id) || 0,
+      professorId: (user && user.tipo === 'PROFESSOR' ? Number(user.professor?.professorId) : 0),
     });
     setErrors({});
     onClose();
   };
 
-  const professorDataFilter = ()=> {
-    let professors = professorsData?.data.map(professor => ({
-      label: professor.Nome,
-      value: professor.ProfessorID
-    }))
+  const professorDataOptions = useMemo(() => {
+    if (!professorsData?.data) return [];
+    
+    let professors = professorsData.data;
 
-    if(user && user.tipo === 'PROFESSOR'){
-      professors = professorsData?.data.filter((professor)=> professor.ProfessorID === user.professor?.professorId ).map((professor)=> ({
-      label: professor.Nome,
-      value: professor.ProfessorID
-      }))
+    if(user && user.tipo === 'PROFESSOR' && user.professor){
+      professors = professors.filter((p)=> p.professorId === user.professor?.professorId);
     }
 
-    return professors || []
-  }
+    return professors.map(p => ({
+      label: p.nome,
+      value: p.professorId
+    }));
+  }, [professorsData, user]);
 
   // Preparar opções dos cursos
   const cursoOptions = [
@@ -135,7 +137,7 @@ export function SumarioDialog({
 
    const professorOptions = [
     { label: 'Selecione o professor', value: '' },
-    ...professorDataFilter()
+    ...professorDataOptions
   ];
 
   return (
@@ -157,7 +159,7 @@ export function SumarioDialog({
           muted={!!user?.professor?.professorId}
           required={true}
           options={professorOptions}
-          value={user?.professor?.professorId || formData.professorId}
+          value={formData.professorId}
           onChange={(value) => setFormData(prev => ({ 
             ...prev, 
             professorId: Number(value) 
@@ -176,16 +178,6 @@ export function SumarioDialog({
           error={errors.cursoId}
           disabled={loadingCursos}
         />
-
-        {/* <Dialog.Input
-          muted={!!user?.professor?.nome}
-          placeholder="Professor"
-          value={user?.professor?.nome || ''}
-          onChange={(value) => {
-            setFormData(prev => ({ ...prev, pr }))
-          }}
-         disabled={!!user?.professor?.nome}
-        /> */}
 
         <Dialog.Input
           required={true}

@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Dialog } from '../Dialog';
-import { ProfessorForm } from '../../../types/entities';
-import { useCreateProfessor } from '../../../hooks/useProfessores';
-import { 
-  validateName, 
-  validateEmail, 
-  validatePassword, 
-  validateCargaHoraria, 
-  validateDepartamento 
-} from '../../../utils/validations';
 import { toast } from 'react-toastify';
+import { useCreateProfessor } from '../../../hooks/useProfessores';
+import { ProfessorForm } from '../../../types/entities';
+import {
+    validateCargaHoraria,
+    validateDepartamento,
+    validateEmail,
+    validateName,
+    validatePassword
+} from '../../../utils/validations';
+import { Dialog } from '../Dialog';
 
 interface FormErrors {
   nome?: string;
@@ -66,13 +66,7 @@ export function ProfessorDialog({
     }
 
     try {
-      await createProfessor.mutateAsync({
-        Nome: formData.nome,
-        Email: formData.email,
-        Senha: formData.senha,
-        Departamento: formData.departamento,
-        CargaHoraria: formData.cargaHoraria,
-      });
+      await createProfessor.mutateAsync(formData);
 
       toast.success('Professor cadastrado com sucesso!');
       onSubmit?.(formData);

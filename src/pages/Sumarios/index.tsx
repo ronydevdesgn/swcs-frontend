@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Table } from '../../components/Table/Table';
-import { InputSearch } from '../../components/InputSearch/InputSearch';
-import { SumarioDialog } from '../../components/Dialog/Dialogs/SumarioDialog';
-import { useSumarios } from '../../hooks/useSumarios';
 import { toast } from 'react-toastify';
+import { SumarioDialog } from '../../components/Dialog/Dialogs/SumarioDialog';
+import { InputSearch } from '../../components/InputSearch/InputSearch';
+import { Table } from '../../components/Table/Table';
 import { usePermission } from '../../hooks/usePermission';
+import { useSumarios } from '../../hooks/useSumarios';
+import { Sumario } from '../../types/entities';
 import { PERMISSIONS } from '../../utils/permissions';
 
 export function Sumarios() {
@@ -22,36 +23,36 @@ export function Sumarios() {
 
   // Colunas para o componente Table
   const columns = [
-    { key: 'SumarioID', label: 'ID' },
+    { key: 'sumarioId', label: 'ID' },
     {
-      key: 'Data',
+      key: 'data',
       label: 'Data',
-      render: (sumario: any) => {
+      render: (sumario: Sumario) => {
         try {
-          return new Date(sumario.Data).toLocaleDateString('pt-BR');
+          return new Date(sumario.data).toLocaleDateString('pt-BR');
         } catch {
-          return sumario.Data;
+          return sumario.data;
         }
       },
     },
     { 
-      key: 'Curso', 
+      key: 'curso', 
       label: 'Curso',
-      render: (sumario: any) => sumario.Curso?.Nome || 'N/A'
+      render: (sumario: Sumario) => sumario.curso?.nome || 'N/A'
     },
     { 
-      key: 'Professor', 
+      key: 'professor', 
       label: 'Professor',
-      render: (sumario: any) => sumario.Professor?.Nome || 'N/A'
+      render: (sumario: Sumario) => sumario.professor?.nome || 'N/A'
     },
     { 
-      key: 'Conteudo', 
+      key: 'conteudo', 
       label: 'Conteúdo',
-      render: (sumario: any) => {
+      render: (sumario: Sumario) => {
         const maxLength = 50;
-        return sumario.Conteudo.length > maxLength 
-          ? `${sumario.Conteudo.substring(0, maxLength)}...`
-          : sumario.Conteudo;
+        return sumario.conteudo.length > maxLength 
+          ? `${sumario.conteudo.substring(0, maxLength)}...`
+          : sumario.conteudo;
       }
     },
   ];

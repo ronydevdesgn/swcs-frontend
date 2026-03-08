@@ -1,56 +1,20 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../lib/api";
 import { queryClient } from "../lib/react-query";
+import { PaginatedResponse, Professor, ProfessorForm } from "../types/entities";
 
-export interface PaginationQuery {
+interface ProfessoresQueryParams {
   page?: number;
   limit?: number;
   search?: string;
+  departamento?: string;
 }
 
-export interface PaginatedResponse<T> {
-  data: T[];
-  meta: {
-    total: number;
-    page: number;
-    lastPage: number;
-  };
-}
-
-export interface Professor {
-  ProfessorID: number;
-  Nome: string;
-  Departamento: 'INFORMATICA' | 'OUTROS';
-  CargaHoraria: number;
-  Email?: string;
-  Cursos?: Curso[];
-}
-
-export interface Curso {
-  cursoId: number;
-  nome: string;
-}
-
-export interface CreateProfessorInput {
-  Nome: string;
-  Email: string;
-  Senha: string;
-  Departamento: 'INFORMATICA' | 'OUTROS';
-  CargaHoraria: number;
-}
-
-export function useProfessores(
-  options?: PaginationQuery & { departamento?: string }
-) {
-  return useQuery({
-    queryKey: ["professores", options],
+export function useProfessores(params?: ProfessoresQueryParams) {
+  return useQuery<PaginatedResponse<Professor>>({
+    queryKey: ["professores", params],
     queryFn: async () => {
-      const response = await api.get<PaginatedResponse<Professor>>(
-        "/professores",
-        {
-          params: options,
-        }
-      );
+      const response = await api.get<PaginatedResponse<Professor>>("/professores", { params });
       return response.data;
     },
   });
@@ -69,7 +33,7 @@ export function useProfessor(id: number) {
 
 export function useCreateProfessor() {
   return useMutation({
-    mutationFn: async (data: CreateProfessorInput) => {
+    mutationFn: async (data: ProfessorForm) => {
       const response = await api.post<Professor>("/professores", data);
       return response.data;
     },
@@ -86,10 +50,11 @@ export function useUpdateProfessor() {
       data,
     }: {
       id: number;
-      data: Partial<Omit<CreateProfessorInput, 'Senha'>>;
+      data: Partial<Omit<ProfessorForm, 'senha'>>;
     }) => {
-      const response = await api.put<Professor>(`/professores/${id}`, data);
-      return response.data;
+      const response = await api.get<Professor>(`/professores/${id}`); // Validation check?? (old code had put)
+      const updateResponse = await api.put<Professor>(`/professores/${id}`, data);
+      return updateResponse.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["professores"] });
