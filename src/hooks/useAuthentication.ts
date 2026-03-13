@@ -83,7 +83,7 @@ export function useCreateUser() {
       senha: string;
       tipo: UserRole;
     }) => {
-      const response = await api.post('/auth/register', data);
+      const response = await api.post('/usuarios', data);
       return response.data;
     },
     onSuccess: () => {

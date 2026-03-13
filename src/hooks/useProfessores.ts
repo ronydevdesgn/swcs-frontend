@@ -52,7 +52,7 @@ export function useUpdateProfessor() {
       id: number;
       data: Partial<Omit<ProfessorForm, 'senha'>>;
     }) => {
-      const response = await api.get<Professor>(`/professores/${id}`); // Validation check?? (old code had put)
+      //const response = await api.get<Professor>(`/professores/${id}`); // Validation check?? (old code had put)
       const updateResponse = await api.put<Professor>(`/professores/${id}`, data);
       return updateResponse.data;
     },
