@@ -1,27 +1,27 @@
 // All screen (todas as telas do aplicativo)
 import {
   createBrowserRouter,
-  RouterProvider,
   Navigate,
+  RouterProvider,
 } from 'react-router-dom';
-import { Login } from './pages/Login';
-import { AuthProvider } from './contexts/AuthContext';
 import { Layout } from './components/Layout';
 import { PrivateRoute } from './components/PrivateRoute';
+import { AuthProvider } from './contexts/AuthContext';
 import { Cursos } from './pages/Cursos';
 import { Dashboard } from './pages/Dashboard';
 import { Efetividade } from './pages/Efetividade';
+import { ForgotPassword } from './pages/ForgotPassword';
+import { Login } from './pages/Login';
 import { Perfil } from './pages/Perfil';
 import { Professores } from './pages/Professores';
 import { Relatorios } from './pages/Relatorios';
 import { SignUp } from './pages/SignUp';
-import { ForgotPassword } from './pages/ForgotPassword';
 import { Sumarios } from './pages/Sumarios';
 
 // All routes (todas as rotas)
 const routers = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
     element: <Login />,
   },
   {
@@ -99,7 +99,7 @@ const routers = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to="/login" replace />,
+    element: <Navigate to="/" replace />,
   },
 ]);
 
