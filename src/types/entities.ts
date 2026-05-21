@@ -1,13 +1,5 @@
 // Interfaces alinhadas com backend (camelCase)
 
-export interface User {
-  id: string;
-  nome: string;
-  email: string;
-  tipo: 'FUNCIONARIO' | 'PROFESSOR';
-  professor?: Professor | null;
-  permissoes?: string[];
-}
 
 export interface CursoForm {
   nome: string;
