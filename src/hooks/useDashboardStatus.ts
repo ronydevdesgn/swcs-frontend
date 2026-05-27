@@ -7,7 +7,10 @@ interface DashboardStatsResponse {
     cursos: number;
     sumarios: number;
     presencas: number;
+    totalFaltas: number;
     funcionarios: number;
+    sumariosRecentes: number;
+    presencasRecentes: number;
   };
 }
 
@@ -17,7 +20,7 @@ export interface DashboardStats {
   totalSumarios: number;
   totalPresencas: number;
   totalFaltas: number;
-  professoresAtivos: number;
+  totalFuncionarios: number;
   sumariosRecentes: number;
   presencasRecentes: number;
 }
@@ -28,16 +31,16 @@ export function useDashboardStats() {
     queryFn: async (): Promise<DashboardStats> => {
       const { data } = await api.get<DashboardStatsResponse>('/dashboard/stats');
       const stats = data.data;
-      
+
       return {
         totalProfessores: stats.professores,
         totalCursos: stats.cursos,
         totalSumarios: stats.sumarios,
-        totalPresencas: stats.presencas, // Nota: Atualmente retorna contagem total de registros
-        totalFaltas: 0, // Não implementado no backend v1
-        professoresAtivos: 0, // Não implementado no backend v1
-        sumariosRecentes: 0, // Não implementado no backend v1
-        presencasRecentes: 0, // Não implementado no backend v1
+        totalPresencas: stats.presencas,
+        totalFaltas: stats.totalFaltas,
+        totalFuncionarios: stats.funcionarios,
+        sumariosRecentes: stats.sumariosRecentes,
+        presencasRecentes: stats.presencasRecentes,
       };
     },
     staleTime: 5 * 60 * 1000, // 5 minutos
