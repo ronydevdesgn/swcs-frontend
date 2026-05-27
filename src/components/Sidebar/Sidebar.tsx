@@ -13,6 +13,7 @@ import {
   User,
   Minimize2,
   BookOpen,
+  Shield,
 } from 'react-feather';
 
 export function Sidebar() {
@@ -48,6 +49,11 @@ export function Sidebar() {
               <span>Professores</span>
             </NavLink>
 
+            <NavLink to="/funcionarios" className={"Icon-link"}>
+              <Users size={18} />
+              <span>Funcionários</span>
+            </NavLink>
+
             {can(PERMISSIONS.VISUALIZAR_EFETIVIDADES) && (
               <NavLink to="/efetividade" className={"Icon-link"}>
                 <BarChart2 size={18} />
@@ -58,6 +64,11 @@ export function Sidebar() {
             <NavLink to="/relatorios" className={"Icon-link"}>
               <Layers size={18} />
               <span>Relatórios</span>
+            </NavLink>
+
+            <NavLink to="/permissoes" className={"Icon-link"}>
+              <Shield size={18} />
+              <span>Permissões</span>
             </NavLink>
           </>
           )}

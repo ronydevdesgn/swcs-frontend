@@ -1,5 +1,5 @@
 import { Card } from "../../components/Card/Card";
-import { ArrowUp, ArrowDown, ArrowUpRight, RefreshCw } from "react-feather";
+import { ArrowUp, ArrowDown, ArrowUpRight, RefreshCw, Users } from "react-feather";
 import { useDashboardStats } from "../../hooks/useDashboardStatus";
 import "./index.css";
 
@@ -62,9 +62,15 @@ export function Dashboard() {
         <Card
           titleCard="Presenças"
           numberCard={stats?.totalPresencas ?? 0}
-          descriptionCard={` Foram registradas: ${stats?.totalFaltas ?? 0} faltas, e ${stats?.totalPresencas ?? 0} presenças até agora.`}
+          descriptionCard={`Foram registradas: ${stats?.totalFaltas ?? 0} faltas, e ${stats?.totalPresencas ?? 0} presenças até agora.`}
           iconUp={<ArrowUp size={24} strokeWidth={4} />}
           iconDown={<ArrowDown size={24} strokeWidth={4} className="svgdown" />}
+        />
+        <Card
+          titleCard="Funcionários"
+          numberCard={stats?.totalFuncionarios ?? 0}
+          descriptionCard="Funcionários cadastrados no sistema."
+          iconUp={<ArrowUpRight size={24} strokeWidth={4} />}
         />
       </div>
     </section>

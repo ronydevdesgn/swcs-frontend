@@ -17,6 +17,8 @@ import { Professores } from './pages/Professores';
 import { Relatorios } from './pages/Relatorios';
 import { SignUp } from './pages/SignUp';
 import { Sumarios } from './pages/Sumarios';
+import { Funcionarios } from './pages/Funcionarios';
+import { Permissoes } from './pages/Permissoes';
 
 // All routes (todas as rotas)
 const routers = createBrowserRouter([
@@ -87,6 +89,20 @@ const routers = createBrowserRouter([
             element: <Sumarios />,
             handle: {
               title: 'Sumários',
+            },
+          },
+          {
+            path: '/funcionarios',
+            element: <Funcionarios />,
+            handle: {
+              title: 'Funcionários',
+            },
+          },
+          {
+            path: '/permissoes',
+            element: <Permissoes />,
+            handle: {
+              title: 'Permissões',
             },
           },
           {
